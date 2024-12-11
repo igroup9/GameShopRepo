@@ -51,6 +51,7 @@ function renderGames(games) {
       G.Name
     }" class="game-header-image">
       <h2>${G.Name}</h2>
+       <button class="add_to_list_btn" data-index="${index}">Add To Your List</button>
       <p><strong>App ID:</strong> ${G.AppID}</p>
       <p><strong>Release Date:</strong> ${
         G.Release_date
@@ -87,7 +88,7 @@ function renderGames(games) {
         <button class="carousel-button prev">&lt;</button>
         <button class="carousel-button next">&gt;</button>
       </div>
-      <button class="add_to_list_btn" data-index="${index}">Add To Your List</button>
+     
     `;
 
     gamesList.appendChild(gameCard);
