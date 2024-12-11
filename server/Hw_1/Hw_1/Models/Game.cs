@@ -1,0 +1,147 @@
+﻿using System.Text.Json.Serialization;
+
+namespace Hw_1.Models
+{
+    public class Game
+    {
+        int appid;
+        string name;
+        string releaseDate;
+        double price;
+        string description;
+        string full_audio_languages;//new from Hw2
+        string headerImage;
+        string website;
+        string windows; //string instead of bool
+        string mac;//string instead of bool
+        string linux;//string instead of bool
+        int scoreRank;
+        string recommendations;
+        string developers;//new from Hw2
+        string categories;//new from Hw2
+        string genres; //new from Hw2
+        string tags;//new from Hw2
+        string screenshots;//new from Hw2
+       // string publisher; // not in use?
+        static List<Game> GamesList = new List<Game>();
+        public Game()
+        {
+                
+        }
+
+        public Game(int appid, string name, string releaseDate, double price, string description, string full_audio_languages, string headerImage, string website, string windows, string mac, string linux, int scoreRank, string recommendations, string developers, string categories, string genres, string tags, string screenshots/*, string publisher*/)
+        {
+            this.appid = appid;
+            this.name = name;
+            this.releaseDate = releaseDate;
+            this.price = price;
+            this.description = description;
+            this.full_audio_languages = full_audio_languages;
+            this.headerImage = headerImage;
+            this.website = website;
+            this.windows = windows;
+            this.mac = mac;
+            this.linux = linux;
+            this.scoreRank = scoreRank;
+            this.recommendations = recommendations;
+            this.developers = developers;
+            this.categories = categories;
+            this.genres = genres;
+            this.tags = tags;
+            this.screenshots = screenshots;
+           // this.publisher = publisher;
+        }
+
+        [JsonPropertyName("AppID")]
+        public int Appid { get => appid; set => appid = value; }
+        [JsonPropertyName("Name")]
+        public string Name { get => name; set => name = value; }
+        [JsonPropertyName("Release_date")]
+        public string ReleaseDate { get => releaseDate; set => releaseDate = value; }
+        [JsonPropertyName("Price")]
+        public double Price { get => price; set => price = value; }
+        [JsonPropertyName("description")]
+        public string Description { get => description; set => description = value; }
+        [JsonPropertyName("Full_audio_languages")]
+        public string Full_audio_languages { get => full_audio_languages; set => full_audio_languages = value; }
+        [JsonPropertyName("Header_image")]
+        public string HeaderImage { get => headerImage; set => headerImage = value; }
+        [JsonPropertyName("Website")]
+        public string Website { get => website; set => website = value; }
+        [JsonPropertyName("Windows")]
+        public string Windows { get => windows; set => windows = value; }
+        [JsonPropertyName("Mac")]
+        public string Mac { get => mac; set => mac = value; }
+        [JsonPropertyName("Linux")]
+        public string Linux { get => linux; set => linux = value; }
+        [JsonPropertyName("Score_rank")]
+        public int ScoreRank { get => scoreRank; set => scoreRank = value; }
+        [JsonPropertyName("Recommendations")]
+        public string Recommendations { get => recommendations; set => recommendations = value; }
+        [JsonPropertyName("Developers")]
+        public string Developers { get => developers; set => developers = value; }
+        [JsonPropertyName("Categories")]
+        public string Categories { get => categories; set => categories = value; }
+        [JsonPropertyName("Genres")]
+        public string Genres { get => genres; set => genres = value; }
+        [JsonPropertyName("Tags")]
+        public string Tags { get => tags; set => tags = value; }
+        [JsonPropertyName("Screenshots")]
+        public string Screenshots { get => screenshots; set => screenshots = value; }
+       // public string Publisher { get => publisher; set => publisher = value; }
+        
+
+        public bool insert()
+        {
+            foreach (Game G in GamesList)
+            {
+                if ((this.Appid==G.Appid)||(this.Name==G.Name))
+                    return false;
+            }
+            GamesList.Add(this);
+            return true;
+        }
+        public List<Game> read()
+        {
+            return GamesList;
+        }
+
+        public List<Game> GamesAbovePrice(int minPrice)
+        {
+            List<Game> tempGamesList = new List<Game>();
+
+            foreach (Game G in GamesList)
+            {
+                if (G.Price > minPrice)
+                    tempGamesList.Add(G);
+            }
+            return tempGamesList;
+        }
+
+        public List<Game> GamesAboveRankScore(int scoreRank)
+        {
+            List<Game> tempGamesList = new List<Game>();
+
+            foreach (Game G in GamesList)
+            {
+                if (G.scoreRank > scoreRank)
+                    tempGamesList.Add(G);
+            }
+            return tempGamesList;
+        }
+
+        public void DeleteById(int appid)
+        {
+            foreach (Game G in GamesList)
+                if (G.Appid == appid)
+                {
+                    GamesList.Remove(G);
+                    return;
+                }
+            throw new Exception("there is no such game in the list");
+        }
+
+
+
+    }
+}
