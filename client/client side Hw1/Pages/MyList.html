@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1.0"
+    />
+    <title>My Games List</title>
+    <script
+      src="https://code.jquery.com/jquery-3.7.1.min.js"
+      integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo="
+      crossorigin="anonymous"
+    ></script>
+    <script src="../Scripts/ajaxCalls.js"></script>
+    <link rel="stylesheet" href="../Css/game.css" />
+    <script src="../Scripts/Script.js"></script>
+  </head>
+  <body>
+    <div id="container">
+      <h1 class="heading">My Games List</h1>
+      <a href="./Index.html"
+        ><button src>Go to All Game List</button></a
+      >
+      <div id="games_container"></div>
+    </div>
+    <script>
+      document.addEventListener("DOMContentLoaded", () => {
+        getFromServer();
+        initializeCarousel();
+        // $(document).on(
+        //   "click",
+        //   ".add_to_list_btn",
+        //   function () {
+        //     const index = $(this).data("index");
+        //     const selectedGame = GAME[index];
+        //     console.log("Sending game:", selectedGame);
+        //     postToServer(selectedGame);
+        //   }
+        // );
+      });
+
+      function getFromServer() {
+        const api = "https://localhost:7119/api/Games";
+        ajaxCall("GET", api, "", getGamesSCB, getGamesECB);
+        function getGamesSCB(gamesList) {
+          console.log(gamesList);
+          renderGames(gamesList);
+        }
+        function getGamesECB(ERR) {
+          console.log(ERR);
+        }
+      }
+    </script>
+  </body>
+</html>

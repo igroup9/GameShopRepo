@@ -31,24 +31,24 @@ namespace Hw_1.Models
 
         public Game(int appid, string name, string releaseDate, double price, string description, string full_audio_languages, string headerImage, string website, string windows, string mac, string linux, int scoreRank, string recommendations, string developers, string categories, string genres, string tags, string screenshots/*, string publisher*/)
         {
-            this.appid = appid;
-            this.name = name;
-            this.releaseDate = releaseDate;
-            this.price = price;
-            this.description = description;
-            this.full_audio_languages = full_audio_languages;
-            this.headerImage = headerImage;
-            this.website = website;
-            this.windows = windows;
-            this.mac = mac;
-            this.linux = linux;
-            this.scoreRank = scoreRank;
-            this.recommendations = recommendations;
-            this.developers = developers;
-            this.categories = categories;
-            this.genres = genres;
-            this.tags = tags;
-            this.screenshots = screenshots;
+            this.Appid = appid;
+            this.Name = name;
+            this.ReleaseDate = releaseDate;
+            this.Price = price;
+            this.Description = description;
+            this.Full_audio_languages = full_audio_languages;
+            this.HeaderImage = headerImage;
+            this.Website = website;
+            this.Windows = windows;
+            this.Mac = mac;
+            this.Linux = linux;
+            this.ScoreRank = scoreRank;
+            this.Recommendations = recommendations;
+            this.Developers = developers;
+            this.Categories = categories;
+            this.Genres = genres;
+            this.Tags = tags;
+            this.Screenshots = screenshots;
            // this.publisher = publisher;
         }
 
