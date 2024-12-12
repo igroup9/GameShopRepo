@@ -130,16 +130,19 @@ namespace Hw_1.Models
             return tempGamesList;
         }
 
-        public void DeleteById(int appid)
+        public bool DeleteById(int appid)
         {
-            foreach (Game G in GamesList)
-                if (G.Appid == appid)
+            for (int i = GamesList.Count - 1; i >= 0; i--)
+            {
+                if (GamesList[i].Appid == appid)
                 {
-                    GamesList.Remove(G);
-                    return;
+                    GamesList.RemoveAt(i);
+                    return true;
                 }
-            throw new Exception("there is no such game in the list");
+            }
+            return false;
         }
+
 
 
 

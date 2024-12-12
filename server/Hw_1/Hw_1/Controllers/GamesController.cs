@@ -64,17 +64,14 @@ namespace Hw_1.Controllers
         }
 
         // DELETE api/<GamesController>/5
-        [HttpDelete("{id}")]
-        public void Delete(int id)
-        {
-        }
-
-        [HttpDelete("DeleteById")]
-        public void DeleteById(int appid)
+        [HttpDelete("deleteByid/AppId/{AppId}")]
+        public bool Delete(int AppId)
         {
             Game game = new Game();
-            game.DeleteById(appid);
+            return game.DeleteById(AppId);
         }
+
+     
 
 
 
