@@ -1,7 +1,12 @@
 body {
   font-family: cursive;
   background: #002412;
-  background: linear-gradient(90deg, rgba(0, 36, 18, 1) 0%, rgba(139, 131, 161, 0.7345063025210083) 35%, rgba(150, 161, 131, 1) 100%);
+  background: linear-gradient(
+    90deg,
+    rgba(0, 36, 18, 1) 0%,
+    rgba(139, 131, 161, 0.7345063025210083) 35%,
+    rgba(150, 161, 131, 1) 100%
+  );
 }
 
 h1.heading {
@@ -12,41 +17,19 @@ h1.heading {
   text-align: center;
   font-size: 4rem;
   background: rgb(4, 36, 0);
-  background: radial-gradient(circle, rgba(4, 36, 0, 0.6280637254901961) 0%, rgba(0, 0, 36, 1) 100%);
+  background: radial-gradient(
+    circle,
+    rgba(4, 36, 0, 0.6280637254901961) 0%,
+    rgba(0, 0, 36, 1) 100%
+  );
 }
 
-.game-card {
-  border: 1px solid #ccc;
-  border-radius: 5px;
-  padding: 20px;
-  margin: 10px;
-  max-width: 500px;
-}
-div.game-card {
-  background: rgb(4, 36, 0);
-  background: radial-gradient(circle, rgba(4, 36, 0, 0.6280637254901961) 0%, rgba(0, 0, 36, 1) 100%);
-  color: #e9ecef;
-}
-.game-header-image {
-  max-width: 100%;
-  border-radius: 5px;
-}
-.game-card h2 {
-  margin: 10px 0;
-}
-.game-card p {
-  margin: 5px 0;
-}
-.screenshots img {
-  border-radius: 5px;
-}
-
-/* Flexbox for the card container */
+/* עיצוב הקונטיינר */
 #games_container {
   display: flex;
   flex-wrap: wrap;
-  justify-content: space-between; /* Ensures even spacing */
-  gap: 20px; /* Spacing between cards */
+  gap: 20px;
+  justify-content: center;
   padding: 20px;
 }
 
@@ -61,6 +44,37 @@ div.game-card {
   padding: 15px;
   text-align: center;
   box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  width: 250px;
+  height: 200px; /* גובה תצוגה מקדימה */
+  overflow: hidden;
+  transition: all 0.3s ease-in-out;
+  position: relative;
+  cursor: pointer;
+}
+
+.game-card:hover {
+  max-width: 40%; /* הגדלת הרוחב */
+  height: auto; /* חשיפת כל המידע */
+  box-shadow: 0 8px 12px rgba(0, 0, 0, 0.2);
+  transform: scale(1.1); /* הגדלה קטנה */
+  z-index: 10; /* לוודא שהכרטיס בחזית */
+}
+
+.game-card:hover p {
+  font-size: 1em;
+}
+
+.game-card h2,
+.game-card p {
+  margin: 10px;
+  font-size: 0.9em;
+  text-align: center;
+}
+
+.game-card img {
+  max-width: 100%;
+  height: auto;
+  border-radius: 8px 8px 0 0;
 }
 
 /* Adjust for tablets */
@@ -77,13 +91,6 @@ div.game-card {
     flex: 1 1 calc(50% - 20px); /* 2 cards per row */
     max-width: calc(50% - 20px);
   }
-}
-
-/* Ensure images fit nicely */
-.game-card img {
-  max-width: 100%;
-  height: auto;
-  border-radius: 8px;
 }
 
 /* Image Carousel */
@@ -124,53 +131,37 @@ div.game-card {
   right: 10px;
 }
 
-/* עיצוב הקונטיינר */
-#games_container {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 20px;
-  justify-content: center;
-  padding: 20px;
+/* Screenshots and images */
+.screenshots img {
+  border-radius: 5px;
 }
 
-/* עיצוב הכרטיס */
-.game-card {
-  width: 250px;
-  height: 200px; /* גובה תצוגה מקדימה */
-  overflow: hidden;
-  background: #f9f9f9;
-  border: 1px solid #ddd;
-  border-radius: 8px;
-  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-  transition: all 0.3s ease-in-out;
-  position: relative;
-  cursor: pointer;
+div.game-card {
+  background: rgb(4, 36, 0);
+  background: radial-gradient(
+    circle,
+    rgba(4, 36, 0, 0.6280637254901961) 0%,
+    rgba(0, 0, 36, 1) 100%
+  );
+  color: #e9ecef;
 }
 
-/* תוכן הכרטיס */
-.game-card img {
-  width: 100%;
-  height: auto;
-  border-radius: 8px 8px 0 0;
+.game-header-image {
+  max-width: 100%;
+  border-radius: 5px;
 }
 
-.game-card h2,
+.game-card h2 {
+  margin: 10px 0;
+}
+
 .game-card p {
-  margin: 10px;
-  font-size: 0.9em;
-  text-align: center;
+  margin: 5px 0;
 }
 
-/* במצב ריחוף */
-.game-card:hover {
-  max-width: 40%; /* הגדלת הרוחב */
-  height: auto; /* חשיפת כל המידע */
-  box-shadow: 0 8px 12px rgba(0, 0, 0, 0.2);
-  transform: scale(1.1); /* הגדלה קטנה */
-  z-index: 10; /* לוודא שהכרטיס בחזית */
-}
-
-/* ריווח נוסף לכרטיס בהגדלה */
-.game-card:hover p {
-  font-size: 1em;
+.filter-section-container {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  justify-content: space-around;
 }

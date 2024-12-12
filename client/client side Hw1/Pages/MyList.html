@@ -17,34 +17,114 @@
     <div id="container">
       <h1 class="heading">My Games List</h1>
       <a href="./Index.html"><button src>Go to All Game List</button></a>
+      <!-- ----------------------------------------------- -->
+
+      <div class="filter-section-container">
+        <div class="filter-section">
+          <h2>Filter by Price</h2>
+          <div class="filter-container">
+            <input type="number" id="price_Input" step="0.01" min="0" placeholder="Enter price..." />
+            <button id="filterByPriceBtn">Search</button>
+          </div>
+        </div>
+
+        <div class="filter-section">
+          <h2>Filter by Score</h2>
+          <div class="filter-container">
+            <input type="number" id="rank_Score_Input" placeholder="Enter score..." />
+            <button id="filterByRankScoreBtn">Search</button>
+          </div>
+        </div>
+        <button id="removeFilterBtn" style="display: none">Remove Filter</button>
+      </div>
+      <!-- ----------------------------------------------- -->
+
       <div id="games_container"></div>
     </div>
     <script>
-      document.addEventListener("DOMContentLoaded", () => {
+      $(document).ready(function () {
         getFromServer();
-
+        /////////////////////////////////////delete func/////////////////////////////////////////////
         $(document).on("click", ".delete_from_list_btn", function () {
           const AppID = $(this).data("appid");
-          // const selectedGame = GAME[index];
           DeleteByIdFromServer(AppID);
         });
 
-        function DeleteByIdFromServer(AppID) {
-          const api = `https://localhost:7119/api/Games/deleteByid/AppId/${AppID}`;
+        /////////////////////////////////////////filter by price func/////////////////////////////////
 
-          ajaxCall("Delete", api, "", deleteGameSCB, deleteGameECB);
+        $("#filterByPriceBtn").click(function () {
+          const priceValue = $("#price_Input").val(); // Get the value from the input
+          if (!priceValue) {
+            alert("Please enter a price.");
+            return;
+          }
+          filterByPrice(priceValue);
+          $("#removeFilterBtn").show();
+        });
+        /////////////////////////////////////////filter by rank func/////////////////////////////////
 
-          function deleteGameSCB(status) {
-            console.log(status);
-            // alert(status);
-            getFromServer();
+        $("#filterByRankScoreBtn").click(function () {
+          const rankScore = $("#rank_Score_Input").val(); // Get the value from the input
+          if (!rankScore) {
+            alert("Please enter a rank score.");
+            return;
           }
-          function deleteGameECB(ERR) {
-            console.log(ERR);
-          }
-        }
+          filterByRank(rankScore);
+          $("#removeFilterBtn").show();
+        });
+        /////////////////////////////////////////remove filter func/////////////////////////////////
+
+        $("#removeFilterBtn").click(function () {
+          getFromServer();
+          $("#removeFilterBtn").hide();
+          $("#price_Input").val("");
+          $("#rank_Score_Input").val("");
+        });
       });
 
+      function DeleteByIdFromServer(AppID) {
+        const api = `https://localhost:7119/api/Games/deleteByid/AppId/${AppID}`;
+
+        ajaxCall("Delete", api, "", deleteGameSCB, deleteGameECB);
+
+        function deleteGameSCB(status) {
+          console.log(status);
+          getFromServer();
+        }
+        function deleteGameECB(ERR) {
+          console.log(ERR);
+        }
+      }
+
+      function filterByPrice(priceValue) {
+        const api = `https://localhost:7119/api/Games/GetByPrice?minPrice=${priceValue}`;
+
+        ajaxCall("GET", api, "", filterByPriceSCB, filterByPriceECB);
+
+        function filterByPriceSCB(tempGamesList) {
+          console.log(tempGamesList);
+          renderGames(tempGamesList); //CALL RENDER FUNC
+          initializeCarousel(); //initialize Carousel
+        }
+        function filterByPriceECB(ERR) {
+          console.log(ERR);
+        }
+      }
+
+      function filterByRank(rankScore) {
+        const api = `https://localhost:7119/api/Games/GetByRankScore/scoreRank${rankScore}`;
+
+        ajaxCall("GET", api, "", filterByRankSCB, filterByRankECB);
+
+        function filterByRankSCB(tempGamesList) {
+          console.log(tempGamesList);
+          renderGames(tempGamesList); //CALL RENDER FUNC
+          initializeCarousel(); //initialize Carousel
+        }
+        function filterByRankECB(ERR) {
+          console.log(ERR);
+        }
+      }
       function getFromServer() {
         const api = "https://localhost:7119/api/Games";
         ajaxCall("GET", api, "", getGamesSCB, getGamesECB);
@@ -102,39 +182,39 @@
           gameCard.className = "game-card";
 
           gameCard.innerHTML = `
-      <img src="${G.Header_image}" alt="${G.Name}" class="game-header-image">
-      <h2>${G.Name}</h2>
-       <button class="delete_from_list_btn" data-AppID="${G.AppID}">Delete Game</button>
-      <p><strong>App ID:</strong> ${G.AppID}</p>
-      <p><strong>Release Date:</strong> ${G.Release_date}</p>
-      <p><strong>Price:</strong> $${G.Price.toFixed(2)}</p>
-      <p><strong>Description:</strong> ${G.description}</p>
-      <p><strong>Full Audio Languages:</strong> ${G.Full_audio_languages}</p>
-      <p><strong>Developers:</strong> ${G.Developers}</p>
-      <p><strong>Categories:</strong> ${G.Categories}</p>
-      <p><strong>Genres:</strong> ${G.Genres}</p>
-      <p><strong>Tags:</strong> ${G.Tags}</p>
-      <p><strong>Score Rank:</strong> ${G.Score_rank}</p>
-      <p><strong>Platforms:</strong>
-        ${G.Windows === "TRUE" ? "Windows " : ""}
-        ${G.Mac === "TRUE" ? "Mac " : ""}
-        ${G.Linux === "TRUE" ? "Linux" : ""}
-      </p>
-      <a href="${G.Website}" target="_blank">Official Website</a>
-      <div class="screenshots image-carousel">
-        ${G.Screenshots.split(",")
-          .map(
-            (url, index) =>
-              `<img src="${url}" alt="Screenshot" class="carousel-image ${
-                index === 0 ? "active" : ""
-              }" style="width:100%; display: ${index === 0 ? "block" : "none"};">`
-          )
-          .join("")}
-        <button class="carousel-button prev">&lt;</button>
-        <button class="carousel-button next">&gt;</button>
-      </div>
-     
-    `;
+        <img src="${G.Header_image}" alt="${G.Name}" class="game-header-image">
+        <h2>${G.Name}</h2>
+         <button class="delete_from_list_btn" data-AppID="${G.AppID}">Delete Game</button>
+        <p><strong>App ID:</strong> ${G.AppID}</p>
+        <p><strong>Release Date:</strong> ${G.Release_date}</p>
+        <p><strong>Price:</strong> $${G.Price.toFixed(2)}</p>
+        <p><strong>Description:</strong> ${G.description}</p>
+        <p><strong>Full Audio Languages:</strong> ${G.Full_audio_languages}</p>
+        <p><strong>Developers:</strong> ${G.Developers}</p>
+        <p><strong>Categories:</strong> ${G.Categories}</p>
+        <p><strong>Genres:</strong> ${G.Genres}</p>
+        <p><strong>Tags:</strong> ${G.Tags}</p>
+        <p><strong>Score Rank:</strong> ${G.Score_rank}</p>
+        <p><strong>Platforms:</strong>
+          ${G.Windows === "TRUE" ? "Windows " : ""}
+          ${G.Mac === "TRUE" ? "Mac " : ""}
+          ${G.Linux === "TRUE" ? "Linux" : ""}
+        </p>
+        <a href="${G.Website}" target="_blank">Official Website</a>
+        <div class="screenshots image-carousel">
+          ${G.Screenshots.split(",")
+            .map(
+              (url, index) =>
+                `<img src="${url}" alt="Screenshot" class="carousel-image ${
+                  index === 0 ? "active" : ""
+                }" style="width:100%; display: ${index === 0 ? "block" : "none"};">`
+            )
+            .join("")}
+          <button class="carousel-button prev">&lt;</button>
+          <button class="carousel-button next">&gt;</button>
+        </div>
+
+      `;
 
           gamesList.appendChild(gameCard);
         });
