@@ -82,7 +82,7 @@
       });
 
       function DeleteByIdFromServer(AppID) {
-        const api = `https://localhost:7119/api/Games/deleteByid/AppId/${AppID}`;
+        const api = `https://proj.ruppin.ac.il/igroup9/test2/tar1/api/Games/deleteByid/AppId/${AppID}`;
 
         ajaxCall("Delete", api, "", deleteGameSCB, deleteGameECB);
 
@@ -96,7 +96,7 @@
       }
 
       function filterByPrice(priceValue) {
-        const api = `https://localhost:7119/api/Games/GetByPrice?minPrice=${priceValue}`;
+        const api = `https://proj.ruppin.ac.il/igroup9/test2/tar1/api/Games/GetByPrice?minPrice=${priceValue}`;
 
         ajaxCall("GET", api, "", filterByPriceSCB, filterByPriceECB);
 
@@ -111,7 +111,7 @@
       }
 
       function filterByRank(rankScore) {
-        const api = `https://localhost:7119/api/Games/GetByRankScore/scoreRank${rankScore}`;
+        const api = `https://proj.ruppin.ac.il/igroup9/test2/tar1/api/Games/GetByRankScore/scoreRank${rankScore}`;
 
         ajaxCall("GET", api, "", filterByRankSCB, filterByRankECB);
 
@@ -125,7 +125,7 @@
         }
       }
       function getFromServer() {
-        const api = "https://localhost:7119/api/Games";
+        const api = "https://proj.ruppin.ac.il/igroup9/test2/tar1/api/Games";
         ajaxCall("GET", api, "", getGamesSCB, getGamesECB);
         function getGamesSCB(gamesList) {
           //SCB

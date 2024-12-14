@@ -20,7 +20,7 @@
           Password: $("#LoginPassword").val(), // שליפת הסיסמה מהשדה המתאים
           };
 
-          const api = `https://localhost:7119/api/Games`;
+          const api = `https://proj.ruppin.ac.il/igroup9/test2/tar1/api/Users/LogInUser`;
 
           ajaxCall(
             "POST",
@@ -84,10 +84,16 @@
     }
 
  
-    swal.fire({
+    wal.fire({
         icon: "success",
         title: "Login successful!",
-    });
+        text: "Redirecting to the main page...",
+        timer: 2000, 
+        showConfirmButton: false
+    }).then(() => {
+        // הפניה לדף הראשי
+        window.location.href = "index.html";
+    });
 }
 
     </script>
