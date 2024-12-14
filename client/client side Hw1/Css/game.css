@@ -1,3 +1,4 @@
+/* General Body Styling */
 body {
   font-family: cursive;
   background: #002412;
@@ -7,8 +8,11 @@ body {
     rgba(139, 131, 161, 0.7345063025210083) 35%,
     rgba(150, 161, 131, 1) 100%
   );
+  margin: 0;
+  padding: 0;
 }
 
+/* Header Styling */
 h1.heading {
   background-color: #0e2954;
   height: 6rem;
@@ -21,7 +25,7 @@ h1.heading {
   background: radial-gradient(circle, rgba(4, 36, 0, 0.6280637254901961) 0%, rgba(0, 0, 36, 1) 100%);
 }
 
-/* עיצוב הקונטיינר */
+/* Games Container Styling */
 #games_container {
   display: flex;
   flex-wrap: wrap;
@@ -30,9 +34,9 @@ h1.heading {
   padding: 20px;
 }
 
-/* Individual game card */
+/* Individual Game Card */
 .game-card {
-  flex: 1 1 calc(25% - 20px); /* 4 cards per row */
+  flex: 1 1 calc(25% - 20px); /* 4 cards per row on larger screens */
   max-width: calc(25% - 20px);
   box-sizing: border-box;
   background-color: #f9f9f9;
@@ -42,7 +46,7 @@ h1.heading {
   text-align: center;
   box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
   width: 250px;
-  height: 200px; /* גובה תצוגה מקדימה */
+  height: 150px; /* Default height showing only part of the card */
   overflow: hidden;
   transition: all 0.3s ease-in-out;
   position: relative;
@@ -50,15 +54,14 @@ h1.heading {
 }
 
 .game-card:hover {
-  max-width: 40%; /* הגדלת הרוחב */
-  height: auto; /* חשיפת כל המידע */
-  box-shadow: 0 8px 12px rgba(0, 0, 0, 0.2);
-  transform: scale(1.1); /* הגדלה קטנה */
-  z-index: 10; /* לוודא שהכרטיס בחזית */
+  transform: scale(1.1); /* Slight zoom on hover */
+  z-index: 10; /* Bring the card to the front */
 }
 
-.game-card:hover p {
-  font-size: 1em;
+.game-card img {
+  max-width: 100%;
+  height: auto;
+  border-radius: 8px 8px 0 0;
 }
 
 .game-card h2,
@@ -68,29 +71,65 @@ h1.heading {
   text-align: center;
 }
 
-.game-card img {
-  max-width: 100%;
-  height: auto;
-  border-radius: 8px 8px 0 0;
-}
+/* Mobile-First Adjustments */
 
-/* Adjust for tablets */
+/* Tablet Adjustments (Max Width: 768px) */
 @media (max-width: 768px) {
   .game-card {
     flex: 1 1 calc(33.33% - 20px); /* 3 cards per row */
     max-width: calc(33.33% - 20px);
+    padding: 10px; /* Reduce padding */
+    height: 120px; /* Show less content initially */
+    overflow: hidden;
+  }
+
+  h1.heading {
+    font-size: 3rem; /* Reduce font size for tablets */
+    height: 5rem;
+  }
+
+  .game-card h2,
+  .game-card p {
+    font-size: 0.8em; /* Slightly smaller text */
   }
 }
 
-/* Adjust for mobile */
+/* Mobile Adjustments (Max Width: 480px) */
 @media (max-width: 480px) {
   .game-card {
     flex: 1 1 calc(50% - 20px); /* 2 cards per row */
     max-width: calc(50% - 20px);
+    padding: 8px; /* Further reduce padding */
+    height: 100px; /* Show less content initially */
+    overflow: hidden;
+  }
+
+  .game-card.expanded {
+    height: auto; /* Expand fully when clicked */
+    transform: scale(1.1); /* Slight zoom on expansion */
+    z-index: 10; /* Ensure expanded card is on top */
+  }
+
+  h1.heading {
+    font-size: 2.5rem; /* Smaller font size for smaller screens */
+    height: 4rem;
+  }
+
+  #games_container {
+    padding: 10px; /* Reduce padding for small screens */
+  }
+
+  .game-card h2,
+  .game-card p {
+    font-size: 0.7em; /* Smaller text size */
+  }
+
+  .carousel-button {
+    padding: 5px; /* Smaller buttons for carousel */
   }
 }
 
-/* Image Carousel */
+/* Image Carousel Styling */
 .image-carousel {
   position: relative;
   width: 100%;
@@ -102,7 +141,7 @@ h1.heading {
   display: none;
   width: 100%;
   height: 100%;
-  object-fit: cover; /* התאמת תמונה לשטח */
+  object-fit: cover; /* Fit image within container */
 }
 
 .carousel-image.active {
@@ -128,7 +167,7 @@ h1.heading {
   right: 10px;
 }
 
-/* Screenshots and images */
+/* Screenshots */
 .screenshots img {
   border-radius: 5px;
 }
@@ -144,17 +183,17 @@ div.game-card {
   border-radius: 5px;
 }
 
-.game-card h2 {
-  margin: 10px 0;
-}
-
-.game-card p {
-  margin: 5px 0;
-}
-
 .filter-section-container {
   display: flex;
   flex-direction: row;
   flex-wrap: wrap;
   justify-content: space-around;
+}
+
+@media (min-width: 481px) {
+  .game-card:hover {
+    transform: scale(1.1); /* Slight zoom on hover */
+    height: auto; /* Expand fully on hover */
+    z-index: 10; /* Bring the card to the front */
+  }
 }

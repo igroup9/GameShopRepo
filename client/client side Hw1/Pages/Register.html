@@ -97,11 +97,17 @@
         return;
     }
 
-   
-    swal.fire({
+
+    Swal.fire({
         icon: "success",
         title: "Form submitted successfully!",
-    });
+        text: "Redirecting to the Login page...",
+        timer: 2000, 
+        showConfirmButton: false
+    }).then(() => {
+        // הפניה לדף כניסה
+        window.location.href = "https://proj.ruppin.ac.il/igroup9/test2/tar2/client%20side%20Hw1/Pages/Login.html";
+    });
 }
 
     </script>

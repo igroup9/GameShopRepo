@@ -16,7 +16,9 @@
   <body>
     <div id="container">
       <h1 class="heading">My Games List</h1>
-      <a href="./Index.html"><button src>Go to All Game List</button></a>
+      <a href="https://proj.ruppin.ac.il/igroup9/test2/tar2/client%20side%20Hw1/Pages/index.html"
+        ><button src>Go to All Game List</button></a
+      >
       <!-- ----------------------------------------------- -->
       <div class="filter-section-container">
         <div class="filter-section">
@@ -218,6 +220,18 @@
           gamesList.appendChild(gameCard);
         });
       }
+      document.addEventListener("DOMContentLoaded", () => {
+        const gameCards = document.querySelectorAll(".game-card");
+
+        gameCards.forEach((card) => {
+          card.addEventListener("click", () => {
+            // Apply expand only for mobile view
+            if (window.innerWidth <= 480) {
+              card.classList.toggle("expanded");
+            }
+          });
+        });
+      });
     </script>
   </body>
 </html>

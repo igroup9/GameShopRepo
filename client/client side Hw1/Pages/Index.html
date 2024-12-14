@@ -18,12 +18,14 @@
   <body>
     <div id="container">
       <h1 class="heading">Game Shop</h1>
-      <a href="./MyList.html"><button>Go to Your List</button></a>
+      <a href="https://proj.ruppin.ac.il/igroup9/test2/tar2/client%20side%20Hw1/Pages/MyList.html"
+        ><button>Go to Your List</button></a
+      >
 
       <div id="games_container">
         <div class="navbar">
-          <a href="Register.html">Register</a>
-          <a href="LogIn.html">LogIn</a>
+          <a href="https://proj.ruppin.ac.il/igroup9/test2/tar2/client%20side%20Hw1/Pages/Register.html">Register</a>
+          <a href="https://proj.ruppin.ac.il/igroup9/test2/tar2/client%20side%20Hw1/Pages/LogIn.html">LogIn</a>
         </div>
       </div>
     </div>
@@ -155,6 +157,18 @@
           console.log(ERR);
         }
       }
+      document.addEventListener("DOMContentLoaded", () => {
+        const gameCards = document.querySelectorAll(".game-card");
+
+        gameCards.forEach((card) => {
+          card.addEventListener("click", () => {
+            // Apply expand only for mobile view
+            if (window.innerWidth <= 480) {
+              card.classList.toggle("expanded");
+            }
+          });
+        });
+      });
     </script>
   </body>
 </html>
