@@ -13,15 +13,12 @@ h1.heading {
   background-color: #0e2954;
   height: 6rem;
   margin: 0px;
+  margin-top: 40px;
   color: #e9ecef;
   text-align: center;
   font-size: 4rem;
   background: rgb(4, 36, 0);
-  background: radial-gradient(
-    circle,
-    rgba(4, 36, 0, 0.6280637254901961) 0%,
-    rgba(0, 0, 36, 1) 100%
-  );
+  background: radial-gradient(circle, rgba(4, 36, 0, 0.6280637254901961) 0%, rgba(0, 0, 36, 1) 100%);
 }
 
 /* עיצוב הקונטיינר */
@@ -138,11 +135,7 @@ h1.heading {
 
 div.game-card {
   background: rgb(4, 36, 0);
-  background: radial-gradient(
-    circle,
-    rgba(4, 36, 0, 0.6280637254901961) 0%,
-    rgba(0, 0, 36, 1) 100%
-  );
+  background: radial-gradient(circle, rgba(4, 36, 0, 0.6280637254901961) 0%, rgba(0, 0, 36, 1) 100%);
   color: #e9ecef;
 }
 
