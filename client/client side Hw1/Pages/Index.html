@@ -5,18 +5,47 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Game Shop</title>
 
-    <script src="https://code.jquery.com/jquery-3.7.1.min.js" integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo=" crossorigin="anonymous"></script>
+    <script
+      src="https://code.jquery.com/jquery-3.7.1.min.js"
+      integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo="
+      crossorigin="anonymous"
+    ></script>
     <script src="../Scripts/ajaxCalls.js"></script>
     <script src="../Scripts/game.js"></script>
     <link rel="stylesheet" href="../Css/game.css" />
+    <link rel="stylesheet" href="../Css/navbar.css" />
   </head>
 
   <body>
     <div id="container">
       <h1 class="heading">Game Shop</h1>
-      <div id="games_container"></div>
+      <div id="games_container">
+        <div class="navbar">
+          <a href="Register.html">Register</a>
+          <a href="LogIn.html">LogIn</a>
+        </div>
+      </div>
     </div>
+    <script>
+      //nav bar setting
+      let lastScrollTop = 0;
+      const navbar = document.querySelector(".navbar");
 
+      window.addEventListener("scroll", () => {
+        const scrollTop =
+          window.pageYOffset || document.documentElement.scrollTop;
+
+        if (scrollTop > lastScrollTop) {
+          // Scroll down: Hide navbar
+          navbar.style.top = "-100px";
+        } else {
+          // Scroll up: Show navbar
+          navbar.style.top = "0";
+        }
+
+        lastScrollTop = scrollTop <= 0 ? 0 : scrollTop;
+      });
+    </script>
     <script>
       document.addEventListener("DOMContentLoaded", () => {
         if (typeof GAME === "undefined" || !Array.isArray(GAME)) {
@@ -72,13 +101,17 @@
           gameCard.className = "game-card";
 
           gameCard.innerHTML = `
-            <img src="${G.Header_image}" alt="${G.Name}" class="game-header-image">
+            <img src="${G.Header_image}" alt="${
+            G.Name
+          }" class="game-header-image">
             <h2>${G.Name}</h2>
             <p><strong>App ID:</strong> ${G.AppID}</p>
             <p><strong>Release Date:</strong> ${G.Release_date}</p>
             <p><strong>Price:</strong> $${G.Price.toFixed(2)}</p>
             <p><strong>Description:</strong> ${G.description}</p>
-            <p><strong>Full Audio Languages:</strong> ${G.Full_audio_languages}</p>
+            <p><strong>Full Audio Languages:</strong> ${
+              G.Full_audio_languages
+            }</p>
             <p><strong>Developers:</strong> ${G.Developers}</p>
             <p><strong>Categories:</strong> ${G.Categories}</p>
             <p><strong>Genres:</strong> ${G.Genres}</p>
@@ -92,7 +125,14 @@
             <a href="${G.Website}" target="_blank">Official Website</a>
             <div class="screenshots image-carousel">
               ${G.Screenshots.split(",")
-                .map((url, index) => `<img src="${url}" alt="Screenshot" class="carousel-image ${index === 0 ? "active" : ""}" style="width:100%; display: ${index === 0 ? "block" : "none"};">`)
+                .map(
+                  (url, index) =>
+                    `<img src="${url}" alt="Screenshot" class="carousel-image ${
+                      index === 0 ? "active" : ""
+                    }" style="width:100%; display: ${
+                      index === 0 ? "block" : "none"
+                    };">`
+                )
                 .join("")}
               <button class="carousel-button prev">&lt;</button>
               <button class="carousel-button next">&gt;</button>
