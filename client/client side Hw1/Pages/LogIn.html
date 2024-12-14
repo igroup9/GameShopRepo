@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <link rel="stylesheet" href="../Css/Form.css" />
+    <script>
+        $(document).ready(function () {
+          $("LogInForm").submit(function (e) {
+            e.preventDefault();
+            if (LogInFormValid()) {
+              LogInUser();
+            }
+          });
+        });
+
+        function LogInUser() {
+      const userLog = {
+          Email: $("#LoginEmail").val(), // שליפת המייל מהשדה המתאים
+          Password: $("#LoginPassword").val(), // שליפת הסיסמה מהשדה המתאים
+          };
+
+          const api = `https://localhost:7119/api/Games`;
+
+          ajaxCall(
+            "POST",
+            api,
+            JSON.stringify(userLog),
+            LogInUserSCB,
+            LogInUserECB
+          );
+        }
+
+        function LogInUserSCB(status) {
+          console.log(status);
+          alert(response.message);
+          $("#loginForm")[0].reset();
+
+        }
+        function LogInUserECB(err) {
+          console.error(err);
+          alert("There is a problem to LogIn, please cheack your information");
+        }
+        function ValidLogInForm() {
+ 
+    var email = $("#LoginEmail").val();
+    var password = $("#LogInPassword").val();
+
+   
+    var emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
+    var passwordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d).{8,}$/;
+
+    
+    if (!email) {
+        swal.fire({
+            icon: "error",
+            title: "Email is required!",
+        });
+        return;
+    }
+    if (!emailRegex.test(email)) {
+        swal.fire({
+            icon: "error",
+            title: "Invalid email format!",
+        });
+        return;
+    }
+
+    
+    if (!password) {
+        swal.fire({
+            icon: "error",
+            title: "Password is required!",
+        });
+        return;
+    }
+    if (!passwordRegex.test(password)) {
+        swal.fire({
+            icon: "error",
+            title: "Invalid password!",
+            text: "Password must contain at least one uppercase letter, one digit, and be at least 8 characters long.",
+        });
+        return;
+    }
+
+ 
+    swal.fire({
+        icon: "success",
+        title: "Login successful!",
+    });
+}
+
+    </script>
+  </head>
+  <body>
+    <div class="form-container">
+      <h1>LogIn</h1>
+      <form id="LogInForm">
+        <label for="email">Email</label>
+        <input id="LoginEmail" type="email" placeholder="Enter your email">
+        <label for="password">Password</label>
+        <input id="LogInPassword" type="password" placeholder="Enter your password">
+        <button type="button" onclick="ValidLogInForm()">Login</button>
+
+    </form>
+  </body>
+</html>
