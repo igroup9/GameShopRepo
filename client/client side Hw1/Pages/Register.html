@@ -1,3 +1,6 @@
+
+
+
 <!DOCTYPE html>
 <html>
   <head>
@@ -21,7 +24,7 @@
           password: $("#RegisterPassword").val(),
           Phone:$("RegisterPhone").val(),
         };
-        const api = `https://proj.ruppin.ac.il/igroup9/test2/tar1/api/Users/RegisterUser`;
+        const api = "https://proj.ruppin.ac.il/igroup9/test2/tar1/api/Games";
         ajaxCall(
           "POST",
           api,
@@ -44,14 +47,12 @@
     var email = $("#RegisterEmail").val();
     var phone = $("#RegisterPhone").val();
     var password = $("#RegisterPassword").val();
-
     // Regex patterns
     var IdRegex = /^\d{9}$/;
     var nameRegex = /^[a-zA-Z]+([ '-][a-zA-Z]+)*$/;
     var emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
     var phoneRegex = /^05\d-\d{7}$/;
     var passwordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d).{8,}$/;
-
     
     if (!IdRegex.test(Id)) {
         swal.fire({
@@ -60,7 +61,6 @@
         });
         return;
     }
-
    
     if (!nameRegex.test(name)) {
         swal.fire({
@@ -69,7 +69,6 @@
         });
         return;
     }
-
    
     if (!emailRegex.test(email)) {
         swal.fire({
@@ -78,7 +77,6 @@
         });
         return;
     }
-
     
     if (!phoneRegex.test(phone)) {
         swal.fire({
@@ -87,7 +85,6 @@
         });
         return;
     }
-
    
     if (!passwordRegex.test(password)) {
         swal.fire({
@@ -96,7 +93,11 @@
         });
         return;
     }
-
+   
+    // swal.fire({
+    //     icon: "success",
+    //     title: "Form submitted successfully!",
+    // });
 
     Swal.fire({
         icon: "success",
@@ -109,7 +110,6 @@
         window.location.href = "https://proj.ruppin.ac.il/igroup9/test2/tar2/client%20side%20Hw1/Pages/Login.html";
     });
 }
-
     </script>
   </head>
   <body>
@@ -121,20 +121,15 @@
         <label for="name">Name</label>
           <input id="RegisterName" type="text" placeholder="Enter your name">
         
-
           <label for="email">Email</label>
           <input id="RegisterEmail" type="email" placeholder="Enter your email">
     
-
           <label for="phone">Phone</label>
           <input id="RegisterPhone" type="text" placeholder="Enter your phone (e.g., 050-1234567)">
-
           
-
           <label for="password">Password</label>
           <input id="RegisterPassword" type="password" placeholder="Enter a strong password">
          
-
           <button type="button" onclick="RegisterFormvalid()">Register</button>
       </form>
   </body>

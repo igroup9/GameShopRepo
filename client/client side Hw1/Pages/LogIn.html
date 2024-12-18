@@ -6,50 +6,43 @@
     <link rel="stylesheet" href="../Css/Form.css" />
     <script>
         $(document).ready(function () {
-          $("#LoginForm").submit(function (e) {
+          $("LogInForm").submit(function (e) {
             e.preventDefault();
-            if (ValidLoginForm) {
-              LoginUser();
+            if (LogInFormValid()) {
+              LogInUser();
             }
           });
         });
-
-        function LoginUser() {
+        function LogInUser() {
       const userLog = {
           Email: $("#LoginEmail").val(), // שליפת המייל מהשדה המתאים
           Password: $("#LoginPassword").val(), // שליפת הסיסמה מהשדה המתאים
           };
-
-          const api = `https://proj.ruppin.ac.il/igroup9/test2/tar1/api/Users/LogInUser`;
-
+          const api = "https://proj.ruppin.ac.il/igroup9/test2/tar1/api/Games";
           ajaxCall(
             "POST",
             api,
             JSON.stringify(userLog),
-            LoginUserSCB,
-            LoginUserECB
+            LogInUserSCB,
+            LogInUserECB
           );
         }
-
-        function LoginUserSCB(status) {
+        function LogInUserSCB(status) {
           console.log(status);
           alert(response.message);
           $("#loginForm")[0].reset();
-
         }
-        function LoginUserECB(err) {
+        function LogInUserECB(err) {
           console.error(err);
-          alert("There is a problem to Login, please cheack your information");
+          alert("There is a problem to LogIn, please cheack your information");
         }
-        function ValidLoginForm() {
+        function ValidLogInForm() {
  
     var email = $("#LoginEmail").val();
-    var password = $("#LoginPassword").val();
-
+    var password = $("#LogInPassword").val();
    
     var emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
     var passwordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d).{8,}$/;
-
     
     if (!email) {
         swal.fire({
@@ -65,7 +58,6 @@
         });
         return;
     }
-
     
     if (!password) {
         swal.fire({
@@ -82,8 +74,12 @@
         });
         return;
     }
-
  
+    // swal.fire({
+    //     icon: "success",
+    //     title: "Login successful!",
+    // });
+
     Swal.fire({
         icon: "success",
         title: "Login successful!",
@@ -94,20 +90,20 @@
         // הפניה לדף הראשי
         window.location.href = "https://proj.ruppin.ac.il/igroup9/test2/tar2/client%20side%20Hw1/Pages/index.html";
     });
-}
 
+
+}
     </script>
   </head>
   <body>
     <div class="form-container">
-      <h1>Login</h1>
-      <form id="LoginForm">
+      <h1>LogIn</h1>
+      <form id="LogInForm">
         <label for="email">Email</label>
         <input id="LoginEmail" type="email" placeholder="Enter your email">
         <label for="password">Password</label>
-        <input id="LoginPassword" type="password" placeholder="Enter your password">
-        <button type="button" onclick="ValidLoginForm">Login</button>
-
+        <input id="LogInPassword" type="password" placeholder="Enter your password">
+        <button type="button" onclick="ValidLogInForm()">Login</button>
     </form>
   </body>
 </html>
