@@ -21,7 +21,7 @@
           password: $("#RegisterPassword").val(),
           Phone:$("RegisterPhone").val(),
         };
-        const api = `https://localhost:7119/api/Games`;
+        const api = `https://proj.ruppin.ac.il/igroup9/test2/tar1/api/Users/RegisterUser`;
         ajaxCall(
           "POST",
           api,
@@ -97,29 +97,17 @@
         return;
     }
 
-   
-    swal.fire({
+
+    Swal.fire({
         icon: "success",
-<<<<<<< HEAD
-<<<<<<< HEAD
-<<<<<<< HEAD
-        title: "Login successful!",
-        text: "Redirecting to the main page...",
+        title: "Form submitted successfully!",
+        text: "Redirecting to the Login page...",
         timer: 2000, 
         showConfirmButton: false
     }).then(() => {
-        // הפניה לדף הראשי
-        window.location.href = "index.html";
-=======
-        title: "Form submitted successfully!",
->>>>>>> parent of a657769 (תיקונים עם שינויים קישורים)
-=======
-        title: "Form submitted successfully!",
->>>>>>> parent of a657769 (תיקונים עם שינויים קישורים)
-=======
-        title: "Form submitted successfully!",
->>>>>>> parent of a657769 (תיקונים עם שינויים קישורים)
-    });
+        // הפניה לדף כניסה
+        window.location.href = "https://proj.ruppin.ac.il/igroup9/test2/tar2/client%20side%20Hw1/Pages/Login.html";
+    });
 }
 
     </script>
