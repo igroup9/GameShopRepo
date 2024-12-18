@@ -1,6 +1,11 @@
 .navbar {
+<<<<<<< HEAD
   position: fixed;
   top: 100px;
+=======
+  position: absolute;
+  top: 0px;
+>>>>>>> parent of a657769 (תיקונים עם שינויים קישורים)
   width: 100%;
   background-color: #1b242b;
   display: flex;
