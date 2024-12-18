@@ -6,29 +6,34 @@
   <head>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script src="https://proj.ruppin.ac.il/igroup9/test2/tar2/client%20side%20Hw1/Scripts/ajaxCalls.js"></script>
+
     <link rel="stylesheet" href="../Css/Form.css" />
     <script>
       $(document).ready(function () {
         $("RegisterForm").submit(function (e) {
           e.preventDefault();
-          if (RegisterFormValid()) {
-            RegisterUser();
-          }
+        //  RegisterFormValid();
         });
+
+        $(document).on("click",".validRegister", RegisterFormvalid );
+       
+
+
       });
       function RegisterUser() {
-        const userreg = {
-          Id: $("#RegisterId").val(),
-          Name: $("#RegisterName").val(),
-          Email: $("#RegisterEmail").val(),
+        const userReg = {
+          id: $("#RegisterId").val(),
+          name: $("#RegisterName").val(),
+          email: $("#RegisterEmail").val(),
           password: $("#RegisterPassword").val(),
-          Phone:$("RegisterPhone").val(),
+          // Phone:$("RegisterPhone").val(),
         };
-        const api = "https://proj.ruppin.ac.il/igroup9/test2/tar1/api/Users";
+        const api = "https://proj.ruppin.ac.il/igroup9/test2/tar1/api/Users/RegisterUser";
         ajaxCall(
           "POST",
           api,
-          JSON.stringify(user),
+          JSON.stringify(userReg),
           RegisterUserSCB,
           RegisterUserECB
         );
@@ -37,9 +42,10 @@
           alert(response.message); //וידא
           $("#registerForm")[0].reset();
         }
-        function RegisterUserECB(err) {}
-        console.error(err);
-        alert("There is a problem to register this user!");
+        function RegisterUserECB(err) {    
+          console.error(err);
+          alert("There is a problem to register this user!");}
+    
       }
       function RegisterFormvalid() {
     var Id = $("#RegisterId").val();
@@ -59,57 +65,57 @@
             icon: "error",
             title: "Invalid ID-cant contain letters!",
         });
-        return;
+        return  ;
     }
    
-    if (!nameRegex.test(name)) {
+    else if (!nameRegex.test(name)) {
         swal.fire({
             icon: "error",
             title: "Invalid name - can't contain numbers or special characters!",
         });
-        return;
+        return ;
     }
    
-    if (!emailRegex.test(email)) {
+    else if (!emailRegex.test(email)) {
         swal.fire({
             icon: "error",
             title: "Invalid email!",
         });
-        return;
+        return ;
     }
     
-    if (!phoneRegex.test(phone)) {
+    else if (!phoneRegex.test(phone)) {
         swal.fire({
             icon: "error",
             title: "Invalid phone number!",
         });
-        return;
+        return ;
     }
    
-    if (!passwordRegex.test(password)) {
+   else  if (!passwordRegex.test(password)) {
         swal.fire({
             icon: "error",
             title: "Invalid password - must contain one uppercase, one digit, and be at least 8 characters!",
         });
-        return;
+        return ;
     }
-   
-    // swal.fire({
-    //     icon: "success",
-    //     title: "Form submitted successfully!",
-    // });
 
+ else{ 
     Swal.fire({
         icon: "success",
         title: "Form submitted successfully!",
         text: "Redirecting to the Login page...",
         timer: 2000, 
-        showConfirmButton: false
-    }).then(() => {
-        // הפניה לדף כניסה
-        window.location.href = "https://proj.ruppin.ac.il/igroup9/test2/tar2/client%20side%20Hw1/Pages/Login.html";
-    });
-}
+        showConfirmButton: false,
+        })   
+        
+          RegisterUser();
+         // הפניה לדף כניסה 
+         window.location.href = 'https://proj.ruppin.ac.il/igroup9/test2/tar2/client%20side%20Hw1/Pages/LogIn.html';
+        
+        return ;}
+      
+      }
     </script>
   </head>
   <body>
@@ -130,7 +136,7 @@
           <label for="password">Password</label>
           <input id="RegisterPassword" type="password" placeholder="Enter a strong password">
          
-          <button type="button" onclick="RegisterFormvalid()">Register</button>
+          <button type="button" class ="validRegister">Register</button>
       </form>
   </body>
 </html>

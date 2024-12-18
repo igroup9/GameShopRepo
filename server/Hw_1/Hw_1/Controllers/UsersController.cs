@@ -77,8 +77,10 @@ namespace Hw_1.Controllers
 
         // DELETE api/<UsersController>/5
         [HttpDelete("{id}")]
-        public void Delete(int id)
+        public void DeleteUser(int id)
         {
+            User user= new User();
+            user.Delete(id);
         }
     }
 }

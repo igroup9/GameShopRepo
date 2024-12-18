@@ -40,5 +40,15 @@
             return UsersList;
         }
 
+        public bool Delete(int id)
+        {
+            for (int i = 0; i < UsersList.Count; i++) 
+            {  if (UsersList[i].Id == id)
+                { UsersList.Remove(UsersList[i]);
+                    return true;
+                }
+
+            }
+            return false;
     }
 }

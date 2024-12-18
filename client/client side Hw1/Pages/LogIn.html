@@ -3,40 +3,51 @@
   <head>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script src="https://proj.ruppin.ac.il/igroup9/test2/tar2/client%20side%20Hw1/Scripts/ajaxCalls.js"></script>
+
     <link rel="stylesheet" href="../Css/Form.css" />
     <script>
         $(document).ready(function () {
           $("LogInForm").submit(function (e) {
             e.preventDefault();
-            if (LogInFormValid()) {
-              LogInUser();
-            }
+            // LogInFormValid();
           });
+          $(document).on("click",".validLogin", LogInFormValid );
+
+
         });
         function LogInUser() {
       const userLog = {
-          Email: $("#LoginEmail").val(), // שליפת המייל מהשדה המתאים
-          Password: $("#LoginPassword").val(), // שליפת הסיסמה מהשדה המתאים
+          email: $("#LoginEmail").val(), // שליפת המייל מהשדה המתאים
+          password: $("#LogInPassword").val() // שליפת הסיסמה מהשדה המתאים
           };
-          const api = "https://proj.ruppin.ac.il/igroup9/test2/tar1/api/Users";
-          ajaxCall(
-            "POST",
-            api,
-            JSON.stringify(userLog),
-            LogInUserSCB,
-            LogInUserECB
-          );
+          const api = "https://proj.ruppin.ac.il/igroup9/test2/tar1/api/Users/LogInUser";
+          ajaxCall("POST",api,JSON.stringify(userLog),LogInUserSCB,LogInUserECB);
         }
         function LogInUserSCB(status) {
           console.log(status);
-          alert(response.message);
+          alert(status);
           $("#loginForm")[0].reset();
-        }
+   
+          Swal.fire({
+                icon: "success",
+                title: "Login successful!",
+                text: "Redirecting to the main page...",
+                timer: 2000, 
+                showConfirmButton: false})
+
+         // הפניה לדף הראשי
+         window.location.href = "https://proj.ruppin.ac.il/igroup9/test2/tar2/client%20side%20Hw1/Pages/index.html";        }
+
+
         function LogInUserECB(err) {
           console.error(err);
-          alert("There is a problem to LogIn, please cheack your information");
+          alert(err);
+          //"There is a problem to LogIn, please cheack your information"
         }
-        function ValidLogInForm() {
+
+
+        function LogInFormValid() {
  
     var email = $("#LoginEmail").val();
     var password = $("#LogInPassword").val();
@@ -49,50 +60,35 @@
             icon: "error",
             title: "Email is required!",
         });
-        return;
+        return ;
     }
-    if (!emailRegex.test(email)) {
+    else if (!emailRegex.test(email)) {
         swal.fire({
             icon: "error",
             title: "Invalid email format!",
         });
-        return;
+        return ;
     }
     
-    if (!password) {
+    else if (!password) {
         swal.fire({
             icon: "error",
             title: "Password is required!",
         });
-        return;
+        return ;
     }
-    if (!passwordRegex.test(password)) {
+    else if   (!passwordRegex.test(password)) {
         swal.fire({
             icon: "error",
             title: "Invalid password!",
             text: "Password must contain at least one uppercase letter, one digit, and be at least 8 characters long.",
         });
-        return;
+        return ;
     }
- 
-    // swal.fire({
-    //     icon: "success",
-    //     title: "Login successful!",
-    // });
-
-    Swal.fire({
-        icon: "success",
-        title: "Login successful!",
-        text: "Redirecting to the main page...",
-        timer: 2000, 
-        showConfirmButton: false
-    }).then(() => {
-        // הפניה לדף הראשי
-        window.location.href = "https://proj.ruppin.ac.il/igroup9/test2/tar2/client%20side%20Hw1/Pages/index.html";
-    });
-
-
-}
+    else{ LogInUser();}         
+        
+      
+      }
     </script>
   </head>
   <body>
@@ -103,7 +99,7 @@
         <input id="LoginEmail" type="email" placeholder="Enter your email">
         <label for="password">Password</label>
         <input id="LogInPassword" type="password" placeholder="Enter your password">
-        <button type="button" onclick="ValidLogInForm()">Login</button>
+        <button type="button" class ="validLogin">Login</button>
     </form>
   </body>
 </html>
