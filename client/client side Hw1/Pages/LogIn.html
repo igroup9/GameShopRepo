@@ -6,15 +6,15 @@
     <link rel="stylesheet" href="../Css/Form.css" />
     <script>
         $(document).ready(function () {
-          $("LogInForm").submit(function (e) {
+          $("#LoginForm").submit(function (e) {
             e.preventDefault();
-            if (LogInFormValid()) {
-              LogInUser();
+            if (ValidLoginForm) {
+              LoginUser();
             }
           });
         });
 
-        function LogInUser() {
+        function LoginUser() {
       const userLog = {
           Email: $("#LoginEmail").val(), // שליפת המייל מהשדה המתאים
           Password: $("#LoginPassword").val(), // שליפת הסיסמה מהשדה המתאים
@@ -26,25 +26,25 @@
             "POST",
             api,
             JSON.stringify(userLog),
-            LogInUserSCB,
-            LogInUserECB
+            LoginUserSCB,
+            LoginUserECB
           );
         }
 
-        function LogInUserSCB(status) {
+        function LoginUserSCB(status) {
           console.log(status);
           alert(response.message);
           $("#loginForm")[0].reset();
 
         }
-        function LogInUserECB(err) {
+        function LoginUserECB(err) {
           console.error(err);
-          alert("There is a problem to LogIn, please cheack your information");
+          alert("There is a problem to Login, please cheack your information");
         }
-        function ValidLogInForm() {
+        function ValidLoginForm() {
  
     var email = $("#LoginEmail").val();
-    var password = $("#LogInPassword").val();
+    var password = $("#LoginPassword").val();
 
    
     var emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
@@ -100,13 +100,13 @@
   </head>
   <body>
     <div class="form-container">
-      <h1>LogIn</h1>
-      <form id="LogInForm">
+      <h1>Login</h1>
+      <form id="LoginForm">
         <label for="email">Email</label>
         <input id="LoginEmail" type="email" placeholder="Enter your email">
         <label for="password">Password</label>
-        <input id="LogInPassword" type="password" placeholder="Enter your password">
-        <button type="button" onclick="ValidLogInForm()">Login</button>
+        <input id="LoginPassword" type="password" placeholder="Enter your password">
+        <button type="button" onclick="ValidLoginForm">Login</button>
 
     </form>
   </body>
