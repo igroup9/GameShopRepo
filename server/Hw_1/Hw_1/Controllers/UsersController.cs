@@ -34,15 +34,17 @@ namespace Hw_1.Controllers
          [HttpPost("RegisterUser")]
         public IActionResult Register([FromBody] User RegisterUser)
         {
-            foreach (var existingUser in User.UsersList)
+            List<User> UsersList = RegisterUser.read();
+
+            foreach (var existingUser in UsersList)
             {
-                if (existingUser.Email == user.Email)
+                if (existingUser.Email == RegisterUser.Email)
                 {
                     return BadRequest(new { message = "This Email is connected to existing User" });
 
                 }
             }
-            User.UsersList.Add(user);
+            RegisterUser.insert();
             return Ok(new { message = "User registed successfully!" });
         }
 
@@ -53,8 +55,10 @@ namespace Hw_1.Controllers
             {
                 return BadRequest(new { message = "Cant be empty" });
             }
+            List<User> UsersList = LogInUser.read();
 
-            foreach (var user in User.UsersList)
+
+            foreach (var user in UsersList)
             {
                 if (user.Email == LogInUser.Email && user.Password == LogInUser.Password)
                 {
