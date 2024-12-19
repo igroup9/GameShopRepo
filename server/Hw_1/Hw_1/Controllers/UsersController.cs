@@ -32,26 +32,17 @@ namespace Hw_1.Controllers
         }
 
          [HttpPost("RegisterUser")]
-            List<User> UsersList = RegisterUser.read();
-
-            foreach (var existingUser in UsersList)
-            {
-                if (existingUser.Email == RegisterUser.Email)
-                {
-                    return BadRequest(new { message = "This Email is connected to existing User" });
-
-                }
-            }
-            RegisterUser.insert();
-            return Ok(new { message = "User registed successfully!" });
+        public bool Register([FromBody] User RegisterUser)
+        {   
+            return RegisterUser.insert();
         }
 
           [HttpPost("LogInUser")]
-        public IActionResult Login([FromBody] User LogInUser)
+        public bool Login([FromBody] User LogInUser)
         {
             if (LogInUser == null || string.IsNullOrEmpty(LogInUser.Email) || string.IsNullOrEmpty(LogInUser.Password))
             {
-                return BadRequest(new { message = "Cant be empty" });
+                return false;
             }
             List<User> UsersList = LogInUser.read();
 
@@ -60,11 +51,11 @@ namespace Hw_1.Controllers
             {
                 if (user.Email == LogInUser.Email && user.Password == LogInUser.Password)
                 {
-                    return Ok(new { message = "LogUn successful" });
+                    return true;
                 }
             }
 
-            return Unauthorized(new { message = "Invalid email or password" });
+            return false;
         }
 
         // PUT api/<UsersController>/5
