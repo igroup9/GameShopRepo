@@ -1,43 +1,58 @@
 <!DOCTYPE html>
 <html>
   <head>
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script
+      src="https://code.jquery.com/jquery-3.7.1.min.js"
+      integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo="
+      crossorigin="anonymous"></script>
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <script src="https://proj.ruppin.ac.il/igroup9/test2/tar2/client%20side%20Hw1/Scripts/ajaxCalls.js"></script>
 
     <link rel="stylesheet" href="../Css/Form.css" />
     <script>
         $(document).ready(function () {
-          $("LogInForm").submit(function (e) {
+          $("#loginForm").submit(function (e) {
             e.preventDefault();
             // LogInFormValid();
           });
-          $(document).on("click",".validLogin", LogInFormValid );
+          $(document).on("click",".validLogin", loginFormValid );
 
 
         });
         function LogInUser() {
       const userLog = {
           email: $("#LoginEmail").val(), // שליפת המייל מהשדה המתאים
-          password: $("#LogInPassword").val() // שליפת הסיסמה מהשדה המתאים
+          password: $("#LogInPassword").val(), // שליפת הסיסמה מהשדה המתאים
+          id:0,
+          name:"",
           };
           const api = "https://proj.ruppin.ac.il/igroup9/test2/tar1/api/Users/LogInUser";
           ajaxCall("POST",api,JSON.stringify(userLog),LogInUserSCB,LogInUserECB);
-        }
+        
         function LogInUserSCB(status) {
           console.log(status);
-          alert(status);
+          // alert(status);
           $("#loginForm")[0].reset();
    
           Swal.fire({
-                icon: "success",
-                title: "Login successful!",
-                text: "Redirecting to the main page...",
-                timer: 2000, 
-                showConfirmButton: false})
+    icon: "success",
+    title: "Login successful!",
+    text: "Redirecting to the main page...",
+    timer: 2000, 
+    showConfirmButton: false,
+    allowOutsideClick: false,
+    allowEscapeKey: false
+});
 
-         // הפניה לדף הראשי
-         window.location.href = "https://proj.ruppin.ac.il/igroup9/test2/tar2/client%20side%20Hw1/Pages/index.html";        }
+setTimeout(() => {
+    // Redirect after 2 seconds
+    window.location.href = "https://proj.ruppin.ac.il/igroup9/test2/tar2/client%20side%20Hw1/Pages/index.html";
+}, 2000);
+
+
+
+
+          }    
 
 
         function LogInUserECB(err) {
@@ -45,9 +60,10 @@
           alert(err);
           //"There is a problem to LogIn, please cheack your information"
         }
+      
+      }
 
-
-        function LogInFormValid() {
+        function loginFormValid() {
  
     var email = $("#LoginEmail").val();
     var password = $("#LogInPassword").val();
@@ -94,7 +110,7 @@
   <body>
     <div class="form-container">
       <h1>LogIn</h1>
-      <form id="LogInForm">
+      <form id="loginForm">
         <label for="email">Email</label>
         <input id="LoginEmail" type="email" placeholder="Enter your email">
         <label for="password">Password</label>

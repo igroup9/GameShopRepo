@@ -32,8 +32,6 @@ namespace Hw_1.Controllers
         }
 
          [HttpPost("RegisterUser")]
-        public IActionResult Register([FromBody] User RegisterUser)
-        {
             List<User> UsersList = RegisterUser.read();
 
             foreach (var existingUser in UsersList)

@@ -6,11 +6,11 @@
         string name;
         string email;
         string password;
-        static List<User> UsersList=new List<User>();
+        static List<User> UsersList = new List<User>();
 
         public User()
         {
-                
+
         }
         public User(int id, string name, string email, string password)
         {
@@ -29,7 +29,7 @@
         {
             foreach (User U in UsersList)
             {
-                if ((this.Id == U.Id))
+                if ((this.Id == U.Id) || (this.Email == U.Email))
                     return false;
             }
             UsersList.Add(this);
@@ -42,13 +42,16 @@
 
         public bool Delete(int id)
         {
-            for (int i = 0; i < UsersList.Count; i++) 
-            {  if (UsersList[i].Id == id)
-                { UsersList.Remove(UsersList[i]);
+            for (int i = 0; i < UsersList.Count; i++)
+            {
+                if (UsersList[i].Id == id)
+                {
+                    UsersList.Remove(UsersList[i]);
                     return true;
                 }
 
             }
             return false;
+        }
     }
 }
