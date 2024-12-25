@@ -26,7 +26,7 @@
       });
       function RegisterUser() {
         const userReg = {
-          id: $("#RegisterId").val(),
+          // id: $("#RegisterId").val(),
           name: $("#RegisterName").val(),
           email: $("#RegisterEmail").val(),
           password: $("#RegisterPassword").val()
@@ -65,27 +65,30 @@ setTimeout(() => {
     // 
       }
       function RegisterFormvalid() {
-    var Id = $("#RegisterId").val();
+    // var Id = $("#RegisterId").val();
     var name = $("#RegisterName").val();
     var email = $("#RegisterEmail").val();
-    var phone = $("#RegisterPhone").val();
     var password = $("#RegisterPassword").val();
+
+    // var phone = $("#RegisterPhone").val();
     // Regex patterns
-    var IdRegex = /^\d{9}$/;
+    // var IdRegex = /^\d{9}$/;
     var nameRegex = /^[a-zA-Z]+([ '-][a-zA-Z]+)*$/;
     var emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
-    var phoneRegex = /^05\d-\d{7}$/;
-    var passwordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d).{8,}$/;
+    var passwordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d).{8,20}$/;
+
+    // var phoneRegex = /^05\d-\d{7}$/;
     
-    if (!IdRegex.test(Id)) {
-        swal.fire({
-            icon: "error",
-            title: "Invalid ID-cant contain letters!",
-        });
-        return  ;
-    }
+    // if (!IdRegex.test(Id)) {
+    //     swal.fire({
+    //         icon: "error",
+    //         title: "Invalid ID-cant contain letters!",
+    //     });
+    //     return  ;
+    // }
    
-    else if (!nameRegex.test(name)) {
+    // else
+     if (!nameRegex.test(name)) {
         swal.fire({
             icon: "error",
             title: "Invalid name - can't contain numbers or special characters!",
@@ -101,13 +104,13 @@ setTimeout(() => {
         return ;
     }
     
-    else if (!phoneRegex.test(phone)) {
-        swal.fire({
-            icon: "error",
-            title: "Invalid phone number!",
-        });
-        return ;
-    }
+    // else if (!phoneRegex.test(phone)) {
+    //     swal.fire({
+    //         icon: "error",
+    //         title: "Invalid phone number!",
+    //     });
+    //     return ;
+    // }
    
    else  if (!passwordRegex.test(password)) {
         swal.fire({
@@ -128,16 +131,16 @@ setTimeout(() => {
     <div class="form-container">
       <h1>Register</h1>
       <form id="registerForm">
-        <label for="Id">ID</label>
-        <input id="RegisterId" type="text" placeholder="Enter your ID">
+        <!-- <label for="Id">ID</label>
+        <input id="RegisterId" type="text" placeholder="Enter your ID"> -->
         <label for="name">Name</label>
           <input id="RegisterName" type="text" placeholder="Enter your name">
         
           <label for="email">Email</label>
           <input id="RegisterEmail" type="email" placeholder="Enter your email">
     
-          <label for="phone">Phone</label>
-          <input id="RegisterPhone" type="text" placeholder="Enter your phone (e.g., 050-1234567)">
+          <!-- <label for="phone">Phone</label>
+          <input id="RegisterPhone" type="text" placeholder="Enter your phone (e.g., 050-1234567)"> -->
           
           <label for="password">Password</label>
           <input id="RegisterPassword" type="password" placeholder="Enter a strong password">

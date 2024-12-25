@@ -6,7 +6,7 @@
         string name;
         string email;
         string password;
-        static List<User> UsersList = new List<User>();
+        List<User> UsersList = new List<User>();
 
         public User()
         {

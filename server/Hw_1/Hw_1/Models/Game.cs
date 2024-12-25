@@ -23,7 +23,7 @@ namespace Hw_1.Models
         string tags;//new from Hw2
         string screenshots;//new from Hw2
        // string publisher; // not in use?
-        static List<Game> GamesList = new List<Game>();
+         List<Game> GamesList = new List<Game>();
         public Game()
         {
                 
