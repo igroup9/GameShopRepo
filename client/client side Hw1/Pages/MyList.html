@@ -7,24 +7,29 @@
     <script
       src="https://code.jquery.com/jquery-3.7.1.min.js"
       integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo="
-      crossorigin="anonymous"></script>
-    <script src="https://proj.ruppin.ac.il/igroup9/test2/tar2/client%20side%20Hw1/Scripts/ajaxCalls.js"></script>
-    <script src="https://proj.ruppin.ac.il/igroup9/test2/tar2/client%20side%20Hw1/Scripts/game.js"></script>
+      crossorigin="anonymous"
+    ></script>
+    <script src="../Scripts/ajaxCalls.js"></script>
+    <script src="../Scripts/game.js"></script>
 
-    <link rel="stylesheet" href="https://proj.ruppin.ac.il/igroup9/test2/tar2/client%20side%20Hw1/Css/game.css" />
+    <link rel="stylesheet" href="../Css/game.css" />
   </head>
   <body>
     <div id="container">
       <h1 class="heading">My Games List</h1>
-      <a href="https://proj.ruppin.ac.il/igroup9/test2/tar2/client%20side%20Hw1/Pages/index.html"
-        ><button src>Go to All Game List</button></a
-      >
+      <a href="./Index.html"><button src>Go to All Game List</button></a>
       <!-- ----------------------------------------------- -->
       <div class="filter-section-container">
         <div class="filter-section">
           <h2>Filter by Price</h2>
           <div class="filter-container">
-            <input type="number" id="price_Input" step="0.01" min="0" placeholder="Enter price..." />
+            <input
+              type="number"
+              id="price_Input"
+              step="0.01"
+              min="0"
+              placeholder="Enter price..."
+            />
             <button id="filterByPriceBtn">Search</button>
           </div>
         </div>
@@ -32,11 +37,17 @@
         <div class="filter-section">
           <h2>Filter by Score</h2>
           <div class="filter-container">
-            <input type="number" id="rank_Score_Input" placeholder="Enter score..." />
+            <input
+              type="number"
+              id="rank_Score_Input"
+              placeholder="Enter score..."
+            />
             <button id="filterByRankScoreBtn">Search</button>
           </div>
         </div>
-        <button id="removeFilterBtn" style="display: none">Remove Filter</button>
+        <button id="removeFilterBtn" style="display: none">
+          Remove Filter
+        </button>
       </div>
       <!-- ----------------------------------------------- -->
 
@@ -44,15 +55,16 @@
     </div>
     <script>
       $(document).ready(function () {
+        //render page with games from user game list
         getFromServer();
-        /////////////////////////////////////delete func/////////////////////////////////////////////
+
+        //delete func when button clicked
         $(document).on("click", ".delete_from_list_btn", function () {
           const AppID = $(this).data("appid");
           DeleteByIdFromServer(AppID);
         });
 
-        /////////////////////////////////////////filter by price func/////////////////////////////////
-
+        //filter by price func when button clicked
         $("#filterByPriceBtn").click(function () {
           const priceValue = $("#price_Input").val(); // Get the value from the input
           if (!priceValue) {
@@ -62,8 +74,8 @@
           filterByPrice(priceValue);
           $("#removeFilterBtn").show();
         });
-        /////////////////////////////////////////filter by rank func/////////////////////////////////
 
+        //filter by rank func when button clicked
         $("#filterByRankScoreBtn").click(function () {
           const rankScore = $("#rank_Score_Input").val(); // Get the value from the input
           if (!rankScore) {
@@ -73,18 +85,25 @@
           filterByRank(rankScore);
           $("#removeFilterBtn").show();
         });
-        /////////////////////////////////////////remove filter func/////////////////////////////////
 
+        //remove filter func when button clicked
         $("#removeFilterBtn").click(function () {
           getFromServer();
           $("#removeFilterBtn").hide();
           $("#price_Input").val("");
           $("#rank_Score_Input").val("");
         });
+
+        // Apply expand only for mobile view
+        $(".game-card").on("click", function () {
+          if ($(window).width() <= 480) {
+            $(this).toggleClass("expanded");
+          }
+        });
       });
 
       function DeleteByIdFromServer(AppID) {
-        const api = `https://proj.ruppin.ac.il/igroup9/test2/tar1/api/Games/deleteByid/AppId/${AppID}`;
+        const api = `https://localhost:7119/api/Games/deleteByid/AppId/${AppID}`;
 
         ajaxCall("Delete", api, "", deleteGameSCB, deleteGameECB);
 
@@ -98,7 +117,7 @@
       }
 
       function filterByPrice(priceValue) {
-        const api = `https://proj.ruppin.ac.il/igroup9/test2/tar1/api/Games/GetByPrice?minPrice=${priceValue}`;
+        const api = `https://localhost:7119/api/Games/GetByPrice?minPrice=${priceValue}`;
 
         ajaxCall("GET", api, "", filterByPriceSCB, filterByPriceECB);
 
@@ -113,7 +132,7 @@
       }
 
       function filterByRank(rankScore) {
-        const api = `https://proj.ruppin.ac.il/igroup9/test2/tar1/api/Games/GetByRankScore/scoreRank${rankScore}`;
+        const api = `https://localhost:7119/api/Games/GetByRankScore/scoreRank${rankScore}`;
 
         ajaxCall("GET", api, "", filterByRankSCB, filterByRankECB);
 
@@ -126,8 +145,9 @@
           console.log(ERR);
         }
       }
+
       function getFromServer() {
-        const api = "https://proj.ruppin.ac.il/igroup9/test2/tar1/api/Games";
+        const api = "https://localhost:7119/api/Games";
         ajaxCall("GET", api, "", getGamesSCB, getGamesECB);
         function getGamesSCB(gamesList) {
           //SCB
@@ -185,7 +205,9 @@
           gameCard.innerHTML = `
         <img src="${G.Header_image}" alt="${G.Name}" class="game-header-image">
         <h2>${G.Name}</h2>
-         <button class="delete_from_list_btn" data-AppID="${G.AppID}">Delete Game</button>
+         <button class="delete_from_list_btn" data-AppID="${
+           G.AppID
+         }">Delete Game</button>
         <p><strong>App ID:</strong> ${G.AppID}</p>
         <p><strong>Release Date:</strong> ${G.Release_date}</p>
         <p><strong>Price:</strong> $${G.Price.toFixed(2)}</p>
@@ -208,7 +230,9 @@
               (url, index) =>
                 `<img src="${url}" alt="Screenshot" class="carousel-image ${
                   index === 0 ? "active" : ""
-                }" style="width:100%; display: ${index === 0 ? "block" : "none"};">`
+                }" style="width:100%; display: ${
+                  index === 0 ? "block" : "none"
+                };">`
             )
             .join("")}
           <button class="carousel-button prev">&lt;</button>
@@ -220,18 +244,19 @@
           gamesList.appendChild(gameCard);
         });
       }
-      document.addEventListener("DOMContentLoaded", () => {
-        const gameCards = document.querySelectorAll(".game-card");
 
-        gameCards.forEach((card) => {
-          card.addEventListener("click", () => {
-            // Apply expand only for mobile view
-            if (window.innerWidth <= 480) {
-              card.classList.toggle("expanded");
-            }
-          });
-        });
-      });
+      // document.addEventListener("DOMContentLoaded", () => {
+      //   const gameCards = document.querySelectorAll(".game-card");
+
+      //   gameCards.forEach((card) => {
+      //     card.addEventListener("click", () => {
+      //       // Apply expand only for mobile view
+      //       if (window.innerWidth <= 480) {
+      //         card.classList.toggle("expanded");
+      //       }
+      //     });
+      //   });
+      // });
     </script>
   </body>
 </html>

@@ -7,6 +7,8 @@ using System.Data;
 using Microsoft.Extensions.Configuration;
 using System.Text;
 using Hw_1.Models;
+using System.Security.Cryptography;
+using System.Xml.Linq;
 
 
 
@@ -36,7 +38,7 @@ namespace Hw_1.DAL
             // read the connection string from the configuration file
             IConfigurationRoot configuration = new ConfigurationBuilder()
             .AddJsonFile("appsettings.json").Build();
-            string cStr = configuration.GetConnectionString("myProjDB"); //לוודא מה זה PROJDB
+            string cStr = configuration.GetConnectionString(conString); //לוודא מה זה PROJDB
             SqlConnection con = new SqlConnection(cStr);
             con.Open();
             return con;
@@ -147,7 +149,7 @@ namespace Hw_1.DAL
         //--------------------------------------------------------------------------------------------------
         // This method inserts a game to the game table 
         //--------------------------------------------------------------------------------------------------
-        public int Insert(Game game)
+        public int InsertGame(Game game)
         {
 
             SqlConnection con;
@@ -187,7 +189,7 @@ namespace Hw_1.DAL
 
 
 
-            cmd = CreateCommandWithStoredProcedureGeneral("SP_InsertFlight2025", con, paramDic);          // create the command לשנות את הפרוצדורה
+            cmd = CreateCommandWithStoredProcedureGeneral("R_SP_AddGameToUserList", con, paramDic);          // create the command לשנות את הפרוצדורה
 
             try
             {
@@ -336,7 +338,7 @@ namespace Hw_1.DAL
 
 
         // read from a table
-        public List<Game> Read()
+        public List<Game> ReadGamesList()
         {
             SqlConnection con;
             SqlCommand cmd;
@@ -355,27 +357,36 @@ namespace Hw_1.DAL
 
             Dictionary<string, object> paramDic = new Dictionary<string, object>();
 
-
-
-
-
-
-            cmd = CreateCommandWithStoredProcedureGeneral("SP_ReadStudent25", con, paramDic);
+            cmd = CreateCommandWithStoredProcedureGeneral("R_SP_ReturnAllGames", con, paramDic);
 
             SqlDataReader dataReader = cmd.ExecuteReader(CommandBehavior.CloseConnection);
 
             while (dataReader.Read())
             {
                 Game game = new Game();
-                s.Id = Convert.ToInt32(dataReader["Id"]);
-                s.Name = dataReader["Name"].ToString();
-                s.Age = Convert.ToDouble(dataReader["Age"]);
-                students.Add(s);
 
+                game.Appid = Convert.ToInt32(dataReader["appid"]) ;
+                game.Name = dataReader["name"].ToString();
+                game.ReleaseDate = dataReader["releaseDate"].ToString();
+                game.Price = Convert.ToDouble(dataReader["price"]);
+                game.Description = dataReader["description"].ToString();
+                game.Full_audio_languages = dataReader["full_audio_languages"].ToString();
+                game.HeaderImage = dataReader["headerImage"].ToString();
+                game.Website = dataReader["website"].ToString();
+                game.Windows = dataReader["windows"].ToString();
+                game.Mac = dataReader["mac"].ToString();
+                game.Linux = dataReader["linux"].ToString();
+                game.ScoreRank = Convert.ToInt32(dataReader["scoreRank"]);
+                game.Recommendations = dataReader["recommendations"].ToString();
+                game.Developers = dataReader["developers"].ToString();
+                game.Categories = dataReader["categories"].ToString();
+                game.Genres = dataReader["genres"].ToString();
+                game.Tags = dataReader["tags"].ToString();
+                game.Screenshots = dataReader["screenshots"].ToString();
+                  
+                gameList.Add(game);
             }
             return gameList;
-
         }
     }
-
 }

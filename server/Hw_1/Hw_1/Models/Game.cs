@@ -1,4 +1,5 @@
 ﻿using System.Text.Json.Serialization;
+using Hw_1.DAL;
 
 namespace Hw_1.Models
 {
@@ -93,17 +94,25 @@ namespace Hw_1.Models
 
         public bool insert()
         {
+            Game game = new Game();
+            GamesList = game.read();
             foreach (Game G in GamesList)
             {
                 if ((this.Appid==G.Appid)||(this.Name==G.Name))
                     return false;
             }
-            GamesList.Add(this);
+
+            DBservices DB = new DBservices();
+
+            DB.InsertGame(this);
+
             return true;
         }
         public List<Game> read()
         {
-            return GamesList;
+            DBservices allGameList = new DBservices();
+
+            return allGameList.ReadGamesList();
         }
 
         public List<Game> GamesAbovePrice(int minPrice)

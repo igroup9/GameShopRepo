@@ -9,30 +9,69 @@
       integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo="
       crossorigin="anonymous"></script>
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-    <script src="https://proj.ruppin.ac.il/igroup9/test2/tar2/client%20side%20Hw1/Scripts/ajaxCalls.js"></script>
+    <script src="../Scripts/ajaxCalls.js"></script>
 
     <link rel="stylesheet" href="../Css/Form.css" />
     <script>
       $(document).ready(function () {
         $("#RegisterForm").submit(function (e) {
           e.preventDefault();
-        //  RegisterFormValid();
         });
 
         $(document).on("click",".validRegister", RegisterFormvalid );
-       
-
-
       });
+       
+      //check if the Register is Form valid
+      function RegisterFormvalid() {
+
+        var name = $("#RegisterName").val();
+        var email = $("#RegisterEmail").val();
+        var password = $("#RegisterPassword").val();
+
+        var nameRegex = /^[a-zA-Z]+([ '-][a-zA-Z]+)*$/;
+        var emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
+        var passwordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d).{8,20}$/;
+
+   
+        if (!nameRegex.test(name)) {
+            swal.fire({
+                icon: "error",
+                title: "Invalid name - can't contain numbers or special characters!",
+            });
+            return ;
+        }
+      
+        else if (!emailRegex.test(email)) {
+            swal.fire({
+                icon: "error",
+                title: "Invalid email!",
+            });
+            return ;
+        }
+      
+        else  if (!passwordRegex.test(password)) {
+            swal.fire({
+                icon: "error",
+                title: "Invalid password - must contain one uppercase, one digit, and be at least 8 characters!",
+            });
+            return ;
+        }
+
+       else{ 
+            RegisterUser();
+            return ;}
+          
+        }
+    
+      //being called throw registerFormValid
       function RegisterUser() {
         const userReg = {
-          // id: $("#RegisterId").val(),
           name: $("#RegisterName").val(),
           email: $("#RegisterEmail").val(),
           password: $("#RegisterPassword").val()
-          // Phone:$("RegisterPhone").val(),
         };
-        const api = "https://proj.ruppin.ac.il/igroup9/test2/tar1/api/Users/RegisterUser";
+
+        const api = "https://localhost:7119/api/Users/RegisterUser";
         ajaxCall(
           "POST",
           api,
@@ -40,111 +79,49 @@
           RegisterUserSCB,
           RegisterUserECB
         );
+
         function RegisterUserSCB(status) {
           console.log(status);
           $("#registerForm")[0].reset();
           //מוציא התראה על הצלחה 
-        Swal.fire({
-          icon: "success",
-        title: "Form submitted successfully!",
-        text: "Redirecting to the Login page...",
-    timer: 2000, 
-    showConfirmButton: false,
-    allowOutsideClick: false,
-    allowEscapeKey: false
-});
+          Swal.fire({
+            icon: "success",
+            title: "Form submitted successfully!",
+            text: "Redirecting to the Login page...",
+            timer: 2000, 
+            showConfirmButton: false,
+            allowOutsideClick: false,
+            allowEscapeKey: false});
+            setTimeout(() => {
+                window.location.href = './LogIn.html';    // הפניה לדף כניסה 
+            }, 2000);
+            }
 
-setTimeout(() => {
-    // הפניה לדף כניסה 
-    window.location.href = 'https://proj.ruppin.ac.il/igroup9/test2/tar2/client%20side%20Hw1/Pages/LogIn.html';
-}, 2000);
-}
-        function RegisterUserECB(err) {    
+        function RegisterUserECB(err) {
           console.error(err);
           alert("There is a problem to register this user!");}
-    // 
       }
-      function RegisterFormvalid() {
-    // var Id = $("#RegisterId").val();
-    var name = $("#RegisterName").val();
-    var email = $("#RegisterEmail").val();
-    var password = $("#RegisterPassword").val();
 
-    // var phone = $("#RegisterPhone").val();
-    // Regex patterns
-    // var IdRegex = /^\d{9}$/;
-    var nameRegex = /^[a-zA-Z]+([ '-][a-zA-Z]+)*$/;
-    var emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
-    var passwordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d).{8,20}$/;
-
-    // var phoneRegex = /^05\d-\d{7}$/;
-    
-    // if (!IdRegex.test(Id)) {
-    //     swal.fire({
-    //         icon: "error",
-    //         title: "Invalid ID-cant contain letters!",
-    //     });
-    //     return  ;
-    // }
-   
-    // else
-     if (!nameRegex.test(name)) {
-        swal.fire({
-            icon: "error",
-            title: "Invalid name - can't contain numbers or special characters!",
-        });
-        return ;
-    }
-   
-    else if (!emailRegex.test(email)) {
-        swal.fire({
-            icon: "error",
-            title: "Invalid email!",
-        });
-        return ;
-    }
-    
-    // else if (!phoneRegex.test(phone)) {
-    //     swal.fire({
-    //         icon: "error",
-    //         title: "Invalid phone number!",
-    //     });
-    //     return ;
-    // }
-   
-   else  if (!passwordRegex.test(password)) {
-        swal.fire({
-            icon: "error",
-            title: "Invalid password - must contain one uppercase, one digit, and be at least 8 characters!",
-        });
-        return ;
-    }
-
- else{ 
-        RegisterUser();
-        return ;}
-      
-      }
     </script>
   </head>
   <body>
     <div class="form-container">
       <h1>Register</h1>
       <form id="registerForm">
-        <!-- <label for="Id">ID</label>
-        <input id="RegisterId" type="text" placeholder="Enter your ID"> -->
-        <label for="name">Name</label>
+
+          <!-- name input -->
+          <label for="name">Name</label>
           <input id="RegisterName" type="text" placeholder="Enter your name">
         
+          <!-- email input -->
           <label for="email">Email</label>
           <input id="RegisterEmail" type="email" placeholder="Enter your email">
-    
-          <!-- <label for="phone">Phone</label>
-          <input id="RegisterPhone" type="text" placeholder="Enter your phone (e.g., 050-1234567)"> -->
           
+          <!-- password input -->
           <label for="password">Password</label>
           <input id="RegisterPassword" type="password" placeholder="Enter a strong password">
-         
+
+          <!-- validRegister click button -->
           <button type="button" class ="validRegister">Register</button>
       </form>
   </body>

@@ -11,19 +11,13 @@ namespace Hw_1.Controllers
     public class GamesController : ControllerBase
     {
         // GET: api/<GamesController>
+        //return all games from DB
         [HttpGet]
         public IEnumerable<Game> Get()
         {
             Game game = new Game();
             return game.read();
         }
-
-
-       
-
-      
-
-
 
 
         // GET api/<GamesController>/5

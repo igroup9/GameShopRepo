@@ -8,62 +8,134 @@
     <script
       src="https://code.jquery.com/jquery-3.7.1.min.js"
       integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo="
-      crossorigin="anonymous"></script>
-    <script src="https://proj.ruppin.ac.il/igroup9/test2/tar2/client%20side%20Hw1/Scripts/ajaxCalls.js"></script>
-    <script src="https://proj.ruppin.ac.il/igroup9/test2/tar2/client%20side%20Hw1/Scripts/game.js"></script>
-    <link rel="stylesheet" href="https://proj.ruppin.ac.il/igroup9/test2/tar2/client%20side%20Hw1/Css/game.css" />
-    <link rel="stylesheet" href="https://proj.ruppin.ac.il/igroup9/test2/tar2/client%20side%20Hw1/Css/navbar.css" />
+      crossorigin="anonymous"
+    ></script>
+    <script src="../Scripts/ajaxCalls.js"></script>
+    <script src="../Scripts/game.js"></script>
+    <link rel="stylesheet" href="../Css/game.css" />
+    <link rel="stylesheet" href="../Css/navbar.css" />
   </head>
 
   <body>
     <div id="container">
       <h1 class="heading">Game Shop</h1>
-      <a href="https://proj.ruppin.ac.il/igroup9/test2/tar2/client%20side%20Hw1/Pages/MyList.html"
-        ><button>Go to Your List</button></a
-      >
+      <a href="./MyList.html"><button>Go to Your List</button></a>
 
       <div id="games_container">
         <div class="navbar">
-          <a href="https://proj.ruppin.ac.il/igroup9/test2/tar2/client%20side%20Hw1/Pages/Register.html">Register</a>
-          <a href="https://proj.ruppin.ac.il/igroup9/test2/tar2/client%20side%20Hw1/Pages/LogIn.html">LogIn</a>
+          <a href="./Register.html">Register</a>
+          <a href="./LogIn.html">LogIn</a>
         </div>
       </div>
     </div>
     <script>
-      // Navbar hide/show logic
-      let lastScrollTop = 0;
-      const navbar = document.querySelector(".navbar");
-
-      window.addEventListener("scroll", () => {
-        const scrollTop = window.pageYOffset || document.documentElement.scrollTop;
-
-        if (scrollTop > lastScrollTop) {
-          // Scroll down: Hide navbar
-          navbar.style.top = "-100px";
-        } else {
-          // Scroll up: Show navbar
-          navbar.style.top = "0";
-        }
-
-        lastScrollTop = scrollTop <= 0 ? 0 : scrollTop;
-      });
-
-      document.addEventListener("DOMContentLoaded", () => {
+      $(document).ready(function () {
         if (typeof GAME === "undefined" || !Array.isArray(GAME)) {
           console.error("GAME data is not available!");
           return;
         }
 
-        renderGames(GAME);
-        initializeCarousel();
+        //render page with ALL games from game list
+        getFromServer();
 
+        // Apply expand only for mobile view
+        $(".game-card").on("click", function () {
+          if ($(window).width() <= 480) {
+            $(this).toggleClass("expanded");
+          }
+        });
+
+        //adding game to user game List when clicked
         $(document).on("click", ".add_to_list_btn", function () {
           const index = $(this).data("index");
           const selectedGame = GAME[index];
           console.log("Sending game:", selectedGame);
           postToServer(selectedGame);
         });
+
+        // Navbar hide/show logic
+        window.addEventListener("scroll", () => {
+          let lastScrollTop = 0;
+          const navbar = $(".navbar");
+
+          const scrollTop = $(this).scrollTop(); // Get the scroll position using jQuery
+          if (scrollTop > lastScrollTop) {
+            // Scroll down: Hide navbar
+            navbar.css("top", "-100px");
+          } else {
+            // Scroll up: Show navbar
+            navbar.css("top", "0");
+          }
+          lastScrollTop = scrollTop <= 0 ? 0 : scrollTop;
+        });
       });
+
+      function getFromServer() {
+        const api = "https://localhost:7119/api/Games";
+        ajaxCall("GET", api, "", getGamesSCB, getGamesECB);
+        function getGamesSCB(gamesList) {
+          //SCB
+          console.log(gamesList);
+          renderGames(gamesList); //CALL RENDER FUNC
+          initializeCarousel(); //initialize Carousel
+        }
+        function getGamesECB(ERR) {
+          //ECB
+          console.log(ERR);
+        }
+      }
+
+      function renderGames(games) {
+        const gamesList = document.getElementById("games_container");
+        if (!gamesList) {
+          console.error("games_container not found in the HTML!");
+          return;
+        }
+        games.forEach((G, index) => {
+          const gameCard = document.createElement("div");
+          gameCard.className = "game-card";
+          gameCard.innerHTML = `
+                  <img src="${G.Header_image}" alt="${
+            G.Name
+          }" class="game-header-image">
+                  <h2>${G.Name}</h2>
+                  <button class="add_to_list_btn" data-index="${index}">Add To Your List</button>
+                  <p><strong>App ID:</strong> ${G.AppID}</p>
+                  <p><strong>Release Date:</strong> ${G.Release_date}</p>
+                  <p><strong>Price:</strong> $${G.Price.toFixed(2)}</p>
+                  <p><strong>Description:</strong> ${G.description}</p>
+                  <p><strong>Full Audio Languages:</strong> ${
+                    G.Full_audio_languages
+                  }</p>
+                  <p><strong>Developers:</strong> ${G.Developers}</p>
+                  <p><strong>Categories:</strong> ${G.Categories}</p>
+                  <p><strong>Genres:</strong> ${G.Genres}</p>
+                  <p><strong>Tags:</strong> ${G.Tags}</p>
+                  <p><strong>Score Rank:</strong> ${G.Score_rank}</p>
+                  <p><strong>Platforms:</strong>
+                    ${G.Windows === "TRUE" ? "Windows " : ""}
+                    ${G.Mac === "TRUE" ? "Mac " : ""}
+                    ${G.Linux === "TRUE" ? "Linux" : ""}
+                  </p>
+                  <a href="${G.Website}" target="_blank">Official Website</a>
+                  <div class="screenshots image-carousel">
+                    ${G.Screenshots.split(",")
+                      .map(
+                        (url, index) =>
+                          `<img src="${url}" alt="Screenshot" class="carousel-image ${
+                            index === 0 ? "active" : ""
+                          }" style="width:100%; display: ${
+                            index === 0 ? "block" : "none"
+                          };">`
+                      )
+                      .join("")}
+                    <button class="carousel-button prev">&lt;</button>
+                    <button class="carousel-button next">&gt;</button>
+                  </div>
+                `;
+          gamesList.appendChild(gameCard);
+        });
+      }
 
       function initializeCarousel() {
         const carousels = document.querySelectorAll(".image-carousel");
@@ -94,58 +166,8 @@
         });
       }
 
-      function renderGames(games) {
-        const gamesList = document.getElementById("games_container");
-
-        if (!gamesList) {
-          console.error("games_container not found in the HTML!");
-          return;
-        }
-
-        games.forEach((G, index) => {
-          const gameCard = document.createElement("div");
-          gameCard.className = "game-card";
-
-          gameCard.innerHTML = `
-                  <img src="${G.Header_image}" alt="${G.Name}" class="game-header-image">
-                  <h2>${G.Name}</h2>
-                  <button class="add_to_list_btn" data-index="${index}">Add To Your List</button>
-                  <p><strong>App ID:</strong> ${G.AppID}</p>
-                  <p><strong>Release Date:</strong> ${G.Release_date}</p>
-                  <p><strong>Price:</strong> $${G.Price.toFixed(2)}</p>
-                  <p><strong>Description:</strong> ${G.description}</p>
-                  <p><strong>Full Audio Languages:</strong> ${G.Full_audio_languages}</p>
-                  <p><strong>Developers:</strong> ${G.Developers}</p>
-                  <p><strong>Categories:</strong> ${G.Categories}</p>
-                  <p><strong>Genres:</strong> ${G.Genres}</p>
-                  <p><strong>Tags:</strong> ${G.Tags}</p>
-                  <p><strong>Score Rank:</strong> ${G.Score_rank}</p>
-                  <p><strong>Platforms:</strong>
-                    ${G.Windows === "TRUE" ? "Windows " : ""}
-                    ${G.Mac === "TRUE" ? "Mac " : ""}
-                    ${G.Linux === "TRUE" ? "Linux" : ""}
-                  </p>
-                  <a href="${G.Website}" target="_blank">Official Website</a>
-                  <div class="screenshots image-carousel">
-                    ${G.Screenshots.split(",")
-                      .map(
-                        (url, index) =>
-                          `<img src="${url}" alt="Screenshot" class="carousel-image ${
-                            index === 0 ? "active" : ""
-                          }" style="width:100%; display: ${index === 0 ? "block" : "none"};">`
-                      )
-                      .join("")}
-                    <button class="carousel-button prev">&lt;</button>
-                    <button class="carousel-button next">&gt;</button>
-                  </div>
-                `;
-
-          gamesList.appendChild(gameCard);
-        });
-      }
-
-      const api = "https://proj.ruppin.ac.il/igroup9/test2/tar1/api/Games";
       function postToServer(game) {
+        const api = "https://localhost:7119/api/Games";
         ajaxCall("POST", api, JSON.stringify(game), postGameSCB, postGameECB);
 
         function postGameSCB(status) {
@@ -157,18 +179,19 @@
           console.log(ERR);
         }
       }
-      document.addEventListener("DOMContentLoaded", () => {
-        const gameCards = document.querySelectorAll(".game-card");
 
-        gameCards.forEach((card) => {
-          card.addEventListener("click", () => {
-            // Apply expand only for mobile view
-            if (window.innerWidth <= 480) {
-              card.classList.toggle("expanded");
-            }
-          });
-        });
-      });
+      // document.addEventListener("DOMContentLoaded", () => {
+      //   const gameCards = document.querySelectorAll(".game-card");
+
+      //   gameCards.forEach((card) => {
+      //     card.addEventListener("click", () => {
+      //       // Apply expand only for mobile view
+      //       if (window.innerWidth <= 480) {
+      //         card.classList.toggle("expanded");
+      //       }
+      //     });
+      //   });
+      // });
     </script>
   </body>
 </html>
