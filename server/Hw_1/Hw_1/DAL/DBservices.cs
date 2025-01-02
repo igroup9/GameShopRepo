@@ -500,7 +500,7 @@ namespace Hw_1.DAL
             paramDic.Add("@email", user.Email);
             paramDic.Add("@password", user.Password);
 
-            cmd = CreateCommandWithStoredProcedureGeneral("R_SP_ReturnUserByEmailAndPassword", con, paramDic);
+            cmd = CreateCommandWithStoredProcedureGeneral("R_SP_UpdateUser", con, paramDic);
 
             SqlDataReader dataReader = cmd.ExecuteReader(CommandBehavior.CloseConnection);
             if (dataReader.Read())

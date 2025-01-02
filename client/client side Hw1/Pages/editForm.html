@@ -37,9 +37,9 @@
 
       //check if the Edit Form is valid
       function EditUserDetails() {
-        var name = $("#RegisterName").val();
-        var email = $("#RegisterEmail").val();
-        var password = $("#RegisterPassword").val();
+        var name = $("#editName").val();
+        var email = $("#editEmail").val();
+        var password = $("#editPassword").val();
 
         var nameRegex = /^[a-zA-Z]+([ '-][a-zA-Z]+)*$/;
         var emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
@@ -57,7 +57,7 @@
             title: "Invalid email!",
           });
           return;
-        } else if (!passwordRegex.test(password)) {
+        } else if (password != "" && !passwordRegex.test(password)) {
           swal.fire({
             icon: "error",
             title: "Invalid password - must contain one uppercase, one digit, and be at least 8 characters!",
@@ -71,38 +71,52 @@
 
       //save user changes
       function saveUserChanges() {
+        //get the details of whom is login
+        let user = getCurrentUser();
+        let currentUser = null;
+
         const updatedUser = {
+          id: user.id,
           name: $("#editName").val(),
           email: $("#editEmail").val(),
-          password: $("#editPassword").val() || null,
+          password: $("#editPassword").val() || user.password,
         };
 
-        const api = "https://localhost:7119/api/Users/RegisterUser";
-        ajaxCall("POST", api, JSON.stringify(userReg), RegisterUserSCB, RegisterUserECB);
+        const api = "https://localhost:7119/api/Users/UpdateUser";
+        ajaxCall("PUT", api, JSON.stringify(updatedUser), UpdateUserSCB, UpdateUserECB);
 
-        function RegisterUserSCB(status) {
-          console.log(status);
-          if (status == true) {
-            $("#registerForm")[0].reset();
+        function UpdateUserSCB(user) {
+          if (user != null) {
+            currentUser = {
+              id: user.id,
+              name: user.name,
+              email: user.email,
+            };
+
+            sessionStorage.setItem("currentUser", JSON.stringify(currentUser));
+
+            console.log(currentUser);
+
+            $("#editUserForm")[0].reset();
             //מוציא התראה על הצלחה
             Swal.fire({
               icon: "success",
-              title: "Form submitted successfully!",
-              text: "Redirecting to the Login page...",
+              title: "Form Edited successfully!",
+              text: "Redirecting to the Main page...",
               timer: 2000,
               showConfirmButton: false,
               allowOutsideClick: false,
               allowEscapeKey: false,
             });
             setTimeout(() => {
-              window.location.href = "./LogIn.html"; // הפניה לדף כניסה
+              window.location.href = "./Index.html"; // הפניה לדף כניסה
             }, 2000);
           } else {
-            $("#registerForm")[0].reset();
+            $("#editUserForm")[0].reset();
             Swal.fire({
               icon: "error",
-              title: "User already exists!",
-              text: "Please try a different username or email.",
+              title: "There was a problem with the email",
+              text: "Please try a different email.",
               confirmButtonText: "OK",
               allowOutsideClick: false,
               allowEscapeKey: false,
@@ -110,7 +124,7 @@
           }
         }
 
-        function RegisterUserECB(err) {
+        function UpdateUserECB(err) {
           console.error(err);
           alert("There is a problem to register this user!");
         }

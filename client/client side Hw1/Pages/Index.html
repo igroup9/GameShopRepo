@@ -70,9 +70,10 @@
 
           const RegisterLink = $("#registerBtn");
           RegisterLink.text("Exit");
-
+          user = getCurrentUser();
           const goToMyListBtn = $(".GoToMyListBtn");
           goToMyListBtn.removeClass("hidden");
+          // goToMyListBtn.text("Go to " + user.name + " Game list");
         }
       });
 
@@ -183,7 +184,7 @@
 
     <div id="container">
       <h1 class="heading">Game Shop</h1>
-      <a class="GoToMyListBtn hidden" href="./MyList.html"><button>Go to Your List</button></a>
+      <a type="button" class="GoToMyListBtn hidden" href="./MyList.html"><button>Go to Your List</button></a>
 
       <div id="games_container">
         <div class="navbar">
