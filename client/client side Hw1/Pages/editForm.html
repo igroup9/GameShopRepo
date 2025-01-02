@@ -1,6 +1,9 @@
 <!DOCTYPE html>
 <html>
   <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Edit User</title>
     <script
       src="https://code.jquery.com/jquery-3.7.1.min.js"
       integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo="
@@ -8,19 +11,32 @@
     ></script>
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <script src="../Scripts/ajaxCalls.js"></script>
+    <script src="../Scripts/Script.js"></script>
 
     <link rel="stylesheet" href="../Css/Form.css" />
     <script>
       $(document).ready(function () {
-        $("#registerForm").submit(function (e) {
+        // Load user details on page load
+        loadUserDetails();
+
+        $("#editUserForm").submit(function (e) {
           e.preventDefault();
         });
 
-        $(document).on("click", ".validRegister", RegisterFormvalid);
+        $(document).on("click", ".validEdit", EditUserDetails);
       });
 
-      //check if the Register is Form valid
-      function RegisterFormvalid() {
+      function loadUserDetails() {
+        //get the details of whom is login
+        let user = getCurrentUser();
+        if (user != null) {
+          $("#editName").val(user.name);
+          $("#editEmail").val(user.email);
+        }
+      }
+
+      //check if the Edit Form is valid
+      function EditUserDetails() {
         var name = $("#RegisterName").val();
         var email = $("#RegisterEmail").val();
         var password = $("#RegisterPassword").val();
@@ -48,17 +64,17 @@
           });
           return;
         } else {
-          RegisterUser();
+          saveUserChanges();
           return;
         }
       }
 
-      //being called throw registerFormValid
-      function RegisterUser() {
-        const userReg = {
-          name: $("#RegisterName").val(),
-          email: $("#RegisterEmail").val(),
-          password: $("#RegisterPassword").val(),
+      //save user changes
+      function saveUserChanges() {
+        const updatedUser = {
+          name: $("#editName").val(),
+          email: $("#editEmail").val(),
+          password: $("#editPassword").val() || null,
         };
 
         const api = "https://localhost:7119/api/Users/RegisterUser";
@@ -79,7 +95,7 @@
               allowEscapeKey: false,
             });
             setTimeout(() => {
-              window.location.href = "./Login.html"; // הפניה לדף כניסה
+              window.location.href = "./LogIn.html"; // הפניה לדף כניסה
             }, 2000);
           } else {
             $("#registerForm")[0].reset();
@@ -103,22 +119,22 @@
   </head>
   <body>
     <div class="form-container">
-      <h1>Register</h1>
-      <form id="registerForm">
+      <h1>Edit User</h1>
+      <form id="editUserForm">
         <!-- name input -->
         <label for="name">Name</label>
-        <input id="RegisterName" type="text" placeholder="Enter your name" />
+        <input id="editName" type="text" placeholder="Enter your name" />
 
         <!-- email input -->
         <label for="email">Email</label>
-        <input id="RegisterEmail" type="email" placeholder="Enter your email" />
+        <input id="editEmail" type="email" placeholder="Enter your email" />
 
         <!-- password input -->
-        <label for="password">Password</label>
-        <input id="RegisterPassword" type="password" placeholder="Enter a strong password" />
+        <label for="password">Password (Optional)</label>
+        <input id="editPassword" type="password" placeholder="Enter a new password" />
 
-        <!-- validRegister click button -->
-        <button type="button" class="validRegister">Register</button>
+        <!-- validEdit click button -->
+        <button type="button" class="validEdit">Save Changes</button>
       </form>
     </div>
   </body>

@@ -12,24 +12,17 @@
     ></script>
     <script src="../Scripts/ajaxCalls.js"></script>
     <script src="../Scripts/game.js"></script>
+    <script src="../Scripts/Script.js"></script>
     <link rel="stylesheet" href="../Css/game.css" />
     <link rel="stylesheet" href="../Css/navbar.css" />
   </head>
 
   <body>
-    <div id="container">
-      <h1 class="heading">Game Shop</h1>
-      <a href="./MyList.html"><button>Go to Your List</button></a>
-
-      <div id="games_container">
-        <div class="navbar">
-          <a href="./Register.html">Register</a>
-          <a href="./LogIn.html">LogIn</a>
-        </div>
-      </div>
-    </div>
     <script>
       $(document).ready(function () {
+        //get the details of whom is login
+        let user = getCurrentUser();
+
         if (typeof GAME === "undefined" || !Array.isArray(GAME)) {
           console.error("GAME data is not available!");
           return;
@@ -54,7 +47,7 @@
         });
 
         // Navbar hide/show logic
-        window.addEventListener("scroll", () => {
+        $(window).on("scroll", function () {
           let lastScrollTop = 0;
           const navbar = $(".navbar");
 
@@ -68,6 +61,19 @@
           }
           lastScrollTop = scrollTop <= 0 ? 0 : scrollTop;
         });
+
+        // Login functionality on the index page - changing visibility and links
+        if (user) {
+          const loginLink = $("#LoginBtn");
+          loginLink.text("Edit User");
+          loginLink.attr("href", "./editForm.html");
+
+          const RegisterLink = $("#registerBtn");
+          RegisterLink.text("Exit");
+
+          const goToMyListBtn = $(".GoToMyListBtn");
+          goToMyListBtn.removeClass("hidden");
+        }
       });
 
       function getFromServer() {
@@ -95,18 +101,14 @@
           const gameCard = document.createElement("div");
           gameCard.className = "game-card";
           gameCard.innerHTML = `
-                  <img src="${G.Header_image}" alt="${
-            G.Name
-          }" class="game-header-image">
+                  <img src="${G.Header_image}" alt="${G.Name}" class="game-header-image">
                   <h2>${G.Name}</h2>
                   <button class="add_to_list_btn" data-index="${index}">Add To Your List</button>
                   <p><strong>App ID:</strong> ${G.AppID}</p>
                   <p><strong>Release Date:</strong> ${G.Release_date}</p>
                   <p><strong>Price:</strong> $${G.Price.toFixed(2)}</p>
                   <p><strong>Description:</strong> ${G.description}</p>
-                  <p><strong>Full Audio Languages:</strong> ${
-                    G.Full_audio_languages
-                  }</p>
+                  <p><strong>Full Audio Languages:</strong> ${G.Full_audio_languages}</p>
                   <p><strong>Developers:</strong> ${G.Developers}</p>
                   <p><strong>Categories:</strong> ${G.Categories}</p>
                   <p><strong>Genres:</strong> ${G.Genres}</p>
@@ -124,9 +126,7 @@
                         (url, index) =>
                           `<img src="${url}" alt="Screenshot" class="carousel-image ${
                             index === 0 ? "active" : ""
-                          }" style="width:100%; display: ${
-                            index === 0 ? "block" : "none"
-                          };">`
+                          }" style="width:100%; display: ${index === 0 ? "block" : "none"};">`
                       )
                       .join("")}
                     <button class="carousel-button prev">&lt;</button>
@@ -179,19 +179,18 @@
           console.log(ERR);
         }
       }
-
-      // document.addEventListener("DOMContentLoaded", () => {
-      //   const gameCards = document.querySelectorAll(".game-card");
-
-      //   gameCards.forEach((card) => {
-      //     card.addEventListener("click", () => {
-      //       // Apply expand only for mobile view
-      //       if (window.innerWidth <= 480) {
-      //         card.classList.toggle("expanded");
-      //       }
-      //     });
-      //   });
-      // });
     </script>
+
+    <div id="container">
+      <h1 class="heading">Game Shop</h1>
+      <a class="GoToMyListBtn hidden" href="./MyList.html"><button>Go to Your List</button></a>
+
+      <div id="games_container">
+        <div class="navbar">
+          <a id="registerBtn" href="./Register.html">Register</a>
+          <a id="LoginBtn" href="./Login.html">Login</a>
+        </div>
+      </div>
+    </div>
   </body>
 </html>

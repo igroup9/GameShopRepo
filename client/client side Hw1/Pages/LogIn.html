@@ -1,109 +1,123 @@
 <!DOCTYPE html>
 <html>
   <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Login Page</title>
+
     <script
       src="https://code.jquery.com/jquery-3.7.1.min.js"
       integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo="
-      crossorigin="anonymous"></script>
+      crossorigin="anonymous"
+    ></script>
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <script src="../Scripts/ajaxCalls.js"></script>
 
     <link rel="stylesheet" href="../Css/Form.css" />
+
     <script>
-        $(document).ready(function () {
-          $("#loginForm").submit(function (e) {
-            e.preventDefault();
-            // LogInFormValid();
-          });
-          $(document).on("click",".validLogin", loginFormValid );
-
-
+      $(document).ready(function () {
+        $("#loginForm").submit(function (e) {
+          e.preventDefault();
         });
-        function LogInUser() {
-      const userLog = {
+
+        $(document).on("click", ".validLogin", loginFormValid);
+      });
+
+      function LogInUser() {
+        let currentUser = null;
+
+        const userLog = {
           email: $("#LoginEmail").val(), // שליפת המייל מהשדה המתאים
           password: $("#LogInPassword").val(), // שליפת הסיסמה מהשדה המתאים
-          id:0,
-          name:"",
-          };
-          const api = "https://localhost:7119/api/Users/LogInUser";
-          ajaxCall("POST",api,JSON.stringify(userLog),LogInUserSCB,LogInUserECB);
-        
-        function LogInUserSCB(status) {
-          console.log(status);
-          // alert(status);
-          $("#loginForm")[0].reset();
-   
-          Swal.fire({
-    icon: "success",
-    title: "Login successful!",
-    text: "Redirecting to the main page...",
-    timer: 2000, 
-    showConfirmButton: false,
-    allowOutsideClick: false,
-    allowEscapeKey: false
-});
+          id: 0,
+          name: "",
+        };
+        const api = "https://localhost:7119/api/Users/LoginUser";
+        ajaxCall("POST", api, JSON.stringify(userLog), LogInUserSCB, LogInUserECB);
 
-setTimeout(() => {
-    // Redirect after 2 seconds
-    window.location.href = "./index.html";
-}, 2000);
+        function LogInUserSCB(user) {
+          if (user != null) {
+            currentUser = {
+              id: user.id,
+              name: user.name,
+              email: user.email,
+            };
 
+            sessionStorage.setItem("currentUser", JSON.stringify(currentUser));
 
+            console.log(currentUser);
 
+            $("#loginForm")[0].reset();
 
-          }    
-
+            Swal.fire({
+              icon: "success",
+              title: "Hello " + currentUser.name + " Login successful!",
+              text: "Redirecting to the main page...",
+              timer: 3000,
+              showConfirmButton: false,
+              allowOutsideClick: false,
+              allowEscapeKey: false,
+            });
+            setTimeout(() => {
+              // Redirect after 2 seconds
+              window.location.href = "./index.html";
+            }, 2000);
+          } else {
+            $("#loginForm")[0].reset();
+            Swal.fire({
+              icon: "error",
+              title: "Login Failed!",
+              text: "Please try a different email or password.",
+              confirmButtonText: "OK",
+              allowOutsideClick: false,
+              allowEscapeKey: false,
+            });
+          }
+        }
 
         function LogInUserECB(err) {
           console.error(err);
-          alert(err);
-          //"There is a problem to LogIn, please cheack your information"
+          alert("There is a problem to Login, please cheack your information");
         }
-      
       }
 
-        function loginFormValid() {
- 
-    var email = $("#LoginEmail").val();
-    var password = $("#LogInPassword").val();
-   
-    var emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
-    var passwordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d).{8,}$/;
-    
-    if (!email) {
-        swal.fire({
+      // check if the login form details are valid
+      function loginFormValid() {
+        var email = $("#LoginEmail").val();
+        var password = $("#LogInPassword").val();
+
+        var emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
+        var passwordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d).{8,20}$/;
+
+        if (!email) {
+          swal.fire({
             icon: "error",
             title: "Email is required!",
-        });
-        return ;
-    }
-    else if (!emailRegex.test(email)) {
-        swal.fire({
+          });
+          return;
+        } else if (!emailRegex.test(email)) {
+          swal.fire({
             icon: "error",
             title: "Invalid email format!",
-        });
-        return ;
-    }
-    
-    else if (!password) {
-        swal.fire({
+          });
+          return;
+        } else if (!password) {
+          swal.fire({
             icon: "error",
             title: "Password is required!",
-        });
-        return ;
-    }
-    else if   (!passwordRegex.test(password)) {
-        swal.fire({
+          });
+          return;
+        } else if (!passwordRegex.test(password)) {
+          swal.fire({
             icon: "error",
             title: "Invalid password!",
             text: "Password must contain at least one uppercase letter, one digit, and be at least 8 characters long.",
-        });
-        return ;
-    }
-    else{ LogInUser();}         
-        
-      
+          });
+          return;
+        } else {
+          LogInUser();
+        }
       }
     </script>
   </head>
@@ -112,10 +126,11 @@ setTimeout(() => {
       <h1>LogIn</h1>
       <form id="loginForm">
         <label for="email">Email</label>
-        <input id="LoginEmail" type="email" placeholder="Enter your email">
+        <input id="LoginEmail" type="email" placeholder="Enter your email" />
         <label for="password">Password</label>
-        <input id="LogInPassword" type="password" placeholder="Enter your password">
-        <button type="button" class ="validLogin">Login</button>
-    </form>
+        <input id="LogInPassword" type="password" placeholder="Enter your password" />
+        <button type="button" class="validLogin">Login</button>
+      </form>
+    </div>
   </body>
 </html>

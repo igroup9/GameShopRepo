@@ -1,4 +1,6 @@
-﻿namespace Hw_1.Models
+﻿using Hw_1.DAL;
+
+namespace Hw_1.Models
 {
     public class User
     {
@@ -27,17 +29,33 @@
 
         public bool insert()
         {
+            DBservices DB= new DBservices();
+            UsersList=DB.ReadUserList();
+
             foreach (User U in UsersList)
             {
-                if ((this.Id == U.Id) || (this.Email == U.Email))
+                if ((this.Email == U.Email))
                     return false;
             }
-            UsersList.Add(this);
-            return true;
+            
+            return DB.InsertUser(this);
         }
         public List<User> read()
         {
             return UsersList;
+        }
+
+        public User Login()
+        {
+            DBservices DB = new DBservices();
+            UsersList = DB.ReadUserList();
+
+            foreach (User U in UsersList)
+            {
+                if ((this.Email == U.Email)&&(this.Password == U.Password))
+                    return DB.LoginUser(this);
+            }
+            return null;
         }
 
         public bool Delete(int id)
@@ -52,6 +70,26 @@
 
             }
             return false;
+        }
+
+        public User Upadte()
+        {
+            DBservices DB = new DBservices();
+            UsersList = DB.ReadUserList();
+
+            foreach (User U in UsersList)
+            {
+                if ((this.id == U.id))
+                {
+                    foreach (User User in UsersList)
+                    {
+                        if ((this.email == User.email) && (this.id != User.id))
+                        { return null; }
+                    }
+                    return DB.UpdateUser(this);
+                }
+            }
+            return null;
         }
     }
 }

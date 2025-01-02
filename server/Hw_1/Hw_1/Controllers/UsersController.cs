@@ -28,7 +28,7 @@ namespace Hw_1.Controllers
         [HttpPost]
         public bool Post([FromBody] User user)
         {
-            return user.insert();
+            return user.insert();   
         }
 
          [HttpPost("RegisterUser")]
@@ -37,31 +37,23 @@ namespace Hw_1.Controllers
             return RegisterUser.insert();
         }
 
-          [HttpPost("LogInUser")]
-        public bool Login([FromBody] User LogInUser)
+          [HttpPost("LoginUser")]
+        public User Login([FromBody] User LoginUser)
         {
-            if (LogInUser == null || string.IsNullOrEmpty(LogInUser.Email) || string.IsNullOrEmpty(LogInUser.Password))
+            if (LoginUser == null || string.IsNullOrEmpty(LoginUser.Email) || string.IsNullOrEmpty(LoginUser.Password))
             {
-                return false;
-            }
-            List<User> UsersList = LogInUser.read();
-
-
-            foreach (var user in UsersList)
-            {
-                if (user.Email == LogInUser.Email && user.Password == LogInUser.Password)
-                {
-                    return true;
-                }
+                return null;
             }
 
-            return false;
+            return LoginUser.Login();
         }
 
         // PUT api/<UsersController>/5
-        [HttpPut("{id}")]
-        public void Put(int id, [FromBody] string value)
+        [HttpPut("UpdateUser")]
+        public User Put(int id, [FromBody] User user)
         {
+            return user.Upadte();
+
         }
 
         // DELETE api/<UsersController>/5

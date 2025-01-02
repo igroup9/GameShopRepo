@@ -145,7 +145,7 @@ namespace Hw_1.DAL
 
             return cmd;
         }
-        //SP_InsertFlight2025
+        
         //--------------------------------------------------------------------------------------------------
         // This method inserts a game to the game table 
         //--------------------------------------------------------------------------------------------------
@@ -213,6 +213,7 @@ namespace Hw_1.DAL
 
         }
 
+       
         //SP_DeleteFlight2025
 
         public int Delete(int id)
@@ -262,7 +263,7 @@ namespace Hw_1.DAL
         //--------------------------------------------------------------------------------------------------
         // This method inserts a user to the user table 
         //--------------------------------------------------------------------------------------------------
-        public int Insert(User user)
+        public bool InsertUser(User user)
         {
 
             SqlConnection con;
@@ -279,17 +280,19 @@ namespace Hw_1.DAL
             }
 
             Dictionary<string, object> paramDic = new Dictionary<string, object>();
-            paramDic.Add("@id", user.Id);
+            //paramDic.Add("@id", user.Id);
             paramDic.Add("@name", user.Name);
             paramDic.Add("@email", user.Email);
             paramDic.Add("@password", user.Password);
 
-            cmd = CreateCommandWithStoredProcedureGeneral("SP_InsertStudent25", con, paramDic);          // create the command לשנות שם פרוצדורה
-
+            cmd = CreateCommandWithStoredProcedureGeneral("R_SP_AddUser", con, paramDic); // create the command   
+            
             try
             {
                 int numEffected = cmd.ExecuteNonQuery(); // execute the command
-                return numEffected;
+                if (numEffected > 0) 
+                return true;
+                else return false;
             }
             catch (Exception ex)
             {
@@ -337,7 +340,10 @@ namespace Hw_1.DAL
         }
 
 
-        // read from a table
+        //--------------------------------------------------------------------------------------------------
+        // This method read all games from a DB
+        //--------------------------------------------------------------------------------------------------
+
         public List<Game> ReadGamesList()
         {
             SqlConnection con;
@@ -388,5 +394,128 @@ namespace Hw_1.DAL
             }
             return gameList;
         }
+
+
+        //--------------------------------------------------------------------------------------------------
+        // This method read all users from a DB
+        //--------------------------------------------------------------------------------------------------
+        public List<User> ReadUserList()
+        {
+            SqlConnection con;
+            SqlCommand cmd;
+
+            try
+            {
+                con = connect("myProjDB"); // create the connection
+            }
+            catch (Exception ex)
+            {
+                // write to log
+                throw (ex);
+            }
+
+            List<User> userList = new List<User>();
+
+            Dictionary<string, object> paramDic = new Dictionary<string, object>();
+
+            cmd = CreateCommandWithStoredProcedureGeneral("R_SP_ReturnAllUsers", con, paramDic);
+
+            SqlDataReader dataReader = cmd.ExecuteReader(CommandBehavior.CloseConnection);
+
+            while (dataReader.Read())
+            {
+                User user = new User();
+
+                user.Id = Convert.ToInt32(dataReader["id"]);
+                user.Name = dataReader["name"].ToString();
+                user.Email = dataReader["email"].ToString();
+                user.Password = dataReader["password"].ToString();
+            
+                userList.Add(user);
+            }
+            return userList;
+        }
+
+        //--------------------------------------------------------------------------------------------------
+        // This method Login the user and return all of his details from a DB
+        //--------------------------------------------------------------------------------------------------
+        public User LoginUser(User user)
+        {
+            SqlConnection con;
+            SqlCommand cmd;
+
+            try
+            {
+                con = connect("myProjDB"); // create the connection
+            }
+            catch (Exception ex)
+            {
+                // write to log
+                throw (ex);
+            }
+
+            Dictionary<string, object> paramDic = new Dictionary<string, object>();
+            paramDic.Add("@email", user.Email);
+            paramDic.Add("@password", user.Password);
+
+            cmd = CreateCommandWithStoredProcedureGeneral("R_SP_ReturnUserByEmailAndPassword", con, paramDic);
+
+            SqlDataReader dataReader = cmd.ExecuteReader(CommandBehavior.CloseConnection);
+            if (dataReader.Read())
+            {
+                user.Id = Convert.ToInt32(dataReader["id"]);
+                user.Name = dataReader["name"].ToString();
+                user.Email = dataReader["email"].ToString();
+                user.Password = dataReader["password"].ToString();
+                return user;
+            }
+            else
+            {
+                return null;
+            }
+        }
+
+
+        //--------------------------------------------------------------------------------------------------
+        // This method Update the user and return all of his new details from a DB
+        //--------------------------------------------------------------------------------------------------
+        public User UpdateUser(User user)
+        {
+            SqlConnection con;
+            SqlCommand cmd;
+
+            try
+            {
+                con = connect("myProjDB"); // create the connection
+            }
+            catch (Exception ex)
+            {
+                // write to log
+                throw (ex);
+            }
+
+            Dictionary<string, object> paramDic = new Dictionary<string, object>();
+            paramDic.Add("@id", user.Id);
+            paramDic.Add("@name", user.Name);
+            paramDic.Add("@email", user.Email);
+            paramDic.Add("@password", user.Password);
+
+            cmd = CreateCommandWithStoredProcedureGeneral("R_SP_ReturnUserByEmailAndPassword", con, paramDic);
+
+            SqlDataReader dataReader = cmd.ExecuteReader(CommandBehavior.CloseConnection);
+            if (dataReader.Read())
+            {
+                user.Id = Convert.ToInt32(dataReader["id"]);
+                user.Name = dataReader["name"].ToString();
+                user.Email = dataReader["email"].ToString();
+                user.Password = dataReader["password"].ToString();
+                return user;
+            }
+            else
+            {
+                return null;
+            }
+        }
+
     }
 }
