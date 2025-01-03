@@ -10,6 +10,7 @@
       integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo="
       crossorigin="anonymous"
     ></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <script src="../Scripts/ajaxCalls.js"></script>
     <script src="../Scripts/game.js"></script>
     <script src="../Scripts/Script.js"></script>
@@ -43,7 +44,7 @@
           const index = $(this).data("index");
           const selectedGame = GAME[index];
           console.log("Sending game:", selectedGame);
-          postToServer(selectedGame);
+          postToServer(selectedGame.AppID, user.id);
         });
 
         // Navbar hide/show logic
@@ -62,6 +63,44 @@
           lastScrollTop = scrollTop <= 0 ? 0 : scrollTop;
         });
 
+        $("#registerBtn").on("click", function () {
+          if (user) {
+            Swal.fire({
+              title: "Are you sure?",
+              text: user.name + "! Do you really want to leave us?",
+              icon: "warning",
+              showCancelButton: true, // מאפשר כפתור ביטול
+              confirmButtonColor: "#3085d6", // צבע כפתור אישור
+              cancelButtonColor: "#d33", // צבע כפתור ביטול
+              confirmButtonText: "Yes, log out",
+              cancelButtonText: "No, stay",
+              allowOutsideClick: false, // לא מאפשר לחיצה מחוץ לפופאפ
+              allowEscapeKey: false, // לא מאפשר יציאה עם ESC
+            }).then((result) => {
+              if (result.isConfirmed) {
+                // פעולות ליציאה מהמערכת
+                console.log("User confirmed logout");
+                // כאן תוסיף את הקוד שלך ליציאה מהמערכת
+                const loginLink = $("#LoginBtn");
+                loginLink.text("Login");
+                loginLink.attr("href", "./Login.html");
+
+                const RegisterLink = $("#registerBtn");
+                RegisterLink.text("Register");
+                RegisterLink.attr("href", "./Register.html");
+
+                deleteCurrentUser();
+                const Btn = $(".btn");
+                Btn.addClass("hidden");
+                // goToMyListBtn.text("Go to " + user.name + " Game list");
+              } else if (result.dismiss === Swal.DismissReason.cancel) {
+                // ביטול הפעולה
+                console.log("User cancelled logout");
+              }
+            });
+          }
+        });
+
         // Login functionality on the index page - changing visibility and links
         if (user) {
           const loginLink = $("#LoginBtn");
@@ -70,10 +109,14 @@
 
           const RegisterLink = $("#registerBtn");
           RegisterLink.text("Exit");
+          RegisterLink.removeAttr("href");
+
           user = getCurrentUser();
-          const goToMyListBtn = $(".GoToMyListBtn");
-          goToMyListBtn.removeClass("hidden");
-          // goToMyListBtn.text("Go to " + user.name + " Game list");
+          const goToMyListBtn = $("#GoToMyListBtn");
+          goToMyListBtn.text("Go to " + user.name + " Game list");
+
+          const Btn = $(".btn");
+          Btn.removeClass("hidden");
         }
       });
 
@@ -104,7 +147,7 @@
           gameCard.innerHTML = `
                   <img src="${G.Header_image}" alt="${G.Name}" class="game-header-image">
                   <h2>${G.Name}</h2>
-                  <button class="add_to_list_btn" data-index="${index}">Add To Your List</button>
+                  <button class="add_to_list_btn" data-index="${index}">Add To List</button>
                   <p><strong>App ID:</strong> ${G.AppID}</p>
                   <p><strong>Release Date:</strong> ${G.Release_date}</p>
                   <p><strong>Price:</strong> $${G.Price.toFixed(2)}</p>
@@ -167,9 +210,13 @@
         });
       }
 
-      function postToServer(game) {
+      function postToServer(AppiD, id) {
+        let GameRequest = {
+          AppiD,
+          id,
+        };
         const api = "https://localhost:7119/api/Games";
-        ajaxCall("POST", api, JSON.stringify(game), postGameSCB, postGameECB);
+        ajaxCall("POST", api, JSON.stringify(GameRequest), postGameSCB, postGameECB);
 
         function postGameSCB(status) {
           console.log(status);
@@ -184,7 +231,9 @@
 
     <div id="container">
       <h1 class="heading">Game Shop</h1>
-      <a type="button" class="GoToMyListBtn hidden" href="./MyList.html"><button>Go to Your List</button></a>
+      <button class="btn hidden">
+        <a id="GoToMyListBtn" class="cssBtn" href="./MyList.html">Go to Your List</a>
+      </button>
 
       <div id="games_container">
         <div class="navbar">
@@ -195,3 +244,5 @@
     </div>
   </body>
 </html>
+
+<!-- type="button" -->

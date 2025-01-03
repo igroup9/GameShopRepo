@@ -29,7 +29,7 @@
 
         const userLog = {
           email: $("#LoginEmail").val(), // שליפת המייל מהשדה המתאים
-          password: $("#LogInPassword").val(), // שליפת הסיסמה מהשדה המתאים
+          password: $("#LoginPassword").val(), // שליפת הסיסמה מהשדה המתאים
           id: 0,
           name: "",
         };
@@ -86,7 +86,7 @@
       // check if the login form details are valid
       function loginFormValid() {
         var email = $("#LoginEmail").val();
-        var password = $("#LogInPassword").val();
+        var password = $("#LoginPassword").val();
 
         var emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
         var passwordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d).{8,20}$/;
@@ -124,12 +124,12 @@
   </head>
   <body>
     <div class="form-container">
-      <h1>LogIn</h1>
+      <h1>Login</h1>
       <form id="loginForm">
         <label for="email">Email</label>
         <input id="LoginEmail" type="email" placeholder="Enter your email" />
         <label for="password">Password</label>
-        <input id="LogInPassword" type="password" placeholder="Enter your password" />
+        <input id="LoginPassword" type="password" placeholder="Enter your password" />
         <button type="button" class="validLogin">Login</button>
       </form>
     </div>

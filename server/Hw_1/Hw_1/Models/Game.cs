@@ -92,21 +92,23 @@ namespace Hw_1.Models
        // public string Publisher { get => publisher; set => publisher = value; }
         
 
-        public bool insert()
+        public bool insert(int appid,int id)
         {
-            Game game = new Game();
-            GamesList = game.read();
-            foreach (Game G in GamesList)
-            {
-                if ((this.Appid==G.Appid)||(this.Name==G.Name))
-                    return false;
-            }
+            //Game game = new Game();
+            //GamesList = game.read();
+            //foreach (Game G in GamesList)
+            //{
+            //    if ((this.Appid==G.Appid)||(this.Name==G.Name))
+            //        return false;
+            //}
 
             DBservices DB = new DBservices();
 
-            DB.InsertGame(this);
-
+            
+            if (DB.InsertGame(appid, id)>0)
             return true;
+            else return false;
+     
         }
         public List<Game> read()
         {
@@ -115,16 +117,17 @@ namespace Hw_1.Models
             return allGameList.ReadGamesList();
         }
 
-        public List<Game> GamesAbovePrice(int minPrice)
+        public List<Game> readMyList(int id)
         {
-            List<Game> tempGamesList = new List<Game>();
+            DBservices myGameList = new DBservices();
 
-            foreach (Game G in GamesList)
-            {
-                if (G.Price > minPrice)
-                    tempGamesList.Add(G);
-            }
-            return tempGamesList;
+            return myGameList.ReadMyGamesList(id);
+        }
+
+        public List<Game> GamesAbovePrice(GameRequest gameRequest)
+        {
+            DBservices myGameList = new DBservices();
+            return myGameList.ReadMyGamesListAbouvePrice(gameRequest);
         }
 
         public List<Game> GamesAboveRankScore(int scoreRank)
@@ -139,17 +142,13 @@ namespace Hw_1.Models
             return tempGamesList;
         }
 
-        public bool DeleteById(int appid)
+        public bool DeleteById(GameRequest gameRequest)
         {
-            for (int i = GamesList.Count - 1; i >= 0; i--)
-            {
-                if (GamesList[i].Appid == appid)
-                {
-                    GamesList.RemoveAt(i);
-                    return true;
-                }
-            }
-            return false;
+            DBservices DB = new DBservices();
+            if (DB.DeleteGame(gameRequest) > 0)
+                return true;
+            else 
+                return false;
         }
 
 

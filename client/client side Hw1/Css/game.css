@@ -201,3 +201,48 @@ div.game-card {
 .hidden {
   display: none;
 }
+.cssBtn {
+  background-color: #e9ecef; /*  background */
+  border: none; /* Remove border */
+  color: linear-gradient(
+    90deg,
+    rgba(0, 36, 18, 1) 0%,
+    rgba(139, 131, 161, 0.7345063025210083) 35%,
+    rgba(150, 161, 131, 1) 100%
+  ); /* White text */
+  padding: 10px 20px; /* Add some padding */
+  text-align: center; /* Center the text */
+  text-decoration: none; /* Remove underline */
+  display: inline-block; /* Make it inline-block */
+  font-size: 16px; /* Adjust font size */
+  font-family: cursive;
+  margin: 4px 2px; /*Add some margin */
+  cursor: pointer; /* Pointer cursor on hover */
+  border-radius: 5px; /* Rounded corners */
+}
+
+/* Add hover effect */
+.cssBtn:hover {
+  background-color: #7bcf7f; /* Darker green on hover */
+}
+/* Add hover effect */
+.add_to_list_btn:hover {
+  background-color: #7bcf7f; /* Darker green on hover */
+}
+
+.btn {
+  border: none; /* Remove border */
+  padding: 0px;
+  border-radius: 5px;
+}
+
+.add_to_list_btn {
+  background-color: #e9ecef;
+}
+
+.delete_from_list_btn {
+  background-color: #e9ecef;
+}
+.delete_from_list_btn:hover {
+  background-color: #7bcf7f; /* Darker green on hover */
+}

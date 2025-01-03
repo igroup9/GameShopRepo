@@ -5,3 +5,7 @@ function getCurrentUser() {
   }
   return null;
 }
+
+function deleteCurrentUser() {
+  sessionStorage.removeItem("currentUser");
+}

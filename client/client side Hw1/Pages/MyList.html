@@ -11,25 +11,20 @@
     ></script>
     <script src="../Scripts/ajaxCalls.js"></script>
     <script src="../Scripts/game.js"></script>
+    <script src="../Scripts/Script.js"></script>
 
     <link rel="stylesheet" href="../Css/game.css" />
   </head>
   <body>
     <div id="container">
       <h1 class="heading">My Games List</h1>
-      <a href="./Index.html"><button src>Go to All Game List</button></a>
+      <button class="btn"><a id="BackToMainPage" class="cssBtn" href="./Index.html">Go to All Game List</a></button>
       <!-- ----------------------------------------------- -->
       <div class="filter-section-container">
         <div class="filter-section">
           <h2>Filter by Price</h2>
           <div class="filter-container">
-            <input
-              type="number"
-              id="price_Input"
-              step="0.01"
-              min="0"
-              placeholder="Enter price..."
-            />
+            <input type="number" id="price_Input" step="0.01" min="0" placeholder="Enter price..." />
             <button id="filterByPriceBtn">Search</button>
           </div>
         </div>
@@ -37,17 +32,11 @@
         <div class="filter-section">
           <h2>Filter by Score</h2>
           <div class="filter-container">
-            <input
-              type="number"
-              id="rank_Score_Input"
-              placeholder="Enter score..."
-            />
+            <input type="number" id="rank_Score_Input" placeholder="Enter score..." />
             <button id="filterByRankScoreBtn">Search</button>
           </div>
         </div>
-        <button id="removeFilterBtn" style="display: none">
-          Remove Filter
-        </button>
+        <button id="removeFilterBtn" style="display: none">Remove Filter</button>
       </div>
       <!-- ----------------------------------------------- -->
 
@@ -102,10 +91,16 @@
         });
       });
 
-      function DeleteByIdFromServer(AppID) {
-        const api = `https://localhost:7119/api/Games/deleteByid/AppId/${AppID}`;
+      function DeleteByIdFromServer(AppiD) {
+        let user = getCurrentUser();
+        Id = user.id;
+        let GameRequest = {
+          AppiD,
+          Id,
+        };
+        const api = `https://localhost:7119/api/Games/deleteByid/GameRequest`;
 
-        ajaxCall("Delete", api, "", deleteGameSCB, deleteGameECB);
+        ajaxCall("Delete", api, JSON.stringify(GameRequest), deleteGameSCB, deleteGameECB);
 
         function deleteGameSCB(status) {
           console.log(status);
@@ -116,10 +111,16 @@
         }
       }
 
-      function filterByPrice(priceValue) {
-        const api = `https://localhost:7119/api/Games/GetByPrice?minPrice=${priceValue}`;
+      function filterByPrice(Num) {
+        let user = getCurrentUser();
+        id = user.id;
+        let GameRequest = {
+          Num,
+          Id,
+        };
+        const api = `https://localhost:7119/api/Games/GetByPrice`;
 
-        ajaxCall("GET", api, "", filterByPriceSCB, filterByPriceECB);
+        ajaxCall("POST", api, JSON.stringify(GameRequest), filterByPriceSCB, filterByPriceECB);
 
         function filterByPriceSCB(tempGamesList) {
           console.log(tempGamesList);
@@ -147,8 +148,9 @@
       }
 
       function getFromServer() {
-        const api = "https://localhost:7119/api/Games";
-        ajaxCall("GET", api, "", getGamesSCB, getGamesECB);
+        let user = getCurrentUser();
+        const api = "https://localhost:7119/api/Games/id";
+        ajaxCall("POST", api, JSON.stringify(user.id), getGamesSCB, getGamesECB);
         function getGamesSCB(gamesList) {
           //SCB
           console.log(gamesList);
@@ -205,9 +207,7 @@
           gameCard.innerHTML = `
         <img src="${G.Header_image}" alt="${G.Name}" class="game-header-image">
         <h2>${G.Name}</h2>
-         <button class="delete_from_list_btn" data-AppID="${
-           G.AppID
-         }">Delete Game</button>
+         <button class="delete_from_list_btn" data-AppID="${G.AppID}">Delete Game</button>
         <p><strong>App ID:</strong> ${G.AppID}</p>
         <p><strong>Release Date:</strong> ${G.Release_date}</p>
         <p><strong>Price:</strong> $${G.Price.toFixed(2)}</p>
@@ -230,9 +230,7 @@
               (url, index) =>
                 `<img src="${url}" alt="Screenshot" class="carousel-image ${
                   index === 0 ? "active" : ""
-                }" style="width:100%; display: ${
-                  index === 0 ? "block" : "none"
-                };">`
+                }" style="width:100%; display: ${index === 0 ? "block" : "none"};">`
             )
             .join("")}
           <button class="carousel-button prev">&lt;</button>
@@ -244,19 +242,6 @@
           gamesList.appendChild(gameCard);
         });
       }
-
-      // document.addEventListener("DOMContentLoaded", () => {
-      //   const gameCards = document.querySelectorAll(".game-card");
-
-      //   gameCards.forEach((card) => {
-      //     card.addEventListener("click", () => {
-      //       // Apply expand only for mobile view
-      //       if (window.innerWidth <= 480) {
-      //         card.classList.toggle("expanded");
-      //       }
-      //     });
-      //   });
-      // });
     </script>
   </body>
 </html>

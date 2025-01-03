@@ -20,36 +20,42 @@ namespace Hw_1.Controllers
         }
 
 
-        // GET api/<GamesController>/5
-        [HttpGet("{id}")]
-        public string Get(int id)
-        {
-            return "value";
-        }
 
-        [HttpGet("GetByPrice")]
-        public IEnumerable<Game> GetByPrice(int minPrice)
+        [HttpPost("GetByPrice")]
+        public IEnumerable<Game> GetByPrice([FromBody] GameRequest gameRequest)
         {
             Game game = new Game();
-            return game.GamesAbovePrice(minPrice);
+            return game.GamesAbovePrice(gameRequest);
         }
 
 
-        [HttpGet("GetByRankScore/scoreRank{scoreRank}")]
-        public IEnumerable<Game> GetByRankScore(int scoreRank)
-        {
-            Game game = new Game();
-            return game.GamesAboveRankScore(scoreRank);
-        }
+        //[HttpPost("GetByRankScore")]
+        //public IEnumerable<Game> GetByRankScore([FromBody] GameRequest gameRequest)
+        //{
+        //    Game game = new Game();
+        //    return game.GamesAboveRankScore(scoreRank);
+        //}
 
 
         // POST api/<GamesController>
         [HttpPost]
-        public bool POST([FromBody] Game game)
+        public bool POST([FromBody] GameRequest gameRequest)
 
         {
-            return game.insert();
+            Game game = new Game();
+
+            return game.insert(gameRequest.Appid,gameRequest.Id);
         }
+
+        // POST api/<GamesController>/5
+        [HttpPost("id")]
+        public IEnumerable<Game> GetMyGames([FromBody] int id)
+        {
+            Game game = new Game();
+            return game.readMyList(id);
+
+        }
+
 
         // PUT api/<GamesController>/5
         [HttpPut("{id}")]
@@ -58,11 +64,11 @@ namespace Hw_1.Controllers
         }
 
         // DELETE api/<GamesController>/5
-        [HttpDelete("deleteByid/AppId/{AppId}")]
-        public bool Delete(int AppId)
+        [HttpDelete("deleteByid/GameRequest")]
+        public bool Delete([FromBody] GameRequest gameRequest)
         {
             Game game = new Game();
-            return game.DeleteById(AppId);
+            return game.DeleteById(gameRequest);
         }
 
      

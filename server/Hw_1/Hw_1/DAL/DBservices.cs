@@ -149,7 +149,7 @@ namespace Hw_1.DAL
         //--------------------------------------------------------------------------------------------------
         // This method inserts a game to the game table 
         //--------------------------------------------------------------------------------------------------
-        public int InsertGame(Game game)
+        public int InsertGame(int appid, int id)
         {
 
             SqlConnection con;
@@ -167,24 +167,9 @@ namespace Hw_1.DAL
 
             Dictionary<string, object> paramDic = new Dictionary<string, object>();
             
-            paramDic.Add("@appid", game.Appid);
-            paramDic.Add("@name", game.Name);
-            paramDic.Add("@releaseDate", game.ReleaseDate);
-            paramDic.Add("@price", game.Price);
-            paramDic.Add("@description", game.Description);
-            paramDic.Add("@full_audio_languages", game.Full_audio_languages);
-            paramDic.Add("@headerImage", game.HeaderImage);
-            paramDic.Add("@website", game.Website);
-            paramDic.Add("@windows", game.Windows);
-            paramDic.Add("@mac", game.Mac);
-            paramDic.Add("@linux", game.Linux);
-            paramDic.Add("@scoreRank", game.ScoreRank);
-            paramDic.Add("@recommendations", game.Recommendations);
-            paramDic.Add("@developers", game.Developers);
-            paramDic.Add("@categories", game.Categories);
-            paramDic.Add("@genres", game.Genres);
-            paramDic.Add("@tags", game.Tags);
-            paramDic.Add("@screenshots", game.Screenshots);
+            paramDic.Add("@appid", appid);
+            paramDic.Add("@id", id);
+           
 
 
 
@@ -214,9 +199,9 @@ namespace Hw_1.DAL
         }
 
        
-        //SP_DeleteFlight2025
+        //SP_Delete Game From user List
 
-        public int Delete(int id)
+        public int DeleteGame(GameRequest gameRequest)
         {
 
             SqlConnection con;
@@ -233,9 +218,9 @@ namespace Hw_1.DAL
             }
 
             Dictionary<string, object> paramDic = new Dictionary<string, object>();
-            paramDic.Add("@id", id);
-
-            cmd = CreateCommandWithStoredProcedureGeneral("SP_DeleteFlight2025", con, paramDic);          // create the command לשנות את השם
+            paramDic.Add("@appid", gameRequest.Appid);
+            paramDic.Add("@id", gameRequest.Id);
+            cmd = CreateCommandWithStoredProcedureGeneral("R_SP_DeleteGameFromList", con, paramDic);          // create the command לשנות את השם
 
             try
             {
@@ -395,6 +380,121 @@ namespace Hw_1.DAL
             return gameList;
         }
 
+
+        //--------------------------------------------------------------------------------------------------
+        // This method read user games from a DB
+        //--------------------------------------------------------------------------------------------------
+
+        public List<Game> ReadMyGamesList(int id)
+        {
+            SqlConnection con;
+            SqlCommand cmd;
+
+            try
+            {
+                con = connect("myProjDB"); // create the connection
+            }
+            catch (Exception ex)
+            {
+                // write to log
+                throw (ex);
+            }
+
+            List<Game> gameList = new List<Game>();
+
+            Dictionary<string, object> paramDic = new Dictionary<string, object>();
+            paramDic.Add("@id",id);
+
+
+            cmd = CreateCommandWithStoredProcedureGeneral("R_SP_ReturnUserGames", con, paramDic);
+
+            SqlDataReader dataReader = cmd.ExecuteReader(CommandBehavior.CloseConnection);
+
+            while (dataReader.Read())
+            {
+                Game game = new Game();
+
+                game.Appid = Convert.ToInt32(dataReader["appid"]);
+                game.Name = dataReader["name"].ToString();
+                game.ReleaseDate = dataReader["releaseDate"].ToString();
+                game.Price = Convert.ToDouble(dataReader["price"]);
+                game.Description = dataReader["description"].ToString();
+                game.Full_audio_languages = dataReader["full_audio_languages"].ToString();
+                game.HeaderImage = dataReader["headerImage"].ToString();
+                game.Website = dataReader["website"].ToString();
+                game.Windows = dataReader["windows"].ToString();
+                game.Mac = dataReader["mac"].ToString();
+                game.Linux = dataReader["linux"].ToString();
+                game.ScoreRank = Convert.ToInt32(dataReader["scoreRank"]);
+                game.Recommendations = dataReader["recommendations"].ToString();
+                game.Developers = dataReader["developers"].ToString();
+                game.Categories = dataReader["categories"].ToString();
+                game.Genres = dataReader["genres"].ToString();
+                game.Tags = dataReader["tags"].ToString();
+                game.Screenshots = dataReader["screenshots"].ToString();
+
+                gameList.Add(game);
+            }
+            return gameList;
+        }
+
+        //--------------------------------------------------------------------------------------------------
+        // This method read user games from a DB over certian price
+        //--------------------------------------------------------------------------------------------------
+
+        public List<Game> ReadMyGamesListAbouvePrice(GameRequest gameRequest)
+        {
+            SqlConnection con;
+            SqlCommand cmd;
+
+            try
+            {
+                con = connect("myProjDB"); // create the connection
+            }
+            catch (Exception ex)
+            {
+                // write to log
+                throw (ex);
+            }
+
+            List<Game> gameList = new List<Game>();
+
+            Dictionary<string, object> paramDic = new Dictionary<string, object>();
+            paramDic.Add("@id", gameRequest.Id);
+            paramDic.Add("@price", gameRequest.Num);
+
+
+            cmd = CreateCommandWithStoredProcedureGeneral("R_SP_ReturnAbovePrice", con, paramDic);
+
+            SqlDataReader dataReader = cmd.ExecuteReader(CommandBehavior.CloseConnection);
+
+            while (dataReader.Read())
+            {
+                Game game = new Game();
+
+                game.Appid = Convert.ToInt32(dataReader["appid"]);
+                game.Name = dataReader["name"].ToString();
+                game.ReleaseDate = dataReader["releaseDate"].ToString();
+                game.Price = Convert.ToDouble(dataReader["price"]);
+                game.Description = dataReader["description"].ToString();
+                game.Full_audio_languages = dataReader["full_audio_languages"].ToString();
+                game.HeaderImage = dataReader["headerImage"].ToString();
+                game.Website = dataReader["website"].ToString();
+                game.Windows = dataReader["windows"].ToString();
+                game.Mac = dataReader["mac"].ToString();
+                game.Linux = dataReader["linux"].ToString();
+                game.ScoreRank = Convert.ToInt32(dataReader["scoreRank"]);
+                game.Recommendations = dataReader["recommendations"].ToString();
+                game.Developers = dataReader["developers"].ToString();
+                game.Categories = dataReader["categories"].ToString();
+                game.Genres = dataReader["genres"].ToString();
+                game.Tags = dataReader["tags"].ToString();
+                game.Screenshots = dataReader["screenshots"].ToString();
+
+                gameList.Add(game);
+            }
+            return gameList;
+        }
 
         //--------------------------------------------------------------------------------------------------
         // This method read all users from a DB
