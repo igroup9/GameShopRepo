@@ -94,13 +94,6 @@ namespace Hw_1.Models
 
         public bool insert(int appid,int id)
         {
-            //Game game = new Game();
-            //GamesList = game.read();
-            //foreach (Game G in GamesList)
-            //{
-            //    if ((this.Appid==G.Appid)||(this.Name==G.Name))
-            //        return false;
-            //}
 
             DBservices DB = new DBservices();
 
@@ -124,22 +117,23 @@ namespace Hw_1.Models
             return myGameList.ReadMyGamesList(id);
         }
 
+        public List<Game> readMyUnpurchasedGames(int id)
+        {
+            DBservices UnpurchasedGamesList = new DBservices();
+
+            return UnpurchasedGamesList.ReadMyUnpurchasedGamesList(id);
+        }
+
         public List<Game> GamesAbovePrice(GameRequest gameRequest)
         {
             DBservices myGameList = new DBservices();
             return myGameList.ReadMyGamesListAbouvePrice(gameRequest);
         }
 
-        public List<Game> GamesAboveRankScore(int scoreRank)
+        public List<Game> GamesAboveRankScore(GameRequest gameRequest)
         {
-            List<Game> tempGamesList = new List<Game>();
-
-            foreach (Game G in GamesList)
-            {
-                if (G.scoreRank > scoreRank)
-                    tempGamesList.Add(G);
-            }
-            return tempGamesList;
+            DBservices tempGamesList = new DBservices();
+            return tempGamesList.ReadMyGamesListAbouveRank(gameRequest);
         }
 
         public bool DeleteById(GameRequest gameRequest)

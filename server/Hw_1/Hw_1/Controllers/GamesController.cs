@@ -29,12 +29,12 @@ namespace Hw_1.Controllers
         }
 
 
-        //[HttpPost("GetByRankScore")]
-        //public IEnumerable<Game> GetByRankScore([FromBody] GameRequest gameRequest)
-        //{
-        //    Game game = new Game();
-        //    return game.GamesAboveRankScore(scoreRank);
-        //}
+        [HttpPost("GetByRankScore")]
+        public IEnumerable<Game> GetByRankScore([FromBody] GameRequest gameRequest)
+        {
+            Game game = new Game();
+            return game.GamesAboveRankScore(gameRequest);
+        }
 
 
         // POST api/<GamesController>
@@ -56,6 +56,17 @@ namespace Hw_1.Controllers
 
         }
 
+        [HttpPost("ReturnUnpurchasedGames")]
+        public IEnumerable<Game> ReturnUnpurchasedGames([FromBody] int id)
+        {
+            Game game = new Game();
+
+            if (id == 0)
+                return game.read();
+            else
+                return game.readMyUnpurchasedGames(id);
+
+        }
 
         // PUT api/<GamesController>/5
         [HttpPut("{id}")]

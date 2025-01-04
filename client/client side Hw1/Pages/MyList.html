@@ -49,7 +49,7 @@
 
         //delete func when button clicked
         $(document).on("click", ".delete_from_list_btn", function () {
-          const AppID = $(this).data("appid");
+          const AppID = $(this).attr("data-AppID");
           DeleteByIdFromServer(AppID);
         });
 
@@ -113,7 +113,7 @@
 
       function filterByPrice(Num) {
         let user = getCurrentUser();
-        id = user.id;
+        Id = user.id;
         let GameRequest = {
           Num,
           Id,
@@ -132,10 +132,16 @@
         }
       }
 
-      function filterByRank(rankScore) {
-        const api = `https://localhost:7119/api/Games/GetByRankScore/scoreRank${rankScore}`;
+      function filterByRank(Num) {
+        let user = getCurrentUser();
+        Id = user.id;
+        let GameRequest = {
+          Num,
+          Id,
+        };
+        const api = `https://localhost:7119/api/Games/GetByRankScore`;
 
-        ajaxCall("GET", api, "", filterByRankSCB, filterByRankECB);
+        ajaxCall("POST", api, JSON.stringify(GameRequest), filterByRankSCB, filterByRankECB);
 
         function filterByRankSCB(tempGamesList) {
           console.log(tempGamesList);
@@ -227,10 +233,10 @@
         <div class="screenshots image-carousel">
           ${G.Screenshots.split(",")
             .map(
-              (url, index) =>
+              (url, indx) =>
                 `<img src="${url}" alt="Screenshot" class="carousel-image ${
-                  index === 0 ? "active" : ""
-                }" style="width:100%; display: ${index === 0 ? "block" : "none"};">`
+                  indx === 0 ? "active" : ""
+                }" style="width:100%; display: ${indx === 0 ? "block" : "none"};">`
             )
             .join("")}
           <button class="carousel-button prev">&lt;</button>

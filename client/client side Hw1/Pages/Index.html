@@ -41,10 +41,8 @@
 
         //adding game to user game List when clicked
         $(document).on("click", ".add_to_list_btn", function () {
-          const index = $(this).data("index");
-          const selectedGame = GAME[index];
-          console.log("Sending game:", selectedGame);
-          postToServer(selectedGame.AppID, user.id);
+          const AppID = $(this).attr("data-AppID");
+          postToServer(AppID, user.id);
         });
 
         // Navbar hide/show logic
@@ -81,18 +79,26 @@
                 // פעולות ליציאה מהמערכת
                 console.log("User confirmed logout");
                 // כאן תוסיף את הקוד שלך ליציאה מהמערכת
-                const loginLink = $("#LoginBtn");
-                loginLink.text("Login");
-                loginLink.attr("href", "./Login.html");
+                Swal.fire({
+                  title: "Goodbye " + user.name + "!",
+                  text: "We'll miss you! Hope to see you again soon.",
+                  icon: "success",
+                  showConfirmButton: false,
+                  timer: 3000, // Automatically close after 2 seconds
+                }).then(() => {
+                  // Perform logout actions after message disappears
+                  const loginLink = $("#LoginBtn");
+                  loginLink.text("Login");
+                  loginLink.attr("href", "./Login.html");
 
-                const RegisterLink = $("#registerBtn");
-                RegisterLink.text("Register");
-                RegisterLink.attr("href", "./Register.html");
+                  const RegisterLink = $("#registerBtn");
+                  RegisterLink.text("Register");
+                  RegisterLink.attr("href", "./Register.html");
 
-                deleteCurrentUser();
-                const Btn = $(".btn");
-                Btn.addClass("hidden");
-                // goToMyListBtn.text("Go to " + user.name + " Game list");
+                  deleteCurrentUser();
+                  const Btn = $(".btn");
+                  Btn.addClass("hidden");
+                });
               } else if (result.dismiss === Swal.DismissReason.cancel) {
                 // ביטול הפעולה
                 console.log("User cancelled logout");
@@ -120,9 +126,13 @@
         }
       });
 
+      //return all the Unpurchased Games
       function getFromServer() {
-        const api = "https://localhost:7119/api/Games";
-        ajaxCall("GET", api, "", getGamesSCB, getGamesECB);
+        let user = getCurrentUser();
+        if (user == null) Id = 0;
+        else Id = user.id;
+        const api = "https://localhost:7119/api/Games/ReturnUnpurchasedGames";
+        ajaxCall("Post", api, JSON.stringify(Id), getGamesSCB, getGamesECB);
         function getGamesSCB(gamesList) {
           //SCB
           console.log(gamesList);
@@ -141,13 +151,15 @@
           console.error("games_container not found in the HTML!");
           return;
         }
+        gamesList.innerHTML = "";
+
         games.forEach((G, index) => {
           const gameCard = document.createElement("div");
           gameCard.className = "game-card";
           gameCard.innerHTML = `
                   <img src="${G.Header_image}" alt="${G.Name}" class="game-header-image">
                   <h2>${G.Name}</h2>
-                  <button class="add_to_list_btn" data-index="${index}">Add To List</button>
+                  <button class="add_to_list_btn" data-AppID="${G.AppID}">Add To List</button>
                   <p><strong>App ID:</strong> ${G.AppID}</p>
                   <p><strong>Release Date:</strong> ${G.Release_date}</p>
                   <p><strong>Price:</strong> $${G.Price.toFixed(2)}</p>
@@ -167,10 +179,10 @@
                   <div class="screenshots image-carousel">
                     ${G.Screenshots.split(",")
                       .map(
-                        (url, index) =>
+                        (url, indx) =>
                           `<img src="${url}" alt="Screenshot" class="carousel-image ${
-                            index === 0 ? "active" : ""
-                          }" style="width:100%; display: ${index === 0 ? "block" : "none"};">`
+                            indx === 0 ? "active" : ""
+                          }" style="width:100%; display: ${indx === 0 ? "block" : "none"};">`
                       )
                       .join("")}
                     <button class="carousel-button prev">&lt;</button>
@@ -220,8 +232,10 @@
 
         function postGameSCB(status) {
           console.log(status);
-          if (status) alert("Game Added successfully");
-          else alert("Game already in the game list");
+          getFromServer();
+          if (status) {
+            alert("Game Added successfully");
+          } else alert("Game already in the game list");
         }
         function postGameECB(ERR) {
           console.log(ERR);
