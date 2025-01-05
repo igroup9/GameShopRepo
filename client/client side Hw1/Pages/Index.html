@@ -33,6 +33,7 @@
 
         //render page with ALL games from game list
         getFromServer();
+        let user = getCurrentUser();
 
         // Apply expand only for mobile view
         $(".game-card").on("click", function () {
@@ -104,6 +105,14 @@
                   deleteCurrentUser();
                   const GoToMyListBtn = $("#GoToMyListBtn");
                   GoToMyListBtn.addClass("hidden");
+
+                  const add_to_list_btn = $("#add_to_list_btn");
+                  add_to_list_btn.addClass("hidden");
+
+                  heading_p = $(".heading_p");
+                  heading_p.text(
+                    "Welcome to the Ultimate Game Shop – the place where every adventure begins! Whether you're looking for timeless classics, the latest releases, or hidden gems, we've got something for every gamer."
+                  );
                 });
               } else if (result.dismiss === Swal.DismissReason.cancel) {
                 // ביטול הפעולה
@@ -127,9 +136,17 @@
           const goToMyListBtn = $("#GoToMyListBtn");
           goToMyListBtn.text("Go to " + user.name + " Game list");
           goToMyListBtn.removeClass("hidden");
+
+          const add_to_list_btn = $("#add_to_list_btn");
+          add_to_list_btn.removeClass("hidden");
+
+          heading_p = $(".heading_p");
+          heading_p.text(
+            "Hey " +
+              user.name +
+              ", welcome to the Ultimate Game Shop – your adventure HQ! We know you’re always on the hunt for epic journeys, thrilling challenges, and unforgettable experiences. Whether it’s the hottest new release or a hidden gem waiting to be discovered, we’ve got it all lined up just for you. Let the adventure begin!"
+          );
         } else {
-          const goToMyListBtn = $("#GoToMyListBtn");
-          goToMyListBtn.addClass("hidden");
         }
       });
 
@@ -210,7 +227,7 @@
 
         games.forEach((G, index) => {
           const gameCard = document.createElement("div");
-          gameCard.className = "game-card";
+          gameCard.className = "game-card sm md lg xl xxl text-bg-light ";
           const uniqueID = `game-${index}`; // Create a unique ID for each game
 
           gameCard.innerHTML = `
@@ -315,7 +332,9 @@
         </div>
 
         <div class="card-body">
-          <button class="card-link add_to_list_btn" data-AppID="${G.AppID}">Add To List</button>
+          <button class="card-link add_to_list_btn hidden"id="add_to_list_btn" data-AppID="${
+            G.AppID
+          }">Add To List</button>
           <div><strong>Price:</strong> $${G.Price.toFixed(2)}</div>
           <div><strong>Score Rank:</strong> ${G.Score_rank}</div>
         </div>
@@ -376,13 +395,13 @@
       }
     </script>
 
-    <div id="container">
+    <div id="container" class="sm md lg xl xxl">
       <nav class="navbar bg-body-tertiary">
-        <form class="container-fluid justify-content-start">
-          <button class="btn btn-outline-success me-2" type="button">
+        <form class="container-fluid justify-content-between">
+          <button class="btn btn-light text-bg-light p-3 m-2" type="button">
             <a id="registerBtn" href="./Register.html">Register</a>
           </button>
-          <button class="btn btn-outline-success me-2" type="button">
+          <button class="btn btn-light text-bg-light p-3 m-2" type="button">
             <a id="LoginBtn" href="./Login.html">Login</a>
           </button>
         </form>
@@ -391,13 +410,15 @@
       <div class="p-5 text-center bg-body-tertiary pt-0 pb-0">
         <div class="container py-5 pt-0 pb-1">
           <h1 class="text-body-emphasis">Game Shop</h1>
-          <p class="col-lg-8 mx-auto lead">
+          <p class="col-lg-8 mx-auto lead heading_p">
             Welcome to the Ultimate Game Shop – the place where every adventure begins! Whether you're looking for
             timeless classics, the latest releases, or hidden gems, we've got something for every gamer.
           </p>
         </div>
       </div>
-      <button type="button" id="GoToMyListBtn" class="hidden" href="./MyList.html">Go to Your List</button>
+      <button type="button" id="GoToMyListBtn" class="hidden btn btn-light" href="./MyList.html">
+        Go to Your List
+      </button>
 
       <div id="games_container">
         <!-- <div class="navbar"></div> -->

@@ -58,9 +58,10 @@
         //render page with games from user game list
         getFromServer();
 
-        let userr = getCurrentUser();
+        let user = getCurrentUser();
+        userName = user.name;
         const h1_tag = $(".h1_tag");
-        h1_tag.text(userr.Name + " Games");
+        h1_tag.text(userName + " Games");
 
         //delete func when button clicked
         $(document).on("click", ".delete_from_list_btn", function () {
@@ -77,6 +78,7 @@
           }
           filterByPrice(priceValue);
           $("#removeFilterBtn").show();
+          $("#rank_Score_Input").val("");
         });
 
         //filter by rank func when button clicked
@@ -88,6 +90,7 @@
           }
           filterByRank(rankScore);
           $("#removeFilterBtn").show();
+          $("#price_Input").val("");
         });
 
         //remove filter func when button clicked
