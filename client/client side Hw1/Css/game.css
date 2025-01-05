@@ -11,6 +11,9 @@ body {
   margin: 0;
   padding: 0;
 }
+.hidden {
+  display: none;
+}
 
 /* Header Styling */
 h1.heading {
@@ -86,9 +89,6 @@ h1.heading {
   justify-content: space-around;
 }
 
-.hidden {
-  display: none;
-}
 .cssBtn {
   background-color: #e9ecef; /*  background */
   border: none; /* Remove border */

@@ -25,7 +25,6 @@
     <script>
       $(document).ready(function () {
         //get the details of whom is login
-        let user = getCurrentUser();
 
         if (typeof GAME === "undefined" || !Array.isArray(GAME)) {
           console.error("GAME data is not available!");
@@ -103,8 +102,8 @@
                   RegisterLink.attr("href", "./Register.html");
 
                   deleteCurrentUser();
-                  const Btn = $(".btn");
-                  Btn.addClass("hidden");
+                  const GoToMyListBtn = $("#GoToMyListBtn");
+                  GoToMyListBtn.addClass("hidden");
                 });
               } else if (result.dismiss === Swal.DismissReason.cancel) {
                 // ביטול הפעולה
@@ -128,6 +127,9 @@
           const goToMyListBtn = $("#GoToMyListBtn");
           goToMyListBtn.text("Go to " + user.name + " Game list");
           goToMyListBtn.removeClass("hidden");
+        } else {
+          const goToMyListBtn = $("#GoToMyListBtn");
+          goToMyListBtn.addClass("hidden");
         }
       });
 
@@ -380,13 +382,22 @@
           <button class="btn btn-outline-success me-2" type="button">
             <a id="registerBtn" href="./Register.html">Register</a>
           </button>
-          <button class="btn btn-sm btn-outline-secondary" type="button">
+          <button class="btn btn-outline-success me-2" type="button">
             <a id="LoginBtn" href="./Login.html">Login</a>
           </button>
         </form>
       </nav>
-      <h1 class="heading">Game Shop</h1>
-      <button type="button" id="GoToMyListBtn" class="hidden cssBtn" href="./MyList.html">Go to Your List</button>
+      <!-- <h1 class="heading">Game Shop</h1> -->
+      <div class="p-5 text-center bg-body-tertiary pt-0 pb-0">
+        <div class="container py-5 pt-0 pb-1">
+          <h1 class="text-body-emphasis">Game Shop</h1>
+          <p class="col-lg-8 mx-auto lead">
+            Welcome to the Ultimate Game Shop – the place where every adventure begins! Whether you're looking for
+            timeless classics, the latest releases, or hidden gems, we've got something for every gamer.
+          </p>
+        </div>
+      </div>
+      <button type="button" id="GoToMyListBtn" class="hidden" href="./MyList.html">Go to Your List</button>
 
       <div id="games_container">
         <!-- <div class="navbar"></div> -->
