@@ -50,7 +50,7 @@
         $(document).on("click", "#GoToMyListBtn", function () {
           window.location.href = "./MyList.html";
         });
-
+        ///exit
         $("#registerBtn").on("click", function () {
           if (user) {
             Swal.fire({
@@ -93,6 +93,7 @@
                   heading_p.text(
                     "Welcome to the Ultimate Game Shop – the place where every adventure begins! Whether you're looking for timeless classics, the latest releases, or hidden gems, we've got something for every gamer."
                   );
+                  location.reload();
                 });
               } else if (result.dismiss === Swal.DismissReason.cancel) {
                 // ביטול הפעולה
@@ -132,7 +133,7 @@
         let user = getCurrentUser();
         if (user == null) Id = 0;
         else Id = user.id;
-        const api = "https://localhost:7119/api/Games/ReturnUnpurchasedGames";
+        const api = "https://proj.ruppin.ac.il/igroup9/test2/tar1/api/Games/ReturnUnpurchasedGames";
         ajaxCall("Post", api, JSON.stringify(Id), getGamesSCB, getGamesECB);
         function getGamesSCB(gamesList) {
           //SCB
@@ -306,7 +307,7 @@
           AppiD,
           id,
         };
-        const api = "https://localhost:7119/api/Games";
+        const api = "https://proj.ruppin.ac.il/igroup9/test2/tar1/api/Games";
         ajaxCall("POST", api, JSON.stringify(GameRequest), postGameSCB, postGameECB);
 
         function postGameSCB(status) {

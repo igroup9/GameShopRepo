@@ -61,7 +61,7 @@
           password: $("#RegisterPassword").val(),
         };
 
-        const api = "https://localhost:7119/api/Users/RegisterUser";
+        const api = "https://proj.ruppin.ac.il/igroup9/test2/tar1/api/Users/RegisterUser";
         ajaxCall("POST", api, JSON.stringify(userReg), RegisterUserSCB, RegisterUserECB);
 
         function RegisterUserSCB(status) {
