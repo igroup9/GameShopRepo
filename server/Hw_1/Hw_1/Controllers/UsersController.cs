@@ -18,11 +18,11 @@ namespace Hw_1.Controllers
         }
 
         // GET api/<UsersController>/5
-        [HttpGet("{id}")]
-        public string Get(int id)
-        {
-            return "value";
-        }
+        //[HttpGet("{id}")]
+        //public string Get(int id)
+        //{
+        //    return "value";
+        //}
 
         // POST api/<UsersController>
         [HttpPost]
@@ -50,7 +50,7 @@ namespace Hw_1.Controllers
 
         // PUT api/<UsersController>/5
         [HttpPut("UpdateUser")]
-        public User Put(int id, [FromBody] User user)
+        public User Put( [FromBody] User user)
         {
             return user.Upadte();
 

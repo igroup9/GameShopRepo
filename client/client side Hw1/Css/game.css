@@ -45,51 +45,6 @@ h1.heading {
   padding: 20px;
 }
 
-/* Mobile-First Adjustments */
-
-/* Image Carousel Styling */
-.image-carousel {
-  position: relative;
-  width: 100%;
-  height: 200px;
-  overflow: hidden;
-}
-
-.carousel-image {
-  display: none;
-  width: 100%;
-  height: 100%;
-  object-fit: cover; /* Fit image within container */
-}
-
-.carousel-image.active {
-  display: block;
-}
-
-.carousel-button {
-  position: absolute;
-  top: 50%;
-  transform: translateY(-50%);
-  background-color: rgba(0, 0, 0, 0.5);
-  color: white;
-  border: none;
-  padding: 10px;
-  cursor: pointer;
-}
-
-.carousel-button.prev {
-  left: 10px;
-}
-
-.carousel-button.next {
-  right: 10px;
-}
-
-/* Screenshots */
-.screenshots img {
-  border-radius: 5px;
-}
-
 .filter-section-container {
   display: flex;
   flex-direction: row;

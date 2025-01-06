@@ -18,7 +18,6 @@
     <script src="../Scripts/game.js"></script>
     <script src="../Scripts/Script.js"></script>
     <link rel="stylesheet" href="../Css/game.css" />
-    <!-- <link rel="stylesheet" href="../Css/navbar.css" /> -->
   </head>
 
   <body>
@@ -51,22 +50,6 @@
         $(document).on("click", "#GoToMyListBtn", function () {
           window.location.href = "./MyList.html";
         });
-
-        // Navbar hide/show logic
-        // $(window).on("scroll", function () {
-        //   let lastScrollTop = 0;
-        //   const navbar = $(".navbar");
-
-        //   const scrollTop = $(this).scrollTop(); // Get the scroll position using jQuery
-        //   if (scrollTop > lastScrollTop) {
-        //     // Scroll down: Hide navbar
-        //     navbar.css("top", "-100px");
-        //   } else {
-        //     // Scroll up: Show navbar
-        //     navbar.css("top", "0");
-        //   }
-        //   lastScrollTop = scrollTop <= 0 ? 0 : scrollTop;
-        // });
 
         $("#registerBtn").on("click", function () {
           if (user) {
@@ -106,9 +89,6 @@
                   const GoToMyListBtn = $("#GoToMyListBtn");
                   GoToMyListBtn.addClass("hidden");
 
-                  const add_to_list_btn = $("#add_to_list_btn");
-                  add_to_list_btn.addClass("hidden");
-
                   heading_p = $(".heading_p");
                   heading_p.text(
                     "Welcome to the Ultimate Game Shop – the place where every adventure begins! Whether you're looking for timeless classics, the latest releases, or hidden gems, we've got something for every gamer."
@@ -136,9 +116,6 @@
           const goToMyListBtn = $("#GoToMyListBtn");
           goToMyListBtn.text("Go to " + user.name + " Game list");
           goToMyListBtn.removeClass("hidden");
-
-          const add_to_list_btn = $("#add_to_list_btn");
-          add_to_list_btn.removeClass("hidden");
 
           heading_p = $(".heading_p");
           heading_p.text(
@@ -168,54 +145,6 @@
           console.log(ERR);
         }
       }
-
-      // function renderGames(games) {
-      //   const gamesList = document.getElementById("games_container");
-      //   if (!gamesList) {
-      //     console.error("games_container not found in the HTML!");
-      //     return;
-      //   }
-      //   gamesList.innerHTML = "";
-
-      //   games.forEach((G, index) => {
-      //     const gameCard = document.createElement("div");
-      //     gameCard.className = "game-card";
-      //     gameCard.innerHTML = `
-      //             <img src="${G.Header_image}" alt="${G.Name}" class="game-header-image">
-      //             <h2>${G.Name}</h2>
-      //             <button class="add_to_list_btn" data-AppID="${G.AppID}">Add To List</button>
-      //             <p><strong>App ID:</strong> ${G.AppID}</p>
-      //             <p><strong>Release Date:</strong> ${G.Release_date}</p>
-      //             <p><strong>Price:</strong> $${G.Price.toFixed(2)}</p>
-      //             <p><strong>Description:</strong> ${G.description}</p>
-      //             <p><strong>Full Audio Languages:</strong> ${G.Full_audio_languages}</p>
-      //             <p><strong>Developers:</strong> ${G.Developers}</p>
-      //             <p><strong>Categories:</strong> ${G.Categories}</p>
-      //             <p><strong>Genres:</strong> ${G.Genres}</p>
-      //             <p><strong>Tags:</strong> ${G.Tags}</p>
-      //             <p><strong>Score Rank:</strong> ${G.Score_rank}</p>
-      //             <p><strong>Platforms:</strong>
-      //               ${G.Windows === "TRUE" ? "Windows " : ""}
-      //               ${G.Mac === "TRUE" ? "Mac " : ""}
-      //               ${G.Linux === "TRUE" ? "Linux" : ""}
-      //             </p>
-      //             <a href="${G.Website}" target="_blank">Official Website</a>
-      //             <div class="screenshots image-carousel">
-      //               ${G.Screenshots.split(",")
-      //                 .map(
-      //                   (url, indx) =>
-      //                     `<img src="${url}" alt="Screenshot" class="carousel-image ${
-      //                       indx === 0 ? "active" : ""
-      //                     }" style="width:100%; display: ${indx === 0 ? "block" : "none"};">`
-      //                 )
-      //                 .join("")}
-      //               <button class="carousel-button prev">&lt;</button>
-      //               <button class="carousel-button next">&gt;</button>
-      //             </div>
-      //           `;
-      //     gamesList.appendChild(gameCard);
-      //   });
-      // }
 
       function renderGames(games) {
         const gamesList = document.getElementById("games_container");
@@ -332,9 +261,7 @@
         </div>
 
         <div class="card-body">
-          <button class="card-link add_to_list_btn hidden"id="add_to_list_btn" data-AppID="${
-            G.AppID
-          }">Add To List</button>
+          <button class="card-link add_to_list_btn"data-AppID="${G.AppID}">Add To List</button>
           <div><strong>Price:</strong> $${G.Price.toFixed(2)}</div>
           <div><strong>Score Rank:</strong> ${G.Score_rank}</div>
         </div>
@@ -406,7 +333,6 @@
           </button>
         </form>
       </nav>
-      <!-- <h1 class="heading">Game Shop</h1> -->
       <div class="p-5 text-center bg-body-tertiary pt-0 pb-0">
         <div class="container py-5 pt-0 pb-1">
           <h1 class="text-body-emphasis">Game Shop</h1>
@@ -416,15 +342,11 @@
           </p>
         </div>
       </div>
-      <button type="button" id="GoToMyListBtn" class="hidden btn btn-light" href="./MyList.html">
+      <button type="button" id="GoToMyListBtn" class="hidden btn btn-light p-2 ms-5" href="./MyList.html">
         Go to Your List
       </button>
 
-      <div id="games_container">
-        <!-- <div class="navbar"></div> -->
-      </div>
+      <div id="games_container"></div>
     </div>
   </body>
 </html>
-
-<!-- type="button" -->

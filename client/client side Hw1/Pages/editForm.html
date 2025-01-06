@@ -32,6 +32,7 @@
         if (user != null) {
           $("#editName").val(user.name);
           $("#editEmail").val(user.email);
+          // $("#editPassword").val(user.password);
         }
       }
 
@@ -57,7 +58,7 @@
             title: "Invalid email!",
           });
           return;
-        } else if (password != "" && !passwordRegex.test(password)) {
+        } else if (password.trim() !== "" && !passwordRegex.test(password)) {
           swal.fire({
             icon: "error",
             title: "Invalid password - must contain one uppercase, one digit, and be at least 8 characters!",
@@ -73,13 +74,12 @@
       function saveUserChanges() {
         //get the details of whom is login
         let user = getCurrentUser();
-        let currentUser = null;
 
         const updatedUser = {
           id: user.id,
           name: $("#editName").val(),
           email: $("#editEmail").val(),
-          password: $("#editPassword").val() || user.password,
+          password: $("#editPassword").val().trim() || "",
         };
 
         const api = "https://localhost:7119/api/Users/UpdateUser";
@@ -87,6 +87,8 @@
 
         function UpdateUserSCB(user) {
           if (user != null) {
+            let currentUser = null;
+
             currentUser = {
               id: user.id,
               name: user.name,
