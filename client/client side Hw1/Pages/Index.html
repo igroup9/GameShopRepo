@@ -66,9 +66,7 @@
               allowEscapeKey: false, // לא מאפשר יציאה עם ESC
             }).then((result) => {
               if (result.isConfirmed) {
-                // פעולות ליציאה מהמערכת
                 console.log("User confirmed logout");
-                // כאן תוסיף את הקוד שלך ליציאה מהמערכת
                 Swal.fire({
                   title: "Goodbye " + user.name + "!",
                   text: "We'll miss you! Hope to see you again soon.",
