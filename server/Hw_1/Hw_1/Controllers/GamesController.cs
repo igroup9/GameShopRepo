@@ -21,43 +21,57 @@ namespace Hw_1.Controllers
 
 
 
-        [HttpPost("GetByPrice")]
-        public IEnumerable<Game> GetByPrice([FromBody] GameRequest gameRequest)
+        [HttpGet("GetByPrice/Id/{Id}/Num/{Num}")]
+        public IEnumerable<Game> GetByPrice(int Id, int Num)
         {
+
+            GameRequest gameRequest = new GameRequest();
+            gameRequest.Id = Id;
+            gameRequest.Num = Num;
+
             Game game = new Game();
             return game.GamesAbovePrice(gameRequest);
         }
 
 
-        [HttpPost("GetByRankScore")]
-        public IEnumerable<Game> GetByRankScore([FromBody] GameRequest gameRequest)
+        [HttpGet("GetByRankScore/Id/{Id}/Num/{Num}")]
+        public IEnumerable<Game> GetByRankScore(int Id, int Num)
         {
+            GameRequest gameRequest = new GameRequest();
+            gameRequest.Id = Id;
+            gameRequest.Num = Num;
+
             Game game = new Game();
             return game.GamesAboveRankScore(gameRequest);
         }
 
 
+        //not in use
+        //-------------------------------------------------------------------------------------------------------------------------------
+
         // POST api/<GamesController>
-        [HttpPost]
-        public bool POST([FromBody] GameRequest gameRequest)
+        //[HttpPost]
+        //public bool POST([FromBody] GameRequest gameRequest)
 
-        {
-            Game game = new Game();
+        //{
+        //    Game game = new Game();
 
-            return game.insert(gameRequest.Appid,gameRequest.Id);
-        }
+        //    return game.insert(gameRequest.Appid,gameRequest.Id);
+        //}
+        //-------------------------------------------------------------------------------------------------------------------------------
+
 
         // POST api/<GamesController>/5
-        [HttpPost("id")]
-        public IEnumerable<Game> GetMyGames([FromBody] int id)
+        [HttpGet("GetMyGames/id/{id}")]
+        public IEnumerable<Game> GetMyGames( int id)
         {
             Game game = new Game();
             return game.readMyList(id);
 
         }
 
-        [HttpPost("ReturnUnpurchasedGames")]
-        public IEnumerable<Game> ReturnUnpurchasedGames([FromBody] int id)
+        [HttpGet("ReturnUnpurchasedGames/id/{id}")]
+        public IEnumerable<Game> ReturnUnpurchasedGames( int id)
         {
             Game game = new Game();
 
@@ -68,11 +82,17 @@ namespace Hw_1.Controllers
 
         }
 
+
+
+        //not in use 
+        //-------------------------------------------------------------------------------------------------------------------------------
         // PUT api/<GamesController>/5
-        [HttpPut("{id}")]
-        public void Put(int id, [FromBody] string value)
-        {
-        }
+        //[HttpPut("{id}")]
+        //public void Put(int id, [FromBody] string value)
+        //{
+        //}
+        //-------------------------------------------------------------------------------------------------------------------------------
+
 
         // DELETE api/<GamesController>/5
         [HttpDelete("deleteByid/GameRequest")]

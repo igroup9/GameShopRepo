@@ -133,8 +133,8 @@
         let user = getCurrentUser();
         if (user == null) Id = 0;
         else Id = user.id;
-        const api = "https://proj.ruppin.ac.il/igroup9/test2/tar1/api/Games/ReturnUnpurchasedGames";
-        ajaxCall("Post", api, JSON.stringify(Id), getGamesSCB, getGamesECB);
+        const api = `https://proj.ruppin.ac.il/igroup9/test2/tar1/api/Games/ReturnUnpurchasedGames/id/${Id}`;
+        ajaxCall("GET", api, JSON.stringify(Id), getGamesSCB, getGamesECB);
         function getGamesSCB(gamesList) {
           //SCB
           console.log(gamesList);

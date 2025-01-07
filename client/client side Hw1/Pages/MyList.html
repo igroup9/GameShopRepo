@@ -132,13 +132,10 @@
       function filterByPrice(Num) {
         let user = getCurrentUser();
         Id = user.id;
-        let GameRequest = {
-          Num,
-          Id,
-        };
-        const api = `https://proj.ruppin.ac.il/igroup9/test2/tar1/api/Games/GetByPrice`;
 
-        ajaxCall("POST", api, JSON.stringify(GameRequest), filterByPriceSCB, filterByPriceECB);
+        const api = `https://proj.ruppin.ac.il/igroup9/test2/tar1/api/Games/GetByPrice/Id/${Id}/Num/${Num}`;
+
+        ajaxCall("GET", api, "", filterByPriceSCB, filterByPriceECB);
 
         function filterByPriceSCB(tempGamesList) {
           console.log(tempGamesList);
@@ -153,13 +150,10 @@
       function filterByRank(Num) {
         let user = getCurrentUser();
         Id = user.id;
-        let GameRequest = {
-          Num,
-          Id,
-        };
-        const api = `https://proj.ruppin.ac.il/igroup9/test2/tar1/api/Games/GetByRankScore`;
 
-        ajaxCall("POST", api, JSON.stringify(GameRequest), filterByRankSCB, filterByRankECB);
+        const api = `https://proj.ruppin.ac.il/igroup9/test2/tar1/api/Games/GetByRankScore/Id/${Id}/Num/${Num}`;
+
+        ajaxCall("GET", api, "", filterByRankSCB, filterByRankECB);
 
         function filterByRankSCB(tempGamesList) {
           console.log(tempGamesList);
@@ -173,13 +167,14 @@
 
       function getFromServer() {
         let user = getCurrentUser();
-        const api = "https://proj.ruppin.ac.il/igroup9/test2/tar1/api/Games/id";
-        ajaxCall("POST", api, JSON.stringify(user.id), getGamesSCB, getGamesECB);
+        const id = user.id;
+        const api = `https://proj.ruppin.ac.il/igroup9/test2/tar1/api/Games/GetMyGames/id/${id}`;
+        ajaxCall("GET", api, JSON.stringify(id), getGamesSCB, getGamesECB);
         function getGamesSCB(gamesList) {
           //SCB
           console.log(gamesList);
           renderGames(gamesList); //CALL RENDER FUNC
-          initializeCarousel(); //initialize Carousel
+          // initializeCarousel(); //initialize Carousel
         }
         function getGamesECB(ERR) {
           //ECB
@@ -187,34 +182,34 @@
         }
       }
 
-      function initializeCarousel() {
-        const carousels = document.querySelectorAll(".image-carousel");
+      // function initializeCarousel() {
+      //   const carousels = document.querySelectorAll(".image-carousel");
 
-        carousels.forEach((carousel) => {
-          const images = carousel.querySelectorAll(".carousel-image");
-          const prevButton = carousel.querySelector(".prev");
-          const nextButton = carousel.querySelector(".next");
-          let currentIndex = 0;
+      //   carousels.forEach((carousel) => {
+      //     const images = carousel.querySelectorAll(".carousel-image");
+      //     const prevButton = carousel.querySelector(".prev");
+      //     const nextButton = carousel.querySelector(".next");
+      //     let currentIndex = 0;
 
-          function showImage(index) {
-            images.forEach((img, i) => {
-              img.style.display = i === index ? "block" : "none";
-            });
-          }
+      //     function showImage(index) {
+      //       images.forEach((img, i) => {
+      //         img.style.display = i === index ? "block" : "none";
+      //       });
+      //     }
 
-          prevButton.addEventListener("click", () => {
-            currentIndex = (currentIndex - 1 + images.length) % images.length;
-            showImage(currentIndex);
-          });
+      //     prevButton.addEventListener("click", () => {
+      //       currentIndex = (currentIndex - 1 + images.length) % images.length;
+      //       showImage(currentIndex);
+      //     });
 
-          nextButton.addEventListener("click", () => {
-            currentIndex = (currentIndex + 1) % images.length;
-            showImage(currentIndex);
-          });
+      //     nextButton.addEventListener("click", () => {
+      //       currentIndex = (currentIndex + 1) % images.length;
+      //       showImage(currentIndex);
+      //     });
 
-          showImage(currentIndex);
-        });
-      }
+      //     showImage(currentIndex);
+      //   });
+      // }
 
       // function renderGames(games) {
       //   const gamesList = document.getElementById("games_container");

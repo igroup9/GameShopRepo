@@ -10,6 +10,8 @@ namespace Hw_1.Controllers
     public class UsersController : ControllerBase
     {
         // GET: api/<UsersController>
+
+        //get all users list
         [HttpGet]
         public IEnumerable<User> Get()
         {
@@ -24,18 +26,25 @@ namespace Hw_1.Controllers
         //    return "value";
         //}
 
-        // POST api/<UsersController>
-        [HttpPost]
-        public bool Post([FromBody] User user)
-        {
-            return user.insert();   
-        }
 
-         [HttpPost("RegisterUser")]
+        //not in use - we have RegisterUser
+        // POST api/<UsersController>
+        //[HttpPost]
+        //public bool Post([FromBody] User user)
+        //{
+        //    return user.insert();   
+        //}
+
+
+
+
+        [HttpPost("RegisterUser")]
         public bool Register([FromBody] User RegisterUser)
         {   
             return RegisterUser.insert();
         }
+
+
 
           [HttpPost("LoginUser")]
         public User Login([FromBody] User LoginUser)
@@ -48,6 +57,8 @@ namespace Hw_1.Controllers
             return LoginUser.Login();
         }
 
+
+
         // PUT api/<UsersController>/5
         [HttpPut("UpdateUser")]
         public User Put( [FromBody] User user)
@@ -56,6 +67,9 @@ namespace Hw_1.Controllers
 
         }
 
+
+
+        //not in use - dont work with DB
         // DELETE api/<UsersController>/5
         [HttpDelete("{id}")]
         public void DeleteUser(int id)
