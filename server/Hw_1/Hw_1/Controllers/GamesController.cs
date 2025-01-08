@@ -46,19 +46,15 @@ namespace Hw_1.Controllers
         }
 
 
-        //not in use
-        //-------------------------------------------------------------------------------------------------------------------------------
+        //POST api/<GamesController>
+        [HttpPost]
+        public bool POST([FromBody] GameRequest gameRequest)
 
-        // POST api/<GamesController>
-        //[HttpPost]
-        //public bool POST([FromBody] GameRequest gameRequest)
+        {
+            Game game = new Game();
 
-        //{
-        //    Game game = new Game();
-
-        //    return game.insert(gameRequest.Appid,gameRequest.Id);
-        //}
-        //-------------------------------------------------------------------------------------------------------------------------------
+            return game.insert(gameRequest.Appid, gameRequest.Id);
+        }
 
 
         // POST api/<GamesController>/5
