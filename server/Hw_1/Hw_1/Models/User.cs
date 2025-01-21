@@ -8,24 +8,27 @@ namespace Hw_1.Models
         string name;
         string email;
         string password;
+        bool isActive;
         List<User> UsersList = new List<User>();
 
         public User()
         {
 
         }
-        public User(int id, string name, string email, string password)
+        public User(int id, string name, string email, string password, bool isActive)
         {
             Id = id;
             Name = name;
             Email = email;
             Password = password;
+            IsActive = isActive;
         }
 
         public int Id { get => id; set => id = value; }
         public string Name { get => name; set => name = value; }
         public string Email { get => email; set => email = value; }
         public string Password { get => password; set => password = value; }
+        public bool IsActive { get => isActive; set => isActive = value; }
 
         public bool insert()
         {
@@ -43,6 +46,13 @@ namespace Hw_1.Models
         public List<User> read()
         {
             return UsersList;
+        }
+
+        public List<object> ReadAdminUserList()
+        {
+
+            DBservices DB = new DBservices();
+            return DB.ReadAdminUserList();
         }
 
         public User Login()
@@ -90,6 +100,13 @@ namespace Hw_1.Models
                 }
             }
             return null;
+        }
+
+        public bool UpdateUserIsActive(int id, bool isActive)
+        {
+            DBservices DB = new DBservices();
+            return DB.UpdateUserIsActive(id, isActive);
+
         }
     }
 }

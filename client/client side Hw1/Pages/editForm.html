@@ -82,7 +82,7 @@
           password: $("#editPassword").val().trim() || "",
         };
 
-        const api = "https://proj.ruppin.ac.il/igroup9/test2/tar1/api/Users/UpdateUser";
+        const api = "https://localhost:7119/api/Users/UpdateUser";
         ajaxCall("PUT", api, JSON.stringify(updatedUser), UpdateUserSCB, UpdateUserECB);
 
         function UpdateUserSCB(user) {

@@ -19,6 +19,14 @@ namespace Hw_1.Controllers
             return game.read();
         }
 
+        //get all Games list for admin
+        [HttpGet("ReadAdminGameList")]
+        public List<object> ReadAdminGameList()
+        {
+            Game game = new Game();
+            return game.ReadAdminGameList();
+        }
+
 
 
         [HttpGet("GetByPrice/Id/{Id}/Num/{Num}")]
@@ -49,15 +57,15 @@ namespace Hw_1.Controllers
         //not in use
         //-------------------------------------------------------------------------------------------------------------------------------
 
-        // POST api/<GamesController>
-        //[HttpPost]
-        //public bool POST([FromBody] GameRequest gameRequest)
+        //POST api/<GamesController>
+        [HttpPost]
+        public bool POST([FromBody] GameRequest gameRequest)
 
-        //{
-        //    Game game = new Game();
+        {
+            Game game = new Game();
 
-        //    return game.insert(gameRequest.Appid,gameRequest.Id);
-        //}
+            return game.insert(gameRequest.Appid, gameRequest.Id);
+        }
         //-------------------------------------------------------------------------------------------------------------------------------
 
 
