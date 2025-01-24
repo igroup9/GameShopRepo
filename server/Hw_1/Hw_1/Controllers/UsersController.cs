@@ -76,7 +76,7 @@ namespace Hw_1.Controllers
         }
 
         // PUT api/<UsersController>/5
-        [HttpPut("UpdateUserIsActive/id/{id}/isActive/isActive")]
+        [HttpPut("UpdateUserIsActive/id/{id}/isActive/{isActive}")]
         public bool UpdateUserIsActive(int id, bool isActive)
         {
             User user= new User();
