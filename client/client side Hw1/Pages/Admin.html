@@ -20,6 +20,7 @@
 
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <script src="../Scripts/ajaxCalls.js"></script>
+    <link rel="stylesheet" href="../Css/Admin.css" />
 
     <script>
       $(document).ready(function () {
@@ -29,13 +30,13 @@
         $("#toggleSwitch").on("change", function () {
           if ($(this).is(":checked")) {
             $("#toggleSwitch").next("label").text("Admin View User List");
-            $("#listType").text("User List");
+            $("#listType").text("Admin View: User List");
 
             // Load user list
             getAdminUserList();
           } else {
             $("#toggleSwitch").next("label").text("Admin View Game List");
-            $("#listType").text("Game List");
+            $("#listType").text("Admin View: Game List");
 
             // Load game lis
             getAdminGameList();
@@ -182,16 +183,19 @@
   </head>
   <body>
     <nav class="navbar navbar-light bg-light">
-      <span class="navbar-brand mb-0 h1">Admin View</span>
-      <div id="listType" style="font-weight: bold; font-size: 1.5em">Game List</div>
+      <a href="./Index.html" class="btn btn-secondary btn-sm" role="button" aria-pressed="true">go back</a>
+
+      <div id="listType" style="font-weight: bold; font-size: 1.5em">Admin View: Game List</div>
       <div class="form-check form-switch">
         <input class="form-check-input" type="checkbox" id="toggleSwitch" />
         <label class="form-check-label" for="toggleSwitch">Admin View Game List</label>
       </div>
     </nav>
-    <table id="AdminTable" class="table table-striped" style="width: 100%">
-      <thead></thead>
-      <tbody></tbody>
-    </table>
+    <div id="tableContainer" class="sm-3 em-3">
+      <table id="AdminTable" class="table table-striped" style="width: 100%">
+        <thead></thead>
+        <tbody></tbody>
+      </table>
+    </div>
   </body>
 </html>
