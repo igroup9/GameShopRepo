@@ -48,51 +48,53 @@ namespace Hw_1.DAL
         //--------------------------------------------------------------------------------------------------
         // This method update a student to the student table 
         //--------------------------------------------------------------------------------------------------
-        public int Update(Game game)
-        {
+        //public int Update(Game game)
+        //{
 
-            SqlConnection con;
-            SqlCommand cmd;
+        //    SqlConnection con;
+        //    SqlCommand cmd;
 
-            try
-            {
-                con = connect("myProjDB"); // create the connection
-            }
-            catch (Exception ex)
-            {
-                // write to log
-                throw (ex);
-            }
+        //    try
+        //    {
+        //        con = connect("myProjDB"); // create the connection
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        // write to log
+        //        throw (ex);
+        //    }
 
-            cmd = CreateCommandWithStoredProcedure("spUpdateStudent1", con, game);             // create the command לשנות שם פרוצדורה
+        //    cmd = CreateCommandWithStoredProcedure("spUpdateStudent1", con, game);             // create the command לשנות שם פרוצדורה
 
-            try
-            {
-                int numEffected = cmd.ExecuteNonQuery(); // execute the command
-                return numEffected;
-            }
-            catch (Exception ex)
-            {
-                // write to log
-                throw (ex);
-            }
+        //    try
+        //    {
+        //        int numEffected = cmd.ExecuteNonQuery(); // execute the command
+        //        return numEffected;
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        // write to log
+        //        throw (ex);
+        //    }
 
-            finally
-            {
-                if (con != null)
-                {
-                    // close the db connection
-                    con.Close();
-                }
-            }
+        //    finally
+        //    {
+        //        if (con != null)
+        //        {
+        //            // close the db connection
+        //            con.Close();
+        //        }
+        //    }
 
-        }
+        //}
 
 
 
         //---------------------------------------------------------------------------------
         // Create the SqlCommand using a stored procedure
         //---------------------------------------------------------------------------------
+      
+        
         private SqlCommand CreateCommandWithStoredProcedure(String spName, SqlConnection con, Game game)
         {
 
@@ -648,11 +650,102 @@ namespace Hw_1.DAL
                 user.Name = dataReader["name"].ToString();
                 user.Email = dataReader["email"].ToString();
                 user.Password = dataReader["password"].ToString();
+                user.IsActive=Convert.ToBoolean(dataReader["isActive"]);
             
                 userList.Add(user);
             }
             return userList;
         }
+
+
+
+        //--------------------------------------------------------------------------------------------------
+        // This method read all users with specific data for admin from a DB
+        //--------------------------------------------------------------------------------------------------
+        public List<object> ReadAdminUserList()
+        {
+            SqlConnection con;
+            SqlCommand cmd;
+
+            try
+            {
+                con = connect("myProjDB"); // create the connection
+            }
+            catch (Exception ex)
+            {
+                // write to log
+                throw (ex);
+            }
+
+           
+
+            Dictionary<string, object> paramDic = new Dictionary<string, object>();
+
+            cmd = CreateCommandWithStoredProcedureGeneral("R_SP_ReturnAllUsersForAdmin", con, paramDic);
+
+            SqlDataReader dataReader = cmd.ExecuteReader(CommandBehavior.CloseConnection);
+
+            List<object> listObjs = new List<object>();
+            while (dataReader.Read())
+            {
+                listObjs.Add(new
+                {
+                    Id = Convert.ToInt32(dataReader["id"]),
+                    Name = dataReader["name"].ToString(),
+                    NumOfGames= Convert.ToInt32(dataReader["NumOfGames"]),
+                    AmountOfMoneySpent = Convert.ToSingle(dataReader["AmountOfMoneySpent"]),
+                    isActive = Convert.ToBoolean(dataReader["isActive"])
+                });
+
+             
+            }
+            return listObjs;
+        }
+
+
+        //--------------------------------------------------------------------------------------------------
+        // This method read all Games with specific data for admin from a DB
+        //--------------------------------------------------------------------------------------------------
+        public List<object> ReadAdminGameList()
+        {
+            SqlConnection con;
+            SqlCommand cmd;
+
+            try
+            {
+                con = connect("myProjDB"); // create the connection
+            }
+            catch (Exception ex)
+            {
+                // write to log
+                throw (ex);
+            }
+
+
+
+            Dictionary<string, object> paramDic = new Dictionary<string, object>();
+
+            cmd = CreateCommandWithStoredProcedureGeneral("R_SP_ReturnAllGamesForAdmin", con, paramDic);
+
+            SqlDataReader dataReader = cmd.ExecuteReader(CommandBehavior.CloseConnection);
+
+            List<object> listObjs = new List<object>();
+            while (dataReader.Read())
+            {
+                listObjs.Add(new
+                {
+                    Appid = Convert.ToInt32(dataReader["appid"]),
+                    Name = dataReader["name"].ToString(),
+                    numberOfPurchases = Convert.ToInt32(dataReader["numberOfPurchases"]),
+                    amountPaidFor = Convert.ToSingle(dataReader["amountPaidFor"])
+                    
+                });
+
+
+            }
+            return listObjs;
+        }
+
 
         //--------------------------------------------------------------------------------------------------
         // This method Login the user and return all of his details from a DB
@@ -685,6 +778,8 @@ namespace Hw_1.DAL
                 user.Name = dataReader["name"].ToString();
                 user.Email = dataReader["email"].ToString();
                 user.Password = dataReader["password"].ToString();
+                user.IsActive = Convert.ToBoolean(dataReader["isActive"]);
+
                 return user;
             }
             else
@@ -717,6 +812,9 @@ namespace Hw_1.DAL
             paramDic.Add("@name", user.Name);
             paramDic.Add("@email", user.Email);
             paramDic.Add("@password", user.Password);
+            //paramDic.Add("@isActive", user.IsActive);
+
+
 
             cmd = CreateCommandWithStoredProcedureGeneral("R_SP_UpdateUser", con, paramDic);
 
@@ -727,6 +825,7 @@ namespace Hw_1.DAL
                 user.Name = dataReader["name"].ToString();
                 user.Email = dataReader["email"].ToString();
                 user.Password = dataReader["password"].ToString();
+                //user.IsActive = Convert.ToBoolean(dataReader["isActive"]);
                 return user;
             }
             else
@@ -735,5 +834,55 @@ namespace Hw_1.DAL
             }
         }
 
+
+
+
+        //--------------------------------------------------------------------------------------------------
+        // This method Update the user isActive
+        //--------------------------------------------------------------------------------------------------
+        public bool UpdateUserIsActive(int id, bool isActive)
+        {
+            SqlConnection con;
+            SqlCommand cmd;
+
+            try
+            {
+                con = connect("myProjDB"); // create the connection
+            }
+            catch (Exception ex)
+            {
+                // write to log
+                throw (ex);
+            }
+
+            Dictionary<string, object> paramDic = new Dictionary<string, object>();
+            paramDic.Add("@id", id);
+            paramDic.Add("@isActive", isActive);
+
+
+            cmd = CreateCommandWithStoredProcedureGeneral("R_SP_UpdateUserIsActiveField", con, paramDic);
+
+            try
+            {
+                int numEffected = cmd.ExecuteNonQuery(); // execute the command
+                if (numEffected > 0)
+                    return true;
+                else return false;
+            }
+            catch (Exception ex)
+            {
+                // write to log
+                throw (ex);
+            }
+
+            finally
+            {
+                if (con != null)
+                {
+                    // close the db connection
+                    con.Close();
+                }
+            }
+        }
     }
 }

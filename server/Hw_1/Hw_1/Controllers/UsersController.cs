@@ -19,6 +19,14 @@ namespace Hw_1.Controllers
             return user.read();
         }
 
+        //get all users list for admin
+        [HttpGet("ReadAdminUserList")]
+        public List<object> ReadAdminUserList()
+        {
+            User user = new User();
+            return user.ReadAdminUserList();
+        }
+
         // GET api/<UsersController>/5
         //[HttpGet("{id}")]
         //public string Get(int id)
@@ -64,6 +72,15 @@ namespace Hw_1.Controllers
         public User Put( [FromBody] User user)
         {
             return user.Upadte();
+
+        }
+
+        // PUT api/<UsersController>/5
+        [HttpPut("UpdateUserIsActive/id/{id}/isActive/{isActive}")]
+        public bool UpdateUserIsActive(int id, bool isActive)
+        {
+            User user= new User();
+            return user.UpdateUserIsActive(id,isActive);
 
         }
 

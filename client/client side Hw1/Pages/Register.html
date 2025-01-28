@@ -44,7 +44,8 @@
         } else if (!passwordRegex.test(password)) {
           swal.fire({
             icon: "error",
-            title: "Invalid password - must contain one uppercase, one digit, and be at least 8 characters!",
+            title:
+              "Invalid password - must contain one lowercase, one uppercase, one digit, and be at least 8 characters!",
           });
           return;
         } else {

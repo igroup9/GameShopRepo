@@ -43,6 +43,9 @@
         $(document).on("click", "#GoToMyListBtn", function () {
           window.location.href = "./MyList.html";
         });
+        $(document).on("click", "#GoToAdminViewBtn", function () {
+          window.location.href = "./Admin.html";
+        });
         ///exit
         $("#registerBtn").on("click", function () {
           if (user) {
@@ -79,6 +82,11 @@
                   deleteCurrentUser();
                   const GoToMyListBtn = $("#GoToMyListBtn");
                   GoToMyListBtn.addClass("hidden");
+                  const GoToAdminViewBtn = $("#GoToAdminViewBtn");
+                  GoToMyListBtn.addClass("hidden");
+
+                  const add_to_list_btn = $(".add_to_list_btn");
+                  add_to_list_btn.addClass("hidden");
 
                   heading_p = $(".heading_p");
                   heading_p.text(
@@ -96,6 +104,7 @@
 
         // Login functionality on the index page - changing visibility and links
         if (user) {
+          console.log("User is logged in");
           const loginLink = $("#LoginBtn");
           loginLink.text("Edit User");
           loginLink.attr("href", "./editForm.html");
@@ -108,6 +117,12 @@
           const goToMyListBtn = $("#GoToMyListBtn");
           goToMyListBtn.text("Go to " + user.name + " Game list");
           goToMyListBtn.removeClass("hidden");
+
+          if (user.email == "admin@admin.com") {
+            console.log("User is Admin");
+            const GoToAdminViewBtn = $("#GoToAdminViewBtn");
+            GoToAdminViewBtn.removeClass("hidden");
+          }
 
           heading_p = $(".heading_p");
           heading_p.text(
@@ -130,6 +145,12 @@
           //SCB
           console.log(gamesList);
           renderGames(gamesList); //CALL RENDER FUNC
+          //initializeCarousel(); //initialize Carousel
+
+          if (Id != 0) {
+            const add_to_list_btn = $(".add_to_list_btn");
+            add_to_list_btn.removeClass("hidden");
+          }
         }
         function getGamesECB(ERR) {
           //ECB
@@ -151,113 +172,115 @@
           const uniqueID = `game-${index}`; // Create a unique ID for each game
 
           gameCard.innerHTML = `
-      <div class="card" style="width: 22rem;">
-        <img class="bd-placeholder-img card-img-top" width="100%" height="180" src="${G.Header_image}" alt="${G.Name}">
-        <div class="card-body">
-          <div style="min-height: 80px; display: flex; align-items: center; justify-content: center;">
-      <h5 class="card-title text-center">${G.Name}</h5>
-    </div>
-          <a href="${G.Website}" target="_blank">Official Website</a>
-        </div>
-
-        <div class="accordion" id="accordion-${uniqueID}">
-          <!-- Details Section -->
-          <div class="accordion-item">
-            <h2 class="accordion-header">
-              <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#details-${uniqueID}" aria-expanded="false" aria-controls="details-${uniqueID}">
-                <strong>Details</strong>
-              </button>
-            </h2>
-            <div id="details-${uniqueID}" class="accordion-collapse collapse">
-              <div class="accordion-body">
-                <ul class="list-group">
-                  <li class="list-group-item"><strong>App ID:</strong> ${G.AppID}</li>
-                  <li class="list-group-item"><strong>Release Date:</strong> ${G.Release_date}</li>
-                  <li class="list-group-item"><strong>Categories:</strong> ${G.Categories}</li>
-                  <li class="list-group-item"><strong>Genres:</strong> ${G.Genres}</li>
-                </ul>
-              </div>
-            </div>
+        <div class="card" style="width: 22rem;">
+          <img class="bd-placeholder-img card-img-top" width="100%" height="180" src="${G.Header_image}" alt="${
+            G.Name
+          }">
+          <div class="card-body">
+            <div style="min-height: 80px; display: flex; align-items: center; justify-content: center;">
+        <h5 class="card-title text-center">${G.Name}</h5>
+      </div>
+            <a href="${G.Website}" target="_blank">Official Website</a>
           </div>
 
-          <!-- Platforms Section -->
-          <div class="accordion-item">
-            <h2 class="accordion-header">
-              <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#platforms-${uniqueID}" aria-expanded="false" aria-controls="platforms-${uniqueID}">
-                <strong>Platforms</strong>
-              </button>
-            </h2>
-            <div id="platforms-${uniqueID}" class="accordion-collapse collapse">
-              <div class="accordion-body">
-                <ul class="list-group">
-                  <li class="list-group-item"><strong>Developers:</strong> ${G.Developers}</li>
-                  <li class="list-group-item"><strong>Tags:</strong> ${G.Tags}</li>
-                  <li class="list-group-item"><strong>Full Audio Languages:</strong> ${G.Full_audio_languages}</li>
-                  <li class="list-group-item"><strong>Platforms:</strong>
-                    ${G.Windows === "TRUE" ? "Windows " : ""}
-                    ${G.Mac === "TRUE" ? "Mac " : ""}
-                    ${G.Linux === "TRUE" ? "Linux" : ""}
-                  </li>
-                </ul>
+          <div class="accordion" id="accordion-${uniqueID}">
+            <!-- Details Section -->
+            <div class="accordion-item">
+              <h2 class="accordion-header">
+                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#details-${uniqueID}" aria-expanded="false" aria-controls="details-${uniqueID}">
+                  <strong>Details</strong>
+                </button>
+              </h2>
+              <div id="details-${uniqueID}" class="accordion-collapse collapse">
+                <div class="accordion-body">
+                  <ul class="list-group">
+                    <li class="list-group-item"><strong>App ID:</strong> ${G.AppID}</li>
+                    <li class="list-group-item"><strong>Release Date:</strong> ${G.Release_date}</li>
+                    <li class="list-group-item"><strong>Categories:</strong> ${G.Categories}</li>
+                    <li class="list-group-item"><strong>Genres:</strong> ${G.Genres}</li>
+                  </ul>
+                </div>
               </div>
             </div>
-          </div>
 
-          <!-- Screenshots Section -->
-          <div class="accordion-item">
-            <h2 class="accordion-header">
-              <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#screenshots-${uniqueID}" aria-expanded="false" aria-controls="screenshots-${uniqueID}">
-                <strong>Screenshots</strong>
-              </button>
-            </h2>
-            <div id="screenshots-${uniqueID}" class="accordion-collapse collapse">
-              <div class="accordion-body">
-                <div id="carousel-${uniqueID}" class="carousel slide" data-bs-ride="carousel">
-                  <div class="carousel-inner">
-                    ${G.Screenshots.split(",")
-                      .map(
-                        (url, indx) => `
-                          <div class="carousel-item ${indx === 0 ? "active" : ""}">
-                            <img src="${url}" alt="Screenshot ${indx + 1}" class="d-block w-100">
-                          </div>`
-                      )
-                      .join("")}
+            <!-- Platforms Section -->
+            <div class="accordion-item">
+              <h2 class="accordion-header">
+                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#platforms-${uniqueID}" aria-expanded="false" aria-controls="platforms-${uniqueID}">
+                  <strong>Platforms</strong>
+                </button>
+              </h2>
+              <div id="platforms-${uniqueID}" class="accordion-collapse collapse">
+                <div class="accordion-body">
+                  <ul class="list-group">
+                    <li class="list-group-item"><strong>Developers:</strong> ${G.Developers}</li>
+                    <li class="list-group-item"><strong>Tags:</strong> ${G.Tags}</li>
+                    <li class="list-group-item"><strong>Full Audio Languages:</strong> ${G.Full_audio_languages}</li>
+                    <li class="list-group-item"><strong>Platforms:</strong>
+                      ${G.Windows === "TRUE" ? "Windows " : ""}
+                      ${G.Mac === "TRUE" ? "Mac " : ""}
+                      ${G.Linux === "TRUE" ? "Linux" : ""}
+                    </li>
+                  </ul>
+                </div>
+              </div>
+            </div>
+
+            <!-- Screenshots Section -->
+            <div class="accordion-item">
+              <h2 class="accordion-header">
+                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#screenshots-${uniqueID}" aria-expanded="false" aria-controls="screenshots-${uniqueID}">
+                  <strong>Screenshots</strong>
+                </button>
+              </h2>
+              <div id="screenshots-${uniqueID}" class="accordion-collapse collapse">
+                <div class="accordion-body">
+                  <div id="carousel-${uniqueID}" class="carousel slide" data-bs-ride="carousel">
+                    <div class="carousel-inner">
+                      ${G.Screenshots.split(",")
+                        .map(
+                          (url, indx) => `
+                            <div class="carousel-item ${indx === 0 ? "active" : ""}">
+                              <img src="${url}" alt="Screenshot ${indx + 1}" class="d-block w-100">
+                            </div>`
+                        )
+                        .join("")}
+                    </div>
+                    <button class="carousel-control-prev" type="button" data-bs-target="#carousel-${uniqueID}" data-bs-slide="prev">
+                      <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                      <span class="visually-hidden">Previous</span>
+                    </button>
+                    <button class="carousel-control-next" type="button" data-bs-target="#carousel-${uniqueID}" data-bs-slide="next">
+                      <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                      <span class="visually-hidden">Next</span>
+                    </button>
                   </div>
-                  <button class="carousel-control-prev" type="button" data-bs-target="#carousel-${uniqueID}" data-bs-slide="prev">
-                    <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-                    <span class="visually-hidden">Previous</span>
-                  </button>
-                  <button class="carousel-control-next" type="button" data-bs-target="#carousel-${uniqueID}" data-bs-slide="next">
-                    <span class="carousel-control-next-icon" aria-hidden="true"></span>
-                    <span class="visually-hidden">Next</span>
-                  </button>
+                </div>
+              </div>
+            </div>
+
+            <!-- Description Section -->
+            <div class="accordion-item">
+              <h2 class="accordion-header">
+                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#description-${uniqueID}" aria-expanded="false" aria-controls="description-${uniqueID}">
+                  <strong>Description</strong>
+                </button>
+              </h2>
+              <div id="description-${uniqueID}" class="accordion-collapse collapse">
+                <div class="accordion-body">
+                  ${G.description}
                 </div>
               </div>
             </div>
           </div>
 
-          <!-- Description Section -->
-          <div class="accordion-item">
-            <h2 class="accordion-header">
-              <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#description-${uniqueID}" aria-expanded="false" aria-controls="description-${uniqueID}">
-                <strong>Description</strong>
-              </button>
-            </h2>
-            <div id="description-${uniqueID}" class="accordion-collapse collapse">
-              <div class="accordion-body">
-                ${G.description}
-              </div>
-            </div>
+          <div class="card-body">
+            <button  class="card-link add_to_list_btn hidden"data-AppID="${G.AppID}">Add To List</button>
+            <div><strong>Price:</strong> $${G.Price.toFixed(2)}</div>
+            <div><strong>Score Rank:</strong> ${G.Score_rank}</div>
           </div>
         </div>
-
-        <div class="card-body">
-          <button class="card-link add_to_list_btn"data-AppID="${G.AppID}">Add To List</button>
-          <div><strong>Price:</strong> $${G.Price.toFixed(2)}</div>
-          <div><strong>Score Rank:</strong> ${G.Score_rank}</div>
-        </div>
-      </div>
-    `;
+      `;
 
           gamesList.appendChild(gameCard);
         });
@@ -275,7 +298,13 @@
           console.log(status);
           getFromServer();
           if (status) {
-            alert("Game Added successfully");
+            Swal.fire({
+              icon: "success",
+              title: "Game Added Successfully",
+              text: "The game has been added to your list.",
+              timer: 2000, // 3 seconds
+              showConfirmButton: false,
+            });
           } else alert("Game already in the game list");
         }
         function postGameECB(ERR) {
@@ -290,6 +319,7 @@
           <button class="btn btn-light text-bg-light p-3 m-2" type="button">
             <a id="registerBtn" href="./Register.html">Register</a>
           </button>
+
           <button class="btn btn-light text-bg-light p-3 m-2" type="button">
             <a id="LoginBtn" href="./Login.html">Login</a>
           </button>
@@ -307,6 +337,7 @@
       <button type="button" id="GoToMyListBtn" class="hidden btn btn-light p-2 ms-5" href="./MyList.html">
         Go to Your List
       </button>
+      <button type="button" id="GoToAdminViewBtn" class="hidden btn btn-light p-2 ms-5">Go to Admin View</button>
 
       <div id="games_container"></div>
     </div>

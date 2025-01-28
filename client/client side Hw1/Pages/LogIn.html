@@ -36,33 +36,45 @@
 
         function LogInUserSCB(user) {
           if (user != null) {
-            let currentUser = null;
-            currentUser = {
-              id: user.id,
-              name: user.name,
-              email: user.email,
-              password: user.password,
-            };
+            if (user.isActive == false) {
+              Swal.fire({
+                icon: "error",
+                title: "Login Failed!",
+                text: `Hi ${user.name}, there is an issue logging you into the system. Please contact the system administrator.`,
+                confirmButtonText: "OK",
+                allowOutsideClick: false,
+                allowEscapeKey: false,
+              });
+              $("#loginForm")[0].reset();
+            } else {
+              let currentUser = null;
+              currentUser = {
+                id: user.id,
+                name: user.name,
+                email: user.email,
+                password: user.password,
+              };
 
-            sessionStorage.setItem("currentUser", JSON.stringify(currentUser));
+              sessionStorage.setItem("currentUser", JSON.stringify(currentUser));
 
-            console.log(currentUser);
+              console.log(currentUser);
 
-            $("#loginForm")[0].reset();
+              $("#loginForm")[0].reset();
 
-            Swal.fire({
-              icon: "success",
-              title: "Hello " + currentUser.name + " Login successful!",
-              text: "Redirecting to the main page...",
-              timer: 3000,
-              showConfirmButton: false,
-              allowOutsideClick: false,
-              allowEscapeKey: false,
-            });
-            setTimeout(() => {
-              // Redirect after 2 seconds
-              window.location.href = "./index.html";
-            }, 2000);
+              Swal.fire({
+                icon: "success",
+                title: "Hello " + currentUser.name + " Login successful!",
+                text: "Redirecting to the main page...",
+                timer: 3000,
+                showConfirmButton: false,
+                allowOutsideClick: false,
+                allowEscapeKey: false,
+              });
+              setTimeout(() => {
+                // Redirect after 2 seconds
+                window.location.href = "./index.html";
+              }, 2000);
+            }
           } else {
             $("#loginForm")[0].reset();
             Swal.fire({

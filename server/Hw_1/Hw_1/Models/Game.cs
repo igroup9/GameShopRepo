@@ -110,6 +110,13 @@ namespace Hw_1.Models
             return allGameList.ReadGamesList();
         }
 
+        public List<object> ReadAdminGameList()
+        {
+
+            DBservices DB = new DBservices();
+            return DB.ReadAdminGameList();
+        }
+
         public List<Game> readMyList(int id)
         {
             DBservices myGameList = new DBservices();
