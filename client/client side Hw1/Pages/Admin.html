@@ -46,7 +46,7 @@
 
       //return Admin Games
       function getAdminGameList() {
-        const api = `https://localhost:7119/api/Games/ReadAdminGameList`;
+        const api = `https://proj.ruppin.ac.il/igroup9/test2/tar1/api/Games/ReadAdminGameList`;
         ajaxCall("GET", api, "", getGamesObjSCB, getGamesObjECB);
         function getGamesObjSCB(gamesObjList) {
           console.log("Ajax Success");
@@ -97,7 +97,7 @@
 
       //return Admin User List
       function getAdminUserList() {
-        const api = `https://localhost:7119/api/Users/ReadAdminUserList`;
+        const api = `https://proj.ruppin.ac.il/igroup9/test2/tar1/api/Users/ReadAdminUserList`;
         ajaxCall("GET", api, "", getUserObjSCB, getUserObjECB);
         function getUserObjSCB(userObjList) {
           console.log("Ajax Success");
@@ -157,7 +157,7 @@
       }
 
       function updateUserActiveStatus(userId, isActive) {
-        const api = `https://localhost:7119/api/Users/UpdateUserIsActive/id/${userId}/isActive/${isActive}`;
+        const api = `https://proj.ruppin.ac.il/igroup9/test2/tar1/api/Users/UpdateUserIsActive/id/${userId}/isActive/${isActive}`;
         // const data = { id: userId, isActive: isActive };
         // JSON.stringify(data)
         ajaxCall("PUT", api, "", updateUserActiveStatusSCB, updateUserActiveStatusECB);
@@ -191,7 +191,7 @@
         <label class="form-check-label" for="toggleSwitch">Admin View Game List</label>
       </div>
     </nav>
-    <div id="tableContainer" class="sm-3 em-3">
+    <div id="tableContainer" class="table-responsive sm-3 em-3">
       <table id="AdminTable" class="table table-striped" style="width: 100%">
         <thead></thead>
         <tbody></tbody>

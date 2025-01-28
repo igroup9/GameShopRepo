@@ -31,15 +31,21 @@
           id: 0,
           name: "",
         };
-        const api = "https://localhost:7119/api/Users/LoginUser";
+        const api = "https://proj.ruppin.ac.il/igroup9/test2/tar1/api/Users/LoginUser";
         ajaxCall("POST", api, JSON.stringify(userLog), LogInUserSCB, LogInUserECB);
 
         function LogInUserSCB(user) {
           if (user != null) {
-            if (user.IsActive == false) {
-              alert(
-                `Hi ${user.name}, there is an issue logging you into the system. Please contact the system administrator.`
-              );
+            if (user.isActive == false) {
+              Swal.fire({
+                icon: "error",
+                title: "Login Failed!",
+                text: `Hi ${user.name}, there is an issue logging you into the system. Please contact the system administrator.`,
+                confirmButtonText: "OK",
+                allowOutsideClick: false,
+                allowEscapeKey: false,
+              });
+              $("#loginForm")[0].reset();
             } else {
               let currentUser = null;
               currentUser = {

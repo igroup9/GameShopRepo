@@ -117,7 +117,7 @@
           AppiD,
           Id,
         };
-        const api = `https://localhost:7119/api/Games/deleteByid/GameRequest`;
+        const api = `https://proj.ruppin.ac.il/igroup9/test2/tar1/api/Games/deleteByid/GameRequest`;
 
         ajaxCall("Delete", api, JSON.stringify(GameRequest), deleteGameSCB, deleteGameECB);
 
@@ -141,7 +141,7 @@
         let user = getCurrentUser();
         Id = user.id;
 
-        const api = `https://localhost:7119/api/Games/GetByPrice/Id/${Id}/Num/${Num}`;
+        const api = `https://proj.ruppin.ac.il/igroup9/test2/tar1/api/Games/GetByPrice/Id/${Id}/Num/${Num}`;
 
         ajaxCall("GET", api, "", filterByPriceSCB, filterByPriceECB);
 
@@ -159,7 +159,7 @@
         let user = getCurrentUser();
         Id = user.id;
 
-        const api = `https://localhost:7119/api/Games/GetByRankScore/Id/${Id}/Num/${Num}`;
+        const api = `https://proj.ruppin.ac.il/igroup9/test2/tar1/api/Games/GetByRankScore/Id/${Id}/Num/${Num}`;
 
         ajaxCall("GET", api, "", filterByRankSCB, filterByRankECB);
 
@@ -176,7 +176,7 @@
       function getFromServer() {
         let user = getCurrentUser();
         const id = user.id;
-        const api = `https://localhost:7119/api/Games/GetMyGames/id/${id}`;
+        const api = `https://proj.ruppin.ac.il/igroup9/test2/tar1/api/Games/GetMyGames/id/${id}`;
         ajaxCall("GET", api, JSON.stringify(id), getGamesSCB, getGamesECB);
         function getGamesSCB(gamesList) {
           //SCB
